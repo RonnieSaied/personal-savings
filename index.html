@@ -153,6 +153,7 @@
             padding: 1px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 60%);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             pointer-events: none;
@@ -183,6 +184,22 @@
             color: #050b14;
             font-size: 1.2rem;
             box-shadow: 0 0 15px var(--accent-teal-glow);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .return-btn {
+            width: auto;
+            min-width: 45px;
+            padding: 0 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            gap: 0.45rem;
         }
 
         /* Net Worth Hero - Robust Redesign */
@@ -627,6 +644,126 @@
             cursor: pointer;
         }
 
+        .transaction-list,
+        .debt-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .transaction-item,
+        .debt-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            padding: 1rem;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+
+        .tx-info,
+        .debt-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .tx-icon,
+        .debt-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tx-details,
+        .debt-details {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .tx-details h4,
+        .debt-details h4 {
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 0.2rem;
+            word-break: break-word;
+        }
+
+        .tx-details p,
+        .debt-details p {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .tx-side,
+        .debt-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.55rem;
+            flex-shrink: 0;
+        }
+
+        .tx-amount,
+        .debt-amount {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--accent-rose);
+            white-space: nowrap;
+        }
+
+        .tx-actions,
+        .debt-actions {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .mini-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 0.45rem 0.75rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .mini-btn:active {
+            transform: scale(0.96);
+        }
+
+        .mini-btn.teal {
+            background: rgba(0, 242, 254, 0.14);
+            color: var(--accent-teal);
+        }
+
+        .mini-btn.emerald {
+            background: rgba(16, 185, 129, 0.14);
+            color: var(--accent-emerald);
+        }
+
+        .mini-btn.rose {
+            background: rgba(244, 63, 94, 0.14);
+            color: var(--accent-rose);
+        }
+
         /* Animation */
         @keyframes fadeIn {
             from {
@@ -872,6 +1009,10 @@
                         <h1>Transactions</h1>
                         <p class="text-muted">Full history of your spending</p>
                     </div>
+                    <div class="profile-btn return-btn" onclick="showTab('home')">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Return</span>
+                    </div>
                 </header>
                 <div class="transaction-list" id="transactionList">
                     <!-- Transactions will be injected here -->
@@ -883,15 +1024,43 @@
                 <header class="header">
                     <div class="greeting">
                         <h1>Savings</h1>
-                        <p class="text-muted">Manage your saving boxes</p>
+                        <p class="text-muted">Manage your saving boxes and debts</p>
                     </div>
-                    <div class="profile-btn" onclick="addSavingBox()"
-                        style="background: var(--accent-teal); color: #000;">
-                        <i class="fa-solid fa-plus"></i>
+                    <div class="header-actions">
+                        <div class="profile-btn return-btn" onclick="showTab('home')"
+                            style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); box-shadow: none;">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>Return</span>
+                        </div>
+                        <div class="profile-btn" onclick="openSavingsActionMenu()"
+                            style="background: var(--accent-teal); color: #000;">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
                     </div>
                 </header>
                 <div class="savings-grid" id="savingsGrid">
                     <!-- Saving boxes and the Create button will be injected here -->
+                </div>
+                <div class="glass-card">
+                    <div class="chart-header" style="margin-bottom: 1rem;">
+                        <div>
+                            <h2>Debt Tracker</h2>
+                            <span class="text-muted">Track what you owe and who you owe</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="text-muted" style="font-size: 0.7rem;">OUTSTANDING</div>
+                            <div class="text-rose" id="totalDebtDisplay"
+                                style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
+                        </div>
+                    </div>
+                    <div class="debt-list" id="debtList">
+                        <!-- Debts will be injected here -->
+                    </div>
+                    <button class="save-btn"
+                        style="margin-top: 1rem; background: rgba(244, 63, 94, 0.14); color: var(--accent-rose);"
+                        onclick="addDebt()">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> Add Debt
+                    </button>
                 </div>
             </div>
 
@@ -901,6 +1070,10 @@
                     <div class="greeting">
                         <h1>Settings</h1>
                         <p class="text-muted">Manage your app data</p>
+                    </div>
+                    <div class="profile-btn return-btn" onclick="showTab('home')">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Return</span>
                     </div>
                 </header>
 
@@ -916,7 +1089,7 @@
                 <div class="glass-card" style="padding: 1.5rem; border-color: rgba(244, 63, 94, 0.2);">
                     <h3 style="color: var(--accent-rose); margin-bottom: 0.5rem;">Danger Zone</h3>
                     <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 1.5rem;">This will permanently delete
-                        all your savings, budgets, and transactions. This cannot be undone.</p>
+                        all your savings, debts, budgets, and transactions. This cannot be undone.</p>
                     <button class="modal-btn danger" onclick="hardReset()">Reset All Data</button>
                 </div>
             </div>
@@ -1078,16 +1251,111 @@
         const fab = document.querySelector('.fab');
         fab.addEventListener('click', () => {
             if (currentTab === 'savings') {
-                addSavingBox();
+                openSavingsActionMenu();
                 return;
             }
 
+            openTransactionWizard();
+        });
+
+        function generateId() {
+            return Date.now() + Math.floor(Math.random() * 10000);
+        }
+
+        function toLocalDateTimeValue(timestamp = Date.now()) {
+            const date = new Date(timestamp);
+            const tzOffset = date.getTimezoneOffset() * 60000;
+            return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+        }
+
+        function parseTransactionDateInput(value) {
+            if (!value) return Date.now();
+            const parsed = new Date(value).getTime();
+            return Number.isNaN(parsed) ? Date.now() : parsed;
+        }
+
+        function formatTransactionDate(timestamp) {
+            const parsed = Number(timestamp);
+            const safeTimestamp = Number.isFinite(parsed) ? parsed : Date.now();
+            const date = new Date(safeTimestamp);
+            return date.toLocaleDateString([], {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }) + ' ' + date.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function normalizeTransaction(tx) {
+            const fallbackTime = Date.parse(tx.date || '') || Date.now();
+            const effectiveAt = Number.isFinite(Number(tx.effectiveAt)) ? Number(tx.effectiveAt) : fallbackTime;
+            const createdAt = Number.isFinite(Number(tx.createdAt)) ? Number(tx.createdAt) : effectiveAt;
+            return {
+                id: Number.isFinite(Number(tx.id)) ? Number(tx.id) : generateId(),
+                category: tx.category || 'personal',
+                amount: parseInt(tx.amount) || 0,
+                description: tx.description || '',
+                date: formatTransactionDate(effectiveAt),
+                effectiveAt,
+                createdAt,
+                sourceType: tx.sourceType || ((tx.category === 'personal' || tx.category === 'car') ? 'weekly' : 'box'),
+                sourceId: tx.sourceId ?? null
+            };
+        }
+
+        function sortTransactionsByDate(transactions) {
+            return transactions.slice().sort((a, b) => {
+                const effectiveDiff = (b.effectiveAt || 0) - (a.effectiveAt || 0);
+                if (effectiveDiff !== 0) return effectiveDiff;
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            });
+        }
+
+        function getTransactionLabel(category) {
+            if (category === 'personal') return 'Personal';
+            if (category === 'car') return 'Car';
+            return category;
+        }
+
+        function recordTransaction(category, amount, description, effectiveAt, sourceMeta = {}) {
+            const transaction = normalizeTransaction({
+                id: generateId(),
+                category,
+                amount,
+                description,
+                effectiveAt,
+                createdAt: Date.now(),
+                sourceType: sourceMeta.sourceType,
+                sourceId: sourceMeta.sourceId
+            });
+            budgetState.transactions.push(transaction);
+        }
+
+        window.openSavingsActionMenu = function () {
+            let options = [
+                { label: "Create Saving Box", icon: "fa-piggy-bank", class: "teal", value: "box" },
+                { label: "Add Debt", icon: "fa-hand-holding-dollar", class: "emerald", value: "debt" }
+            ];
+
+            showModal({
+                title: "Savings Actions",
+                desc: "What would you like to add?",
+                options: options,
+                callback: (action) => {
+                    if (action === 'box') addSavingBox();
+                    if (action === 'debt') addDebt();
+                }
+            });
+        };
+
+        window.openTransactionWizard = function () {
             let options = [
                 { label: "Personal spending", icon: "fa-user", class: "teal", value: "personal" },
                 { label: "Car Maintenance", icon: "fa-car", class: "emerald", value: "car" }
             ];
 
-            // Add dynamic saving boxes to options
             if (budgetState.savingsBoxes && budgetState.savingsBoxes.length > 0) {
                 budgetState.savingsBoxes.forEach(box => {
                     options.push({
@@ -1108,7 +1376,7 @@
 
                     showModal({
                         title: "How much?",
-                        desc: `Enter amount for ${category === 'personal' ? 'Personal' : 'Car'}`,
+                        desc: `Enter amount for ${getTransactionLabel(category)}`,
                         type: "number",
                         placeholder: "e.g. 5000",
                         callback: (amount) => {
@@ -1121,22 +1389,31 @@
                                 type: "text",
                                 placeholder: "e.g. Coffee, Fuel, etc.",
                                 callback: (desc) => {
-                                    spendMoney(category, parsedAmount, desc);
+                                    showModal({
+                                        title: "Transaction Date",
+                                        desc: "Pick when this transaction actually happened.",
+                                        type: "datetime-local",
+                                        value: toLocalDateTimeValue(),
+                                        actionLabel: "Save Transaction",
+                                        callback: (dateValue) => {
+                                            spendMoney(category, parsedAmount, desc, dateValue);
 
-                                    // Visual success feedback
-                                    fab.style.background = "var(--accent-emerald)";
-                                    fab.innerHTML = '<i class="fa-solid fa-check"></i>';
-                                    setTimeout(() => {
-                                        fab.style.background = "linear-gradient(135deg, #00f2fe, #4facfe)";
-                                        fab.innerHTML = '<i class="fa-solid fa-plus"></i>';
-                                    }, 1500);
+                                            // Visual success feedback
+                                            fab.style.background = "var(--accent-emerald)";
+                                            fab.innerHTML = '<i class="fa-solid fa-check"></i>';
+                                            setTimeout(() => {
+                                                fab.style.background = "linear-gradient(135deg, #00f2fe, #4facfe)";
+                                                fab.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                                            }, 1500);
+                                        }
+                                    });
                                 }
                             });
                         }
                     });
                 }
             });
-        });
+        };
 
         // Weekly Allowance Logic
         let budgetState = JSON.parse(localStorage.getItem('budgetState')) || {
@@ -1149,6 +1426,8 @@
                 { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
                 { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' }
             ],
+            savingsBoxes: [],
+            debts: [],
             transactions: [],
             totalSavings: 0
         };
@@ -1156,6 +1435,7 @@
         // Safety check & Migration
         function migrateData() {
             if (!budgetState.transactions || !Array.isArray(budgetState.transactions)) budgetState.transactions = [];
+            budgetState.transactions = budgetState.transactions.map(normalizeTransaction);
             if (!budgetState.savingsBoxes || !Array.isArray(budgetState.savingsBoxes)) {
                 // Recover any single box that might be stuck as an object
                 if (budgetState.savingsBoxes && typeof budgetState.savingsBoxes === 'object' && !Array.isArray(budgetState.savingsBoxes)) {
@@ -1164,6 +1444,20 @@
                     budgetState.savingsBoxes = [];
                 }
             }
+            budgetState.savingsBoxes = budgetState.savingsBoxes.map(box => ({
+                ...box,
+                id: Number.isFinite(Number(box.id)) ? Number(box.id) : generateId(),
+                balance: parseInt(box.balance) || 0,
+                hidden: !!box.hidden
+            }));
+            if (!budgetState.debts || !Array.isArray(budgetState.debts)) budgetState.debts = [];
+            budgetState.debts = budgetState.debts.map(debt => ({
+                id: Number.isFinite(Number(debt.id)) ? Number(debt.id) : generateId(),
+                person: debt.person || debt.name || 'Unknown',
+                amount: parseInt(debt.amount) || 0,
+                note: debt.note || '',
+                createdAt: Number.isFinite(Number(debt.createdAt)) ? Number(debt.createdAt) : Date.now()
+            })).filter(debt => debt.amount > 0);
             if (typeof budgetState.totalSavings !== 'number') budgetState.totalSavings = 0;
             if (!budgetState.weeks || !Array.isArray(budgetState.weeks) || budgetState.weeks.length < 5) {
                 const defaultWeeks = [
@@ -1260,6 +1554,10 @@
                 const tsDisplay = document.getElementById('totalSavingsDisplay');
                 if (tsDisplay) tsDisplay.innerText = weeklySavingsTotal.toLocaleString() + ' IQD';
 
+                const totalDebt = (budgetState.debts || []).reduce((sum, debt) => sum + (parseInt(debt.amount) || 0), 0);
+                const totalDebtDisplay = document.getElementById('totalDebtDisplay');
+                if (totalDebtDisplay) totalDebtDisplay.innerText = totalDebt.toLocaleString() + ' IQD';
+
                 // 3. RESTORE FULL WEEK GRID (UI Restoration)
                 const grid = document.getElementById('weekGrid');
                 if (grid) {
@@ -1344,20 +1642,58 @@
                         txList.innerHTML = '<div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">No transactions yet</div>';
                     } else {
                         txList.innerHTML = '';
-                        budgetState.transactions.slice().reverse().slice(0, 10).forEach(tx => {
-                            const icon = tx.category === 'personal' ? 'fa-user' : 'fa-car';
-                            const iconBg = tx.category === 'personal' ? 'rgba(0, 242, 254, 0.1)' : 'rgba(16, 185, 129, 0.1)';
-                            const iconColor = tx.category === 'personal' ? 'var(--accent-teal)' : 'var(--accent-emerald)';
+                        sortTransactionsByDate(budgetState.transactions).forEach(tx => {
+                            const isPersonal = tx.category === 'personal';
+                            const isCar = tx.category === 'car';
+                            const icon = isPersonal ? 'fa-user' : isCar ? 'fa-car' : 'fa-piggy-bank';
+                            const iconBg = isPersonal ? 'rgba(0, 242, 254, 0.1)' : isCar ? 'rgba(16, 185, 129, 0.1)' : 'rgba(59, 130, 246, 0.14)';
+                            const iconColor = isPersonal ? 'var(--accent-teal)' : isCar ? 'var(--accent-emerald)' : '#60a5fa';
                             txList.innerHTML += `
                                 <div class="transaction-item fade-in">
                                     <div class="tx-info">
                                         <div class="tx-icon" style="background: ${iconBg}; color: ${iconColor};"><i class="fa-solid ${icon}"></i></div>
                                         <div class="tx-details">
                                             <h4>${tx.description || 'Spending'}</h4>
-                                            <p>${tx.date} • ${tx.category === 'personal' ? 'Personal' : 'Car'}</p>
+                                            <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}</p>
                                         </div>
                                     </div>
-                                    <div class="tx-amount">-${(tx.amount || 0).toLocaleString()}</div>
+                                    <div class="tx-side">
+                                        <div class="tx-amount">-${(tx.amount || 0).toLocaleString()}</div>
+                                        <div class="tx-actions">
+                                            <button class="mini-btn teal" onclick="editTransaction(${tx.id})">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        });
+                    }
+                }
+
+                const debtList = document.getElementById('debtList');
+                if (debtList) {
+                    if (!budgetState.debts || budgetState.debts.length === 0) {
+                        debtList.innerHTML = '<div class="text-muted" style="text-align: center; padding: 1.5rem 0; font-size: 0.8rem;">No debts added yet</div>';
+                    } else {
+                        debtList.innerHTML = '';
+                        budgetState.debts.slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).forEach(debt => {
+                            debtList.innerHTML += `
+                                <div class="debt-item fade-in">
+                                    <div class="debt-info">
+                                        <div class="debt-icon" style="background: rgba(244, 63, 94, 0.12); color: var(--accent-rose);">
+                                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                                        </div>
+                                        <div class="debt-details">
+                                            <h4>${debt.person}</h4>
+                                            <p>${debt.note || 'No note added'}</p>
+                                        </div>
+                                    </div>
+                                    <div class="debt-side">
+                                        <div class="debt-amount">-${(debt.amount || 0).toLocaleString()}</div>
+                                        <div class="debt-actions">
+                                            <button class="mini-btn emerald" onclick="payDebt(${debt.id})">Pay</button>
+                                            <button class="mini-btn teal" onclick="editDebt(${debt.id})">Edit</button>
+                                            <button class="mini-btn rose" onclick="deleteDebt(${debt.id})">Delete</button>
+                                        </div>
+                                    </div>
                                 </div>`;
                         });
                     }
@@ -1423,6 +1759,12 @@
                 modalInput.type = config.type;
                 modalInput.placeholder = config.placeholder || "";
                 modalInput.value = config.value || "";
+                ['min', 'max', 'step'].forEach(attr => modalInput.removeAttribute(attr));
+                if (config.inputAttributes) {
+                    Object.entries(config.inputAttributes).forEach(([key, value]) => {
+                        modalInput.setAttribute(key, value);
+                    });
+                }
                 setTimeout(() => modalInput.focus(), 100);
             }
 
@@ -1448,7 +1790,7 @@
 
             actionBtn.onclick = () => {
                 const val = config.type ? modalInput.value : true;
-                if (config.type === "text" && !val.trim()) return; // Don't allow empty names
+                if (config.type === "text" && !config.allowEmptyText && !val.trim()) return;
                 closeModal();
                 if (config.callback) config.callback(val);
             };
@@ -1470,7 +1812,7 @@
                 callback: (name) => {
                     if (name) {
                         const newBox = {
-                            id: Date.now(),
+                            id: generateId(),
                             name: name,
                             balance: 0
                         };
@@ -1494,6 +1836,47 @@
                         document.body.appendChild(toast);
                         setTimeout(() => toast.remove(), 2000);
                     }
+                }
+            });
+        };
+
+        window.addDebt = function () {
+            showModal({
+                title: "Who do you owe?",
+                desc: "Add the person's name or business.",
+                type: "text",
+                placeholder: "e.g. Ali, Bank, Karim",
+                actionLabel: "Next",
+                callback: (person) => {
+                    showModal({
+                        title: "Debt Amount",
+                        desc: "How much do you owe?",
+                        type: "number",
+                        placeholder: "e.g. 250000",
+                        actionLabel: "Next",
+                        callback: (amountValue) => {
+                            const amount = parseInt(amountValue);
+                            if (isNaN(amount) || amount <= 0) return;
+                            showModal({
+                                title: "Note",
+                                desc: "Optional reminder for this debt.",
+                                type: "text",
+                                placeholder: "e.g. Car repair, borrowed cash",
+                                allowEmptyText: true,
+                                actionLabel: "Save Debt",
+                                callback: (note) => {
+                                    budgetState.debts.push({
+                                        id: generateId(),
+                                        person: person.trim(),
+                                        amount,
+                                        note: note.trim(),
+                                        createdAt: Date.now()
+                                    });
+                                    updateUI();
+                                }
+                            });
+                        }
+                    });
                 }
             });
         };
@@ -1546,6 +1929,75 @@
             });
         };
 
+        window.editDebt = function (id) {
+            const debt = budgetState.debts.find(entry => entry.id === id);
+            if (!debt) return;
+
+            showModal({
+                title: "Edit Creditor",
+                desc: "Update who you owe.",
+                type: "text",
+                value: debt.person,
+                actionLabel: "Next",
+                callback: (person) => {
+                    showModal({
+                        title: "Edit Amount",
+                        desc: "Update the remaining amount.",
+                        type: "number",
+                        value: debt.amount,
+                        actionLabel: "Next",
+                        callback: (amountValue) => {
+                            const amount = parseInt(amountValue);
+                            if (isNaN(amount) || amount <= 0) return;
+                            showModal({
+                                title: "Edit Note",
+                                desc: "Update the note if needed.",
+                                type: "text",
+                                value: debt.note || '',
+                                allowEmptyText: true,
+                                actionLabel: "Save Changes",
+                                callback: (note) => {
+                                    debt.person = person.trim();
+                                    debt.amount = amount;
+                                    debt.note = note.trim();
+                                    updateUI();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+
+        window.payDebt = function (id) {
+            const debt = budgetState.debts.find(entry => entry.id === id);
+            if (!debt) return;
+
+            showModal({
+                title: `Pay ${debt.person}`,
+                desc: `Enter how much you paid back. Remaining: ${debt.amount.toLocaleString()} IQD`,
+                type: "number",
+                placeholder: "e.g. 5000",
+                value: Math.min(5000, debt.amount),
+                actionLabel: "Apply Payment",
+                callback: (value) => {
+                    const payment = parseInt(value);
+                    if (isNaN(payment) || payment <= 0) return;
+                    debt.amount = Math.max(0, debt.amount - payment);
+                    if (debt.amount === 0) {
+                        budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
+                    }
+                    updateUI();
+                }
+            });
+        };
+
+        window.deleteDebt = function (id) {
+            if (!confirm("Delete this debt entry?")) return;
+            budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
+            updateUI();
+        };
+
         window.setWeeklyBudget = function (index) {
             const week = budgetState.weeks[index];
             if (week.status === 'completed') return;
@@ -1575,7 +2027,39 @@
             });
         };
 
-        window.spendMoney = function (category, amount, description = "") {
+        window.editTransaction = function (id) {
+            const transaction = budgetState.transactions.find(tx => tx.id === id);
+            if (!transaction) return;
+
+            showModal({
+                title: "Edit Description",
+                desc: "Update the note for this transaction.",
+                type: "text",
+                value: transaction.description || '',
+                placeholder: "e.g. Coffee, Fuel, etc.",
+                allowEmptyText: true,
+                actionLabel: "Next",
+                callback: (description) => {
+                    showModal({
+                        title: "Edit Transaction Date",
+                        desc: "Choose when this transaction actually happened.",
+                        type: "datetime-local",
+                        value: toLocalDateTimeValue(transaction.effectiveAt),
+                        actionLabel: "Save Changes",
+                        callback: (dateValue) => {
+                            transaction.description = description.trim();
+                            transaction.effectiveAt = parseTransactionDateInput(dateValue);
+                            transaction.date = formatTransactionDate(transaction.effectiveAt);
+                            updateUI();
+                        }
+                    });
+                }
+            });
+        };
+
+        window.spendMoney = function (category, amount, description = "", effectiveDateValue = null) {
+            const effectiveAt = parseTransactionDateInput(effectiveDateValue);
+
             // Handle Spending from a Saving Box
             if (category.startsWith('box_')) {
                 const boxId = parseInt(category.replace('box_', ''));
@@ -1589,11 +2073,9 @@
 
                 box.balance -= amount;
 
-                budgetState.transactions.push({
-                    category: box.name,
-                    amount: amount,
-                    description: description,
-                    date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                recordTransaction(box.name, amount, description, effectiveAt, {
+                    sourceType: 'box',
+                    sourceId: box.id
                 });
 
                 updateUI();
@@ -1608,12 +2090,9 @@
                 week[category] -= amount;
 
                 // Record transaction
-                const now = new Date();
-                budgetState.transactions.push({
-                    category: category,
-                    amount: amount,
-                    description: description,
-                    date: now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                recordTransaction(category, amount, description, effectiveAt, {
+                    sourceType: 'weekly',
+                    sourceId: category
                 });
 
                 updateUI();
