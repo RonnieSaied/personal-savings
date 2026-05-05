@@ -1,2171 +1,6231 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
+
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Personal Finance Management Dashboard</title>
+
     <!-- Fonts -->
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Icons -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Charts -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+
         :root {
+
             /* Color Palette */
+
             --bg-deep-navy: #050b14;
+
             --bg-slate: #0f172a;
+
             --card-glass: rgba(15, 23, 42, 0.45);
+
             --card-border: rgba(255, 255, 255, 0.08);
+
             --text-main: #f8fafc;
+
             --text-muted: #94a3b8;
+
             --accent-teal: #00f2fe;
+
             --accent-teal-glow: rgba(0, 242, 254, 0.3);
+
             --accent-emerald: #10b981;
+
             --accent-rose: #f43f5e;
+
             --font-family: 'Inter', sans-serif;
+
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
             --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+
         }
+
+
 
         body.light-mode {
+
             --bg-deep-navy: #f4f1ea;
+
             --bg-slate: #fdfcf8;
+
             --card-glass: rgba(255, 255, 255, 0.95);
+
             --card-border: rgba(0, 0, 0, 0.1);
+
             --text-main: #000000;
+
             /* Pure Black for maximum readability */
+
             --text-muted: #111111;
+
             /* Deep charcoal for secondary text */
+
             background-color: #fdfcf8;
+
             color: #000000;
+
         }
+
+
 
         /* Reset & Base */
+
         * {
+
             margin: 0;
+
             padding: 0;
+
             box-sizing: border-box;
+
             font-family: var(--font-family);
+
             -webkit-tap-highlight-color: transparent;
+
         }
+
+
 
         body {
+
             background-color: #000;
+
             color: var(--text-main);
+
             display: flex;
+
             justify-content: center;
+
             min-height: 100vh;
+
             overflow-x: hidden;
+
             background-image:
+
                 radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.1), transparent 50%),
+
                 radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.05), transparent 40%);
+
         }
+
+
 
         .app-container {
+
             width: 100%;
+
             max-width: 450px;
+
             /* Reduced for better phone aspect ratio */
+
             background-color: var(--bg-deep-navy);
+
             height: 92vh;
+
             /* Fixed height for phone look */
+
             max-height: 900px;
+
             display: flex;
+
             flex-direction: column;
+
             position: relative;
+
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
             border: 8px solid #1e293b;
+
             /* Realistic phone bezel */
+
             border-radius: 45px;
+
             overflow: hidden;
+
             margin: auto;
+
         }
+
+
 
         /* Typography */
+
         h1,
+
         h2,
+
         h3 {
+
             font-weight: 600;
+
             letter-spacing: -0.02em;
+
         }
+
+
 
         .text-muted {
+
             color: var(--text-muted);
+
             font-size: 0.85rem;
+
         }
+
+
 
         .text-teal {
+
             color: var(--accent-teal);
+
         }
+
+
 
         .text-emerald {
+
             color: var(--accent-emerald);
+
         }
+
+
 
         .text-rose {
+
             color: var(--accent-rose);
+
         }
+
+
 
         /* Main Content */
+
         .main-content {
+
             flex: 1;
+
             padding: 1.5rem;
+
             padding-bottom: calc(85px + var(--safe-area-inset-bottom));
+
             display: flex;
+
             flex-direction: column;
+
             gap: 1.5rem;
+
             overflow-y: auto;
+
             scrollbar-width: none;
+
         }
+
+
 
         .main-content::-webkit-scrollbar {
+
             display: none;
+
         }
+
+
 
         /* Glassmorphism Cards */
+
         .glass-card {
+
             background: var(--card-glass);
+
             border: 1px solid var(--card-border);
+
             border-radius: 28px;
+
             padding: 1.5rem;
+
             backdrop-filter: blur(20px);
+
             -webkit-backdrop-filter: blur(20px);
+
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
             transition: var(--transition);
+
             position: relative;
+
             overflow: hidden;
+
         }
+
+
 
         .glass-card:active {
+
             transform: scale(0.98);
+
             background: rgba(255, 255, 255, 0.02);
+
         }
+
+
 
         .glass-card::before {
+
             content: '';
+
             position: absolute;
+
             top: 0;
+
             left: 0;
+
             right: 0;
+
             bottom: 0;
+
             border-radius: 28px;
+
             padding: 1px;
+
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 60%);
+
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+
             -webkit-mask-composite: xor;
+
             mask-composite: exclude;
+
             pointer-events: none;
+
         }
+
+
 
         /* Header */
+
         .header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             padding-top: 1rem;
+
         }
+
+
 
         .greeting h1 {
+
             font-size: 1.8rem;
+
             color: #fff;
+
             margin-bottom: 0.2rem;
+
         }
+
+
 
         .profile-btn {
+
             width: 45px;
+
             height: 45px;
+
             border-radius: 50%;
+
             background: linear-gradient(135deg, #00f2fe, #4facfe);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             color: #050b14;
+
             font-size: 1.2rem;
+
             box-shadow: 0 0 15px var(--accent-teal-glow);
+
         }
+
+
 
         .header-actions {
+
             display: flex;
+
             align-items: center;
+
             gap: 0.75rem;
+
         }
+
+
 
         .return-btn {
+
             width: auto;
+
             min-width: 45px;
+
             padding: 0 1rem;
+
             border-radius: 999px;
+
             font-size: 0.85rem;
+
             font-weight: 700;
+
             gap: 0.45rem;
+
         }
+
+
 
         /* Net Worth Hero - Robust Redesign */
+
         .net-worth-card {
+
             background: linear-gradient(165deg, rgba(10, 20, 35, 1), rgba(5, 10, 20, 1));
+
             padding: 2.5rem 1.8rem;
+
             border-color: rgba(255, 255, 255, 0.12);
+
             position: relative;
+
         }
+
+
 
         .net-worth-card::after {
+
             content: '';
+
             position: absolute;
+
             top: 0;
+
             right: 0;
+
             width: 100%;
+
             height: 100%;
+
             background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.05), transparent 60%);
+
             pointer-events: none;
+
         }
+
+
 
         .net-worth-main {
+
             position: relative;
+
             z-index: 1;
+
         }
+
+
 
         .net-worth-main h2 {
+
             font-size: 0.8rem;
+
             color: var(--text-muted);
+
             text-transform: uppercase;
+
             letter-spacing: 2px;
+
             margin-bottom: 0.6rem;
+
             display: block;
+
         }
+
+
 
         .net-worth-main .amount {
+
             font-size: 2.2rem;
+
             font-weight: 800;
+
             color: #fff;
+
             letter-spacing: -1px;
+
             line-height: 1.1;
+
             margin-bottom: 0.8rem;
+
             display: block;
+
         }
+
+
 
         .net-worth-card .stats-row {
+
             display: flex;
+
             align-items: center;
+
             gap: 1.5rem;
+
             margin-top: 1.5rem;
+
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+
             padding-top: 1.5rem;
+
         }
+
+
 
         .trend-badge {
+
             display: inline-flex;
+
             align-items: center;
+
             gap: 0.4rem;
+
             background: rgba(16, 185, 129, 0.1);
+
             padding: 0.4rem 0.8rem;
+
             border-radius: 10px;
+
             font-size: 0.8rem;
+
             font-weight: 600;
+
             color: var(--accent-emerald);
+
             border: 1px solid rgba(16, 185, 129, 0.1);
+
         }
+
+
 
         .assets-liab {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 1rem;
+
             width: 100%;
+
         }
+
+
 
         .al-item {
+
             display: flex;
+
             align-items: center;
+
             gap: 0.8rem;
+
         }
+
+
 
         .al-icon {
+
             width: 32px;
+
             height: 32px;
+
             border-radius: 8px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 0.9rem;
+
         }
+
+
 
         .al-icon.up {
+
             background: rgba(16, 185, 129, 0.1);
+
             color: var(--accent-emerald);
+
         }
+
+
 
         .al-icon.down {
+
             background: rgba(244, 63, 94, 0.1);
+
             color: var(--accent-rose);
+
         }
+
+
 
         .al-details h3 {
+
             font-size: 0.7rem;
+
             color: var(--text-muted);
+
             font-weight: 500;
+
             margin-bottom: 2px;
+
         }
+
+
 
         .al-details .al-amount {
+
             font-size: 1rem;
+
             font-weight: 600;
+
             color: #fff;
+
         }
+
+
 
         /* Bottom Nav */
+
         .bottom-nav {
+
             position: absolute;
+
             bottom: 0;
+
             left: 0;
+
             width: 100%;
+
             height: calc(75px + var(--safe-area-inset-bottom));
+
             background: rgba(10, 15, 28, 0.9);
+
             backdrop-filter: blur(25px);
+
             -webkit-backdrop-filter: blur(25px);
+
             border-top: 1px solid var(--card-border);
+
             display: flex;
+
             justify-content: space-around;
+
             align-items: center;
+
             padding: 0 1rem;
+
             padding-bottom: var(--safe-area-inset-bottom);
+
             z-index: 100;
+
         }
+
+
 
         .nav-item {
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             gap: 0.4rem;
+
             color: var(--text-muted);
+
             text-decoration: none;
+
             transition: var(--transition);
+
             width: 20%;
+
         }
+
+
 
         .nav-item i {
+
             font-size: 1.4rem;
+
         }
+
+
 
         .nav-item span {
+
             font-size: 0.7rem;
+
             font-weight: 500;
+
         }
+
+
 
         .nav-item.active {
+
             color: var(--accent-teal);
+
         }
+
+
 
         .nav-item.active i {
+
             filter: drop-shadow(0 0 8px var(--accent-teal-glow));
+
         }
+
+
 
         /* Action Fab */
+
         .fab {
+
             position: absolute;
+
             bottom: calc(90px + var(--safe-area-inset-bottom));
+
             right: 1.5rem;
+
             width: 56px;
+
             height: 56px;
+
             border-radius: 18px;
+
             background: linear-gradient(135deg, #00f2fe, #4facfe);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             color: #050b14;
+
             font-size: 1.5rem;
+
             box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
+
             cursor: pointer;
+
             z-index: 90;
+
             transition: var(--transition);
+
         }
+
+
 
         .fab:active {
+
             transform: scale(0.9) rotate(90deg);
+
         }
+
+
 
         /* Tab Management */
+
         .tab-content {
+
             display: none;
+
             width: 100%;
+
         }
+
+
 
         .tab-content.active {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 1.5rem;
+
             width: 100%;
+
             align-items: stretch;
+
         }
+
+
 
         /* Charts & Progress */
+
         .chart-header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 1rem;
+
         }
+
+
 
         .chart-header h2 {
+
             font-size: 1.1rem;
+
             color: #fff;
+
         }
+
+
 
         .chart-container {
+
             height: 200px;
+
             position: relative;
+
         }
+
+
 
         .savings-container {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 1rem;
+
         }
+
+
 
         .saving-goal {
+
             background: rgba(255, 255, 255, 0.03);
+
             padding: 1.2rem;
+
             border-radius: 20px;
+
         }
+
+
 
         .saving-header {
+
             display: flex;
+
             justify-content: space-between;
+
             margin-bottom: 0.8rem;
+
             align-items: center;
+
         }
+
+
 
         .saving-title {
+
             font-weight: 600;
+
             display: flex;
+
             align-items: center;
+
             gap: 0.6rem;
+
             font-size: 0.95rem;
+
         }
+
+
 
         .saving-icon {
+
             width: 28px;
+
             height: 28px;
+
             border-radius: 8px;
+
             background: rgba(0, 242, 254, 0.1);
+
             color: var(--accent-teal);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 0.8rem;
+
         }
+
+
 
         .progress-bar-bg {
+
             width: 100%;
+
             height: 6px;
+
             background: rgba(255, 255, 255, 0.05);
+
             border-radius: 10px;
+
         }
+
+
 
         .progress-fill {
+
             height: 100%;
+
             border-radius: 10px;
+
             position: relative;
+
         }
+
+
 
         /* Weekly Allowance Grid */
+
         .allowance-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+
+            gap: 0.5rem;
+
         }
+
+
 
         .week-card {
+
             aspect-ratio: 1 / 1;
+
             display: flex;
+
             flex-direction: column;
+
             justify-content: space-between;
-            padding: 1.2rem;
+
+            padding: 0.8rem;
+
             position: relative;
+
         }
+
+
 
         .week-card.active {
+
             border-color: var(--accent-teal);
+
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+
         }
+
+
 
         .week-card.completed {
+
             background: rgba(16, 185, 129, 0.05);
+
             border-color: rgba(16, 185, 129, 0.2);
+
         }
+
+
 
         .week-card.locked {
+
             opacity: 0.5;
+
             filter: grayscale(0.5);
+
         }
+
+
 
         .week-title {
-            font-size: 0.8rem;
+
+            font-size: 0.77rem;
+
             font-weight: 700;
+
             text-transform: uppercase;
+
             letter-spacing: 1px;
+
             color: var(--text-muted);
+
         }
+
+
 
         .week-status {
-            font-size: 0.7rem;
+
+            font-size: 0.66rem;
+
             padding: 0.2rem 0.5rem;
+
             border-radius: 6px;
+
             background: rgba(255, 255, 255, 0.05);
+
             width: fit-content;
+
         }
+
+
 
         .allowance-item {
+
             margin-top: 0.5rem;
+
         }
+
+
 
         .allowance-label {
-            font-size: 0.7rem;
+
+            font-size: 0.66rem;
+
             color: var(--text-muted);
+
             display: flex;
+
             justify-content: space-between;
+
             margin-bottom: 0.2rem;
+
         }
+
+
 
         .allowance-bar {
+
             height: 4px;
+
             background: rgba(255, 255, 255, 0.05);
+
             border-radius: 2px;
+
             overflow: hidden;
+
         }
+
+
 
         .allowance-fill {
+
             height: 100%;
+
             background: var(--accent-teal);
+
             transition: width 0.3s ease;
+
         }
+
+
 
         .total-left {
-            font-size: 1.2rem;
+
+            font-size: 1rem;
+
             font-weight: 700;
+
             margin-top: 0.5rem;
+
             color: #fff;
+
         }
+
+
 
         .total-left span {
+
             font-size: 0.7rem;
+
             color: var(--text-muted);
+
             font-weight: 400;
+
         }
+
+
 
         .save-btn {
+
             background: var(--accent-emerald);
+
             color: #050b14;
+
             border: none;
+
             padding: 0.5rem;
+
             border-radius: 12px;
+
             font-size: 0.75rem;
+
             font-weight: 700;
+
             cursor: pointer;
+
             margin-top: 0.5rem;
+
             width: 100%;
+
             transition: var(--transition);
+
         }
+
+
 
         .save-btn:active {
+
             transform: scale(0.95);
+
         }
+
+
 
         /* Savings Boxes */
+
         .savings-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 1rem;
+
             width: 100%;
+
         }
+
+
 
         .savings-box {
+
             padding: 1rem;
+
             display: flex;
+
             flex-direction: column;
+
             justify-content: space-between;
+
             min-height: 140px;
+
         }
+
+
 
         .savings-box h4 {
+
             font-size: 0.8rem;
+
             color: var(--text-muted);
+
             text-transform: uppercase;
+
             letter-spacing: 1px;
+
             margin-bottom: 0.2rem;
+
         }
+
+
 
         .savings-box .box-amount {
+
             font-size: 1.3rem;
+
             font-weight: 800;
+
             color: #fff;
+
             margin-bottom: 0.5rem;
+
         }
+
+
 
         .box-actions {
+
             display: flex;
+
             gap: 0.4rem;
+
         }
+
+
 
         .box-btn {
+
             flex: 1;
+
             padding: 0.6rem 0.2rem;
+
             border-radius: 10px;
+
             border: none;
+
             font-size: 0.7rem;
+
             font-weight: 600;
+
             cursor: pointer;
+
             background: rgba(255, 255, 255, 0.05);
+
             color: #fff;
+
             transition: var(--transition);
+
         }
+
+
 
         .box-btn.add {
+
             background: rgba(16, 185, 129, 0.1);
+
             color: var(--accent-emerald);
+
         }
+
+
 
         .box-btn.sub {
+
             background: rgba(244, 63, 94, 0.1);
+
             color: var(--accent-rose);
+
         }
+
+
 
         .add-box-btn {
+
             background: rgba(255, 255, 255, 0.05);
+
             border: 1px dashed var(--card-border);
+
             color: var(--text-muted);
+
             border-radius: 28px;
+
             padding: 1.5rem;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 0.5rem;
+
             cursor: pointer;
+
         }
+
+
 
         .transaction-list,
+
         .debt-list {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 0.9rem;
+
         }
+
+
 
         .transaction-item,
+
         .debt-item {
+
             background: rgba(255, 255, 255, 0.03);
+
             border: 1px solid var(--card-border);
+
             border-radius: 22px;
+
             padding: 1rem;
+
         }
+
+
 
         .transaction-item {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             gap: 0.8rem;
+
         }
+
+
 
         .tx-info,
+
         .debt-info {
+
             display: flex;
+
             align-items: flex-start;
+
             gap: 0.85rem;
+
             min-width: 0;
+
             flex: 1;
+
         }
+
+
 
         .tx-icon,
+
         .debt-icon {
+
             width: 42px;
+
             height: 42px;
+
             border-radius: 14px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             flex-shrink: 0;
+
         }
+
+
 
         .tx-details,
+
         .debt-details {
+
             min-width: 0;
+
             flex: 1;
+
         }
+
+
 
         .tx-details h4,
+
         .debt-details h4 {
+
             font-size: 0.95rem;
+
             color: #fff;
+
             margin-bottom: 0.2rem;
+
             word-break: break-word;
+
         }
+
+
 
         .tx-details p,
+
         .debt-details p {
+
             font-size: 0.76rem;
+
             color: var(--text-muted);
+
             margin: 0;
+
             word-break: break-word;
+
         }
+
+
 
         .tx-side,
+
         .debt-side {
+
             display: flex;
+
             flex-direction: column;
+
             align-items: flex-end;
+
             gap: 0.55rem;
+
             flex-shrink: 0;
+
         }
+
+
 
         .tx-amount,
+
         .debt-amount {
+
             font-size: 0.95rem;
+
             font-weight: 800;
+
             color: var(--accent-rose);
+
             white-space: nowrap;
+
         }
+
+
 
         .tx-actions,
+
         .debt-actions {
+
             display: flex;
+
             gap: 0.45rem;
+
             flex-wrap: wrap;
+
             justify-content: flex-end;
+
         }
+
+
 
         .mini-btn {
+
             border: none;
+
             border-radius: 999px;
+
             padding: 0.45rem 0.75rem;
+
             font-size: 0.68rem;
+
             font-weight: 700;
+
             cursor: pointer;
+
             transition: var(--transition);
+
             color: #fff;
+
             background: rgba(255, 255, 255, 0.08);
+
         }
+
+
 
         .mini-btn:active {
+
             transform: scale(0.96);
+
         }
+
+
 
         .mini-btn.teal {
+
             background: rgba(0, 242, 254, 0.14);
+
             color: var(--accent-teal);
+
         }
+
+
 
         .mini-btn.emerald {
+
             background: rgba(16, 185, 129, 0.14);
+
             color: var(--accent-emerald);
+
         }
+
+
 
         .mini-btn.rose {
+
             background: rgba(244, 63, 94, 0.14);
+
             color: var(--accent-rose);
+
         }
+
+
+
+        .clickable-filter {
+
+            transition: var(--transition);
+
+        }
+
+
+
+        .clickable-filter:hover {
+
+            transform: scale(1.05);
+
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+
+        }
+
+
+
+        .clickable-filter:active {
+
+            transform: scale(0.95);
+
+        }
+
+
 
         /* Animation */
+
         @keyframes fadeIn {
+
             from {
+
                 opacity: 0;
+
                 transform: translateY(15px);
+
             }
+
+
 
             to {
+
                 opacity: 1;
+
                 transform: translateY(0);
+
             }
+
         }
+
+
 
         .fade-in {
+
             animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
             opacity: 0;
+
         }
+
+
 
         .delay-1 {
+
             animation-delay: 0.15s;
+
         }
+
+
 
         .delay-2 {
+
             animation-delay: 0.3s;
+
         }
+
+
 
         /* Modals */
+
         .modal-overlay {
+
             position: fixed;
+
             top: 0;
+
             left: 0;
+
             width: 100%;
+
             height: 100%;
+
             background: rgba(0, 0, 0, 0.8);
+
             backdrop-filter: blur(10px);
+
             z-index: 1000;
+
             display: none;
+
             align-items: center;
+
             justify-content: center;
+
             padding: 2rem;
+
         }
+
+
 
         .modal-overlay.active {
+
             display: flex;
+
         }
+
+
 
         .modal-content {
+
             width: 100%;
+
             max-width: 400px;
+
             padding: 2rem;
+
         }
+
+
 
         .modal-content h2 {
+
             font-size: 1.2rem;
+
             margin-bottom: 0.5rem;
+
             color: var(--text-main);
+
         }
+
+
 
         .modal-content p {
+
             font-size: 0.85rem;
+
             color: var(--text-muted);
+
             margin-bottom: 1.5rem;
+
         }
+
+
 
         .modal-input {
+
             width: 100%;
+
             background: rgba(255, 255, 255, 0.05);
+
             border: 1px solid var(--card-border);
+
             border-radius: 12px;
+
             padding: 1rem;
+
             color: #fff;
+
             font-size: 1rem;
+
             margin-bottom: 1.5rem;
+
             outline: none;
+
         }
+
+
 
         .modal-input:focus {
+
             border-color: var(--accent-teal);
+
         }
+
+
 
         .modal-options {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 0.75rem;
+
             margin-bottom: 1.5rem;
+
         }
+
+
 
         .option-btn {
+
             width: 100%;
+
             padding: 1rem;
+
             background: rgba(255, 255, 255, 0.03);
+
             border: 1px solid var(--card-border);
+
             border-radius: 16px;
+
             color: var(--text-main);
+
             display: flex;
+
             align-items: center;
+
             gap: 1rem;
+
             font-weight: 600;
+
             cursor: pointer;
+
             transition: var(--transition);
+
         }
+
+
 
         .option-btn i {
+
             font-size: 1.2rem;
+
         }
+
+
 
         .option-btn:active {
+
             background: rgba(255, 255, 255, 0.1);
+
             transform: scale(0.98);
+
         }
+
+
 
         .option-btn.teal i {
+
             color: var(--accent-teal);
+
         }
+
+
 
         .option-btn.emerald i {
+
             color: var(--accent-emerald);
+
         }
+
+
 
         .modal-btns {
+
             display: flex;
+
             gap: 1rem;
+
         }
+
+
 
         .modal-btn {
+
             flex: 1;
+
             padding: 1rem;
+
             border-radius: 12px;
+
             border: none;
+
             font-weight: 700;
+
             cursor: pointer;
+
             transition: var(--transition);
+
         }
+
+
 
         .modal-btn:active {
+
             transform: scale(0.95);
+
         }
+
+
 
         .modal-btn.primary {
+
             background: var(--accent-teal);
+
             color: #000;
+
         }
+
+
 
         .modal-btn.secondary {
+
             background: rgba(0, 0, 0, 0.05);
+
             color: var(--text-main);
+
         }
+
+
 
         .modal-btn.danger {
+
             background: rgba(244, 63, 94, 0.2);
+
             color: var(--accent-rose);
+
         }
+
+
 
         /* Media Query for Desktop Browser Frame (Optional) */
+
         @media (min-width: 481px) {
+
             body {
+
                 background: #0a0a0a;
+
             }
 
+
+
             .app-container {
+
                 margin: 2rem 0;
+
                 height: 850px;
+
                 min-height: auto;
+
                 border-radius: 40px;
+
                 overflow: hidden;
+
                 border: 8px solid #1a1a1a;
+
             }
+
         }
+
     </style>
+
 </head>
+
+
 
 <body>
 
+
+
     <div class="app-container">
+
         <!-- Main Content -->
+
         <main class="main-content">
 
+
+
             <!-- Home Tab -->
+
             <div id="home-tab" class="tab-content active">
+
                 <header class="header fade-in">
+
                     <div class="greeting">
+
                         <h1>NovaVest</h1>
+
                         <p class="text-muted" id="headerDateTime">Calculating date...</p>
+
                     </div>
+
                     <div class="profile-btn">
+
                         <i class="fa-solid fa-user"></i>
+
                     </div>
+
+                    
+
                 </header>
+
+
 
                 <!-- Net Worth Hero -->
+
                 <section class="glass-card net-worth-card fade-in delay-1">
+
                     <div class="net-worth-main">
+
                         <h2>Total IQD Balance</h2>
+
                         <div class="amount" id="totalIQDBalance">0 IQD</div>
-                        <div class="trend-badge text-emerald" style="margin-top: 10px;">
-                            <i class="fa-solid fa-piggy-bank"></i> Total Savings
+
+                        <div class="trend-badge text-emerald clickable-filter" style="margin-top: 10px; cursor: pointer;" onclick="toggleBalanceFilter()">
+
+                            <i class="fa-solid fa-piggy-bank"></i> <span id="filterText">Total Savings</span>
+
                         </div>
+
                     </div>
+
                 </section>
+
+
 
                 <!-- Weekly Allowance Section -->
+
                 <section class="fade-in delay-1">
+
                     <div class="chart-header" style="margin-bottom: 1rem;">
+
                         <div>
+
                             <h2>Weekly Allowance</h2>
+
                             <span class="text-muted">IQD 50,000 / week</span>
+
                         </div>
+
                         <div style="text-align: right;">
+
                             <div class="text-muted" style="font-size: 0.7rem;">TOTAL SAVED</div>
+
                             <div class="text-emerald" id="totalSavingsDisplay"
+
                                 style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
+
                         </div>
-                    </div>
-                    <div class="allowance-grid" id="weekGrid">
-                        <!-- Week Cubes will be injected here by JS -->
+
                     </div>
 
-                    <!-- Quick Interaction -->
-                    <div class="glass-card" style="margin-top: 1rem; padding: 1.2rem;">
-                        <div class="allowance-label" style="margin-bottom: 0.8rem; font-weight: 600; color: #fff;">
-                            Register Spending</div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                            <button class="save-btn"
-                                style="background: rgba(0, 242, 254, 0.1); color: var(--accent-teal);"
-                                onclick="spendMoney('personal', 5000)">Personal -5k</button>
-                            <button class="save-btn"
-                                style="background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald);"
-                                onclick="spendMoney('car', 5000)">Car -5k</button>
-                        </div>
-                        <button class="save-btn"
-                            style="margin-top: 1rem; background: linear-gradient(135deg, #10b981, #059669); color: #fff;"
-                            onclick="completeWeek()">
-                            <i class="fa-solid fa-check-circle"></i> End Week & Save Remaining
-                        </button>
+                    <div class="allowance-grid" id="weekGrid">
+
+                        <!-- Week Cubes will be injected here by JS -->
+
                     </div>
+
+
+
+                    <button class="save-btn"
+
+                        style="margin-top: 1rem; background: linear-gradient(135deg, #10b981, #059669); color: #fff;"
+
+                        onclick="completeWeek()">
+
+                        <i class="fa-solid fa-check-circle"></i> End Week & Save Remaining
+
+                    </button>
+
                 </section>
+
+
+
+                <!-- Salary Income Section -->
+
+                <section class="glass-card fade-in delay-2" id="salarySection">
+
+                    <div class="chart-header" style="margin-bottom: 1rem;">
+
+                        <div>
+
+                            <h2>Salary Income</h2>
+
+                            <span class="text-muted">Monthly salary management</span>
+
+                        </div>
+
+                        <div style="text-align: right;">
+
+                            <div class="text-muted" style="font-size: 0.7rem;">AVAILABLE TO DISTRIBUTE</div>
+
+                            <div class="text-teal" id="salaryAvailableDisplay"
+
+                                style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
+
+                        </div>
+
+                    </div>
+
+                    <div id="salaryContent">
+
+                        <div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">
+
+                            <i class="fa-solid fa-money-bill-wave" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+
+                            No salary recorded yet. Click below to add your monthly income.
+
+                        </div>
+
+                    </div>
+
+                    <button class="save-btn" style="margin-top: 1rem; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000;" onclick="addSalary()">
+
+                        <i class="fa-solid fa-plus"></i> Add Salary
+
+                    </button>
+
+                </section>
+
             </div>
+
+
 
             <!-- Transactions Tab -->
+
             <div id="transactions-tab" class="tab-content">
+
                 <header class="header">
+
                     <div class="greeting">
+
                         <h1>Transactions</h1>
+
                         <p class="text-muted">Full history of your spending</p>
+
                     </div>
-                    <div class="profile-btn return-btn" onclick="showTab('home')">
-                        <i class="fa-solid fa-arrow-left"></i>
-                        <span>Return</span>
+
+                    <div class="header-actions">
+
+                        
+
+                        <div class="profile-btn return-btn" onclick="showTab('home')">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            <span>Return</span>
+
+                        </div>
+
                     </div>
+
                 </header>
+
                 <div class="transaction-list" id="transactionList">
+
                     <!-- Transactions will be injected here -->
+
                 </div>
+
             </div>
+
+
 
             <!-- Savings Tab -->
+
             <div id="savings-tab" class="tab-content">
+
                 <header class="header">
+
                     <div class="greeting">
+
                         <h1>Savings</h1>
-                        <p class="text-muted">Manage your saving boxes and debts</p>
+
+                        <p class="text-muted">Manage your saving boxes</p>
+
                     </div>
+
                     <div class="header-actions">
+
                         <div class="profile-btn return-btn" onclick="showTab('home')"
+
                             style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); box-shadow: none;">
+
                             <i class="fa-solid fa-arrow-left"></i>
+
                             <span>Return</span>
+
                         </div>
+
                         <div class="profile-btn" onclick="openSavingsActionMenu()"
+
                             style="background: var(--accent-teal); color: #000;">
+
                             <i class="fa-solid fa-plus"></i>
+
                         </div>
+
                     </div>
+
                 </header>
+
                 <div class="savings-grid" id="savingsGrid">
+
                     <!-- Saving boxes and the Create button will be injected here -->
+
                 </div>
-                <div class="glass-card">
-                    <div class="chart-header" style="margin-bottom: 1rem;">
-                        <div>
-                            <h2>Debt Tracker</h2>
-                            <span class="text-muted">Track what you owe and who you owe</span>
-                        </div>
-                        <div style="text-align: right;">
-                            <div class="text-muted" style="font-size: 0.7rem;">OUTSTANDING</div>
-                            <div class="text-rose" id="totalDebtDisplay"
-                                style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
-                        </div>
-                    </div>
-                    <div class="debt-list" id="debtList">
-                        <!-- Debts will be injected here -->
-                    </div>
-                    <button class="save-btn"
-                        style="margin-top: 1rem; background: rgba(244, 63, 94, 0.14); color: var(--accent-rose);"
-                        onclick="addDebt()">
-                        <i class="fa-solid fa-hand-holding-dollar"></i> Add Debt
-                    </button>
-                </div>
+
             </div>
+
+
+
+            <!-- Debts Tab -->
+
+            <div id="debts-tab" class="tab-content">
+
+                <header class="header">
+
+                    <div class="greeting">
+
+                        <h1>Debts</h1>
+
+                        <p class="text-muted">Track what you owe and who you owe</p>
+
+                    </div>
+
+                    <div class="header-actions">
+
+                        <div class="profile-btn return-btn" onclick="showTab('home')"
+
+                            style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); box-shadow: none;">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            <span>Return</span>
+
+                        </div>
+
+                        <div class="profile-btn" onclick="addDebt()"
+
+                            style="background: var(--accent-rose); color: #fff;">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                        </div>
+
+                    </div>
+
+                </header>
+
+
+
+                <div class="glass-card">
+
+                    <div class="chart-header" style="margin-bottom: 1rem;">
+
+                        <div>
+
+                            <h2>Debt Summary</h2>
+
+                            <span class="text-muted">Total outstanding debts</span>
+
+                        </div>
+
+                        <div style="text-align: right;">
+
+                            <div class="text-muted" style="font-size: 0.7rem;">OUTSTANDING</div>
+
+                            <div class="text-rose" id="totalDebtDisplay"
+
+                                style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="debt-list" id="debtList">
+
+                        <!-- Debts will be injected here -->
+
+                    </div>
+
+                    <button class="save-btn"
+
+                        style="margin-top: 1rem; background: rgba(244, 63, 94, 0.14); color: var(--accent-rose);"
+
+                        onclick="addDebt()">
+
+                        <i class="fa-solid fa-hand-holding-dollar"></i> Add Debt
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
 
             <!-- Settings Tab -->
+
             <div id="settings-tab" class="tab-content">
+
                 <header class="header">
+
                     <div class="greeting">
+
                         <h1>Settings</h1>
+
                         <p class="text-muted">Manage your app data</p>
+
                     </div>
+
                     <div class="profile-btn return-btn" onclick="showTab('home')">
+
                         <i class="fa-solid fa-arrow-left"></i>
+
                         <span>Return</span>
+
                     </div>
+
                 </header>
 
+
+
                 <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+
                     <h3 style="margin-bottom: 0.5rem;">Appearance</h3>
+
                     <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 1.5rem;">Switch between Light and
+
                         Dark mode.</p>
+
                     <button class="modal-btn primary" onclick="toggleTheme()" id="themeToggleBtn">
+
                         <i class="fa-solid fa-sun"></i> Switch to Light Mode
+
                     </button>
+
                 </div>
+
+
 
                 <div class="glass-card" style="padding: 1.5rem; border-color: rgba(244, 63, 94, 0.2);">
+
                     <h3 style="color: var(--accent-rose); margin-bottom: 0.5rem;">Danger Zone</h3>
+
                     <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 1.5rem;">This will permanently delete
+
                         all your savings, debts, budgets, and transactions. This cannot be undone.</p>
+
                     <button class="modal-btn danger" onclick="hardReset()">Reset All Data</button>
+
                 </div>
+
             </div>
+
         </main>
 
+
+
         <!-- Custom Modal -->
+
         <div class="modal-overlay" id="customModal">
+
             <div class="glass-card modal-content">
+
                 <h2 id="modalTitle">Title</h2>
+
                 <p id="modalDesc"></p>
 
+
+
                 <div id="modalOptions" class="modal-options" style="display: none;">
+
                     <!-- Dynamic options injected here -->
+
                 </div>
+
+
 
                 <input type="text" id="modalInput" class="modal-input" placeholder="..." style="display: none;">
 
+
+
                 <div class="modal-btns">
+
                     <button class="modal-btn secondary" id="modalCancelBtn" onclick="closeModal()">Cancel</button>
+
                     <button class="modal-btn primary" id="modalActionBtn">Confirm</button>
+
                 </div>
+
             </div>
+
         </div>
+
+
 
         <!-- Action FAB -->
+
         <div class="fab">
+
             <i class="fa-solid fa-plus"></i>
+
         </div>
 
+
+
         <!-- Bottom Navigation -->
+
         <nav class="bottom-nav">
+
             <a href="#" class="nav-item active" onclick="showTab('home')">
+
                 <i class="fa-solid fa-house"></i>
+
                 <span>Home</span>
+
             </a>
+
             <a href="#" class="nav-item" onclick="showTab('transactions')">
+
                 <i class="fa-solid fa-receipt"></i>
+
                 <span>Transactions</span>
+
             </a>
+
             <a href="#" class="nav-item" onclick="showTab('savings')">
+
                 <i class="fa-solid fa-piggy-bank"></i>
+
                 <span>Savings</span>
+
             </a>
+
+            <a href="#" class="nav-item" onclick="showTab('debts')">
+
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+
+                <span>Debts</span>
+
+            </a>
+
             <a href="#" class="nav-item" onclick="showTab('settings')">
+
                 <i class="fa-solid fa-gear"></i>
+
                 <span>Settings</span>
+
             </a>
+
         </nav>
+
     </div> <!-- Close app-container -->
 
+
+
     <script>
+
         // Set up Chart.js defaults for darker theme
+
         Chart.defaults.color = '#94a3b8';
+
         Chart.defaults.font.family = "'Inter', sans-serif";
+
         Chart.defaults.font.size = 11;
+
         Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.9)';
+
         Chart.defaults.plugins.tooltip.padding = 10;
+
         Chart.defaults.plugins.tooltip.cornerRadius = 8;
 
+
+
         // Make Chart responsive and auto-resize
+
         window.addEventListener('load', () => {
+
             // Cash Flow Chart (Bar)
+
             const ctxFlow = document.getElementById('cashFlowChart').getContext('2d');
 
+
+
             let gradientIncome = ctxFlow.createLinearGradient(0, 0, 0, 200);
+
             gradientIncome.addColorStop(0, 'rgba(0, 242, 254, 0.8)');
+
             gradientIncome.addColorStop(1, 'rgba(0, 242, 254, 0.05)');
 
+
+
             let gradientExpense = ctxFlow.createLinearGradient(0, 0, 0, 200);
+
             gradientExpense.addColorStop(0, 'rgba(148, 163, 184, 0.6)');
+
             gradientExpense.addColorStop(1, 'rgba(148, 163, 184, 0.05)');
 
+
+
             new Chart(ctxFlow, {
+
                 type: 'bar',
+
                 data: {
+
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+
                     datasets: [
+
                         {
+
                             label: 'Income',
+
                             data: [8500, 9200, 8800, 8900, 9500, 10100],
+
                             backgroundColor: gradientIncome,
+
                             borderRadius: 6,
+
                             barPercentage: 0.6
+
                         },
+
                         {
+
                             label: 'Expense',
+
                             data: [4200, 5800, 4900, 4500, 5100, 4800],
+
                             backgroundColor: gradientExpense,
+
                             borderRadius: 6,
+
                             barPercentage: 0.6
+
                         }
+
                     ]
+
                 },
+
                 options: {
+
                     responsive: true,
+
                     maintainAspectRatio: false,
+
                     plugins: {
+
                         legend: { display: false }
+
                     },
+
                     scales: {
+
                         y: {
+
                             beginAtZero: true,
+
                             grid: { color: 'rgba(255, 255, 255, 0.03)' },
+
                             ticks: { callback: v => '$' + v / 1000 + 'k' }
+
                         },
+
                         x: { grid: { display: false } }
+
                     }
+
                 }
+
             });
+
+
 
             // Spending Breakdown (Doughnut)
+
             const ctxCat = document.getElementById('categoryChart').getContext('2d');
+
             new Chart(ctxCat, {
+
                 type: 'doughnut',
+
                 data: {
+
                     labels: ['Housing', 'Food', 'Fun', 'Bills'],
+
                     datasets: [{
+
                         data: [40, 25, 20, 15],
+
                         backgroundColor: ['#00f2fe', '#4facfe', '#10b981', '#64748b'],
+
                         borderWidth: 0,
+
                         hoverOffset: 4
+
                     }]
+
                 },
+
                 options: {
+
                     responsive: true,
+
                     maintainAspectRatio: false,
+
                     cutout: '80%',
+
                     plugins: {
+
                         legend: { position: 'right', labels: { boxWidth: 8, padding: 10, font: { size: 10 } } }
+
                     }
+
                 }
+
             });
+
         });
+
+
 
         // Handle Tab State
+
         let currentTab = 'home';
+
+        let modalOpen = false;
+
+        let showBalanceOnly = false; // Initialize balance filter state
+
         window.showTab = function (tabId) {
+
             currentTab = tabId;
+
             const navItems = document.querySelectorAll('.nav-item');
+
             const tabs = document.querySelectorAll('.tab-content');
 
+
+
             tabs.forEach(tab => tab.classList.remove('active'));
+
             document.getElementById(tabId + '-tab').classList.add('active');
 
+
+
             navItems.forEach(nav => {
+
                 nav.classList.remove('active');
+
                 if (nav.innerText.toLowerCase().includes(tabId)) {
+
                     nav.classList.add('active');
+
                 }
+
             });
+
+
 
             // Special case for "Home" text match
+
             if (tabId === 'home') {
+
                 navItems[0].classList.add('active');
+
             }
+
         };
+
+
 
         // Handle FAB spending/actions
+
         const fab = document.querySelector('.fab');
+
         fab.addEventListener('click', () => {
+
             if (currentTab === 'savings') {
+
                 openSavingsActionMenu();
+
                 return;
+
             }
+
+            if (currentTab === 'debts') {
+
+                addDebt();
+
+                return;
+
+            }
+
+
 
             openTransactionWizard();
+
         });
 
+
+
         function generateId() {
+
             return Date.now() + Math.floor(Math.random() * 10000);
+
         }
+
+
 
         function toLocalDateTimeValue(timestamp = Date.now()) {
+
             const date = new Date(timestamp);
+
             const tzOffset = date.getTimezoneOffset() * 60000;
+
             return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+
         }
+
+
 
         function parseTransactionDateInput(value) {
+
             if (!value) return Date.now();
+
             const parsed = new Date(value).getTime();
+
             return Number.isNaN(parsed) ? Date.now() : parsed;
+
         }
+
+
 
         function formatTransactionDate(timestamp) {
+
             const parsed = Number(timestamp);
+
             const safeTimestamp = Number.isFinite(parsed) ? parsed : Date.now();
+
             const date = new Date(safeTimestamp);
+
             return date.toLocaleDateString([], {
+
                 year: 'numeric',
+
                 month: 'short',
+
                 day: 'numeric'
+
             }) + ' ' + date.toLocaleTimeString([], {
+
                 hour: '2-digit',
+
                 minute: '2-digit'
+
             });
+
         }
+
+
 
         function normalizeTransaction(tx) {
+
             const fallbackTime = Date.parse(tx.date || '') || Date.now();
+
             const effectiveAt = Number.isFinite(Number(tx.effectiveAt)) ? Number(tx.effectiveAt) : fallbackTime;
+
             const createdAt = Number.isFinite(Number(tx.createdAt)) ? Number(tx.createdAt) : effectiveAt;
+
             return {
+
                 id: Number.isFinite(Number(tx.id)) ? Number(tx.id) : generateId(),
+
                 category: tx.category || 'personal',
+
                 amount: parseInt(tx.amount) || 0,
+
                 description: tx.description || '',
+
                 date: formatTransactionDate(effectiveAt),
+
                 effectiveAt,
+
                 createdAt,
+
                 sourceType: tx.sourceType || ((tx.category === 'personal' || tx.category === 'car') ? 'weekly' : 'box'),
+
                 sourceId: tx.sourceId ?? null
+
             };
+
         }
+
+
 
         function sortTransactionsByDate(transactions) {
+
             return transactions.slice().sort((a, b) => {
+
                 const effectiveDiff = (b.effectiveAt || 0) - (a.effectiveAt || 0);
+
                 if (effectiveDiff !== 0) return effectiveDiff;
+
                 return (b.createdAt || 0) - (a.createdAt || 0);
+
             });
+
         }
+
+
 
         function getTransactionLabel(category) {
+
             if (category === 'personal') return 'Personal';
+
             if (category === 'car') return 'Car';
+
             return category;
+
         }
+
+
 
         function recordTransaction(category, amount, description, effectiveAt, sourceMeta = {}) {
+
             const transaction = normalizeTransaction({
+
                 id: generateId(),
+
                 category,
+
                 amount,
+
                 description,
+
                 effectiveAt,
+
                 createdAt: Date.now(),
+
                 sourceType: sourceMeta.sourceType,
+
                 sourceId: sourceMeta.sourceId
+
             });
+
             budgetState.transactions.push(transaction);
+
         }
+
+
 
         window.openSavingsActionMenu = function () {
+
             let options = [
+
                 { label: "Create Saving Box", icon: "fa-piggy-bank", class: "teal", value: "box" },
+
                 { label: "Add Debt", icon: "fa-hand-holding-dollar", class: "emerald", value: "debt" }
+
             ];
 
+
+
             showModal({
+
                 title: "Savings Actions",
+
                 desc: "What would you like to add?",
+
                 options: options,
+
                 callback: (action) => {
+
                     if (action === 'box') addSavingBox();
+
                     if (action === 'debt') addDebt();
+
                 }
+
             });
+
         };
+
+
 
         window.openTransactionWizard = function () {
+
             let options = [
+
                 { label: "Personal spending", icon: "fa-user", class: "teal", value: "personal" },
+
                 { label: "Car Maintenance", icon: "fa-car", class: "emerald", value: "car" }
+
             ];
 
+
+
             if (budgetState.savingsBoxes && budgetState.savingsBoxes.length > 0) {
+
                 budgetState.savingsBoxes.forEach(box => {
+
                     options.push({
+
                         label: box.name,
+
                         icon: "fa-piggy-bank",
+
                         class: "teal",
+
                         value: `box_${box.id}`
+
                     });
+
                 });
+
             }
+
+
 
             showModal({
+
                 title: "Register Spending",
+
                 desc: "Which category did you spend from?",
+
                 options: options,
+
                 callback: (category) => {
+
                     if (!category) return;
 
+
+
                     showModal({
+
                         title: "How much?",
+
                         desc: `Enter amount for ${getTransactionLabel(category)}`,
+
                         type: "number",
+
                         placeholder: "e.g. 5000",
+
                         callback: (amount) => {
+
                             const parsedAmount = parseInt(amount);
+
                             if (isNaN(parsedAmount) || parsedAmount <= 0) return;
 
+
+
                             showModal({
+
                                 title: "Description",
+
                                 desc: "What did you spend it on?",
+
                                 type: "text",
+
                                 placeholder: "e.g. Coffee, Fuel, etc.",
+
                                 callback: (desc) => {
+
                                     showModal({
+
                                         title: "Transaction Date",
+
                                         desc: "Pick when this transaction actually happened.",
+
                                         type: "datetime-local",
+
                                         value: toLocalDateTimeValue(),
+
                                         actionLabel: "Save Transaction",
+
                                         callback: (dateValue) => {
+
                                             spendMoney(category, parsedAmount, desc, dateValue);
 
+
+
                                             // Visual success feedback
+
                                             fab.style.background = "var(--accent-emerald)";
+
                                             fab.innerHTML = '<i class="fa-solid fa-check"></i>';
+
                                             setTimeout(() => {
+
                                                 fab.style.background = "linear-gradient(135deg, #00f2fe, #4facfe)";
+
                                                 fab.innerHTML = '<i class="fa-solid fa-plus"></i>';
+
                                             }, 1500);
+
                                         }
+
                                     });
+
                                 }
+
                             });
+
                         }
+
                     });
+
                 }
+
             });
+
         };
+
+
 
         // Weekly Allowance Logic
+
         let budgetState = JSON.parse(localStorage.getItem('budgetState')) || {
+
             currentWeek: 1,
+
             weekStartDate: new Date().getTime(),
+
             weeks: [
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active' },
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' }
+
+                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active', days: 7 },
+
+                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+
+                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+
+                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 }
+
             ],
+
             savingsBoxes: [],
+
             debts: [],
+
             transactions: [],
-            totalSavings: 0
+
+            totalSavings: 0,
+
+            currentSalary: null,
+
+            salaryHistory: []
+
         };
 
+
+
+        // Balance Filter State
+
+        let currentBalanceFilter = 'weeklyCash'; // Options: 'totalSavings', 'weeklyCash', 'totalBalance'
+
+
+
         // Safety check & Migration
+
         function migrateData() {
+
             if (!budgetState.transactions || !Array.isArray(budgetState.transactions)) budgetState.transactions = [];
+
             budgetState.transactions = budgetState.transactions.map(normalizeTransaction);
+
             if (!budgetState.savingsBoxes || !Array.isArray(budgetState.savingsBoxes)) {
+
                 // Recover any single box that might be stuck as an object
+
                 if (budgetState.savingsBoxes && typeof budgetState.savingsBoxes === 'object' && !Array.isArray(budgetState.savingsBoxes)) {
+
                     budgetState.savingsBoxes = [budgetState.savingsBoxes];
+
                 } else {
+
                     budgetState.savingsBoxes = [];
+
                 }
+
             }
+
             budgetState.savingsBoxes = budgetState.savingsBoxes.map(box => ({
+
                 ...box,
+
                 id: Number.isFinite(Number(box.id)) ? Number(box.id) : generateId(),
+
                 balance: parseInt(box.balance) || 0,
+
                 hidden: !!box.hidden
+
             }));
+
             if (!budgetState.debts || !Array.isArray(budgetState.debts)) budgetState.debts = [];
+
             budgetState.debts = budgetState.debts.map(debt => ({
+
                 id: Number.isFinite(Number(debt.id)) ? Number(debt.id) : generateId(),
+
                 person: debt.person || debt.name || 'Unknown',
+
                 amount: parseInt(debt.amount) || 0,
+
                 note: debt.note || '',
+
                 createdAt: Number.isFinite(Number(debt.createdAt)) ? Number(debt.createdAt) : Date.now()
+
             })).filter(debt => debt.amount > 0);
+
             if (typeof budgetState.totalSavings !== 'number') budgetState.totalSavings = 0;
-            if (!budgetState.weeks || !Array.isArray(budgetState.weeks) || budgetState.weeks.length < 5) {
+
+            
+
+            // Migrate salary data
+
+            if (!budgetState.currentSalary) budgetState.currentSalary = null;
+
+            if (!budgetState.salaryHistory || !Array.isArray(budgetState.salaryHistory)) budgetState.salaryHistory = [];
+
+            if (!budgetState.weeks || !Array.isArray(budgetState.weeks) || budgetState.weeks.length !== 4) {
+
                 const defaultWeeks = [
-                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active' },
-                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' }
+
+                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active', days: 7 },
+
+                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+
+                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+
+                    { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 }
+
                 ];
+
                 // Preserve existing week data if expanding
+
                 if (budgetState.weeks && Array.isArray(budgetState.weeks)) {
-                    budgetState.weeks.forEach((w, i) => { if (i < 5) defaultWeeks[i] = w; });
+
+                    budgetState.weeks.forEach((w, i) => { if (i < 4) defaultWeeks[i] = w; });
+
                 }
+
+                // Force migration from 5 weeks to 4 weeks
+
+                if (budgetState.weeks && budgetState.weeks.length === 5) {
+
+                    console.log('Migrating from 5 weeks to 4 weeks - removing week 5');
+
+                    localStorage.setItem('migratedTo4Weeks', 'true');
+
+                }
+
                 budgetState.weeks = defaultWeeks;
+
             }
+
             // Ensure all week numbers are valid
+
             budgetState.weeks.forEach(w => {
+
                 w.personal = parseInt(w.personal) || 0;
+
                 w.car = parseInt(w.car) || 0;
+
                 w.maxPersonal = parseInt(w.maxPersonal) || 25000;
+
                 w.maxCar = parseInt(w.maxCar) || 25000;
+
+                w.days = parseInt(w.days) || 7;
+
             });
+
             localStorage.setItem('budgetState', JSON.stringify(budgetState));
+
         }
-        migrateData();
+
+        // Force clear old 5-week data
+
+if (localStorage.getItem('migratedTo4Weeks') !== 'true') {
+
+    localStorage.removeItem('budgetState');
+
+    console.log('Cleared old 5-week data');
+
+}
+
+migrateData();
+
+
 
         function checkWeekProgression() {
+
             const now = new Date().getTime();
-            // Standard 7 days for weeks 1-4, but only 3 days for the final Week 5 to reach 31 days
-            const daysInThisWeek = budgetState.currentWeek < 5 ? 7 : 3;
+
+            const currentWeekData = budgetState.weeks[budgetState.currentWeek - 1];
+
+            const daysInThisWeek = currentWeekData ? currentWeekData.days : 7;
+
             const weekDuration = daysInThisWeek * 24 * 60 * 60 * 1000;
+
             const elapsed = now - budgetState.weekStartDate;
 
-            if (elapsed >= weekDuration && budgetState.currentWeek <= 5) {
+
+
+            if (elapsed >= weekDuration && budgetState.currentWeek <= 4) {
+
                 completeWeek(); // Automatically finish the current week
+
                 budgetState.weekStartDate = now; // Reset timer for the new week
+
                 updateUI();
+
             }
+
         }
 
+
+
         function updateUI() {
+
             if (!budgetState) return;
 
+
+
             try {
+
                 // 1. UPDATE SAVINGS GRID (Robust & Priority)
+
                 const savGrid = document.getElementById('savingsGrid');
+
                 if (savGrid) {
+
                     savGrid.innerHTML = '';
+
                     if (budgetState.savingsBoxes && Array.isArray(budgetState.savingsBoxes)) {
+
                         budgetState.savingsBoxes.forEach(box => {
+
                             savGrid.innerHTML += `
+
                                 <div class="glass-card savings-box fade-in">
+
                                     <div style="display: flex; justify-content: space-between; align-items: start;">
+
                                         <h4>${box.name}</h4>
+
                                         <button onclick="deleteBox(${box.id})" style="background: none; border: none; color: var(--accent-rose); cursor: pointer;"><i class="fa-solid fa-trash-can"></i></button>
+
                                     </div>
+
                                     <div class="box-amount">${(parseInt(box.balance) || 0).toLocaleString()} IQD</div>
+
                                     <div class="box-actions">
+
                                         <button class="box-btn add" onclick="updateBox(${box.id}, 5000)">+5k</button>
+
                                         <button class="box-btn sub" onclick="updateBox(${box.id}, -5000)">-5k</button>
+
                                         <button class="box-btn" style="flex: 0.5" onclick="toggleBoxVisibility(${box.id})" title="${box.hidden ? 'Show in total' : 'Hide from total'}">
+
                                             <i class="fa-solid ${box.hidden ? 'fa-eye-slash' : 'fa-eye'}"></i>
+
                                         </button>
+
                                         <button class="box-btn" style="flex: 0.5" onclick="updateBox(${box.id}, 'custom')"><i class="fa-solid fa-pen"></i></button>
+
                                     </div>
+
                                 </div>`;
+
                         });
+
                     }
+
                     savGrid.innerHTML += `
+
                         <div class="add-box-btn" onclick="addSavingBox()">
+
                             <i class="fa-solid fa-plus" style="font-size: 1.5rem;"></i>
+
                             <span>Create Box</span>
+
                         </div>`;
+
                 }
+
+
 
                 checkWeekProgression();
 
+
+
                 // 2. UPDATE TOTALS
+
                 let totalIQD = 0;
+
                 if (budgetState.savingsBoxes) {
+
                     budgetState.savingsBoxes.forEach(box => {
+
                         if (!box.hidden) totalIQD += (parseInt(box.balance) || 0);
+
                     });
+
                 }
+
                 budgetState.weeks.forEach(week => {
+
                     if (week.status !== 'completed') totalIQD += (parseInt(week.personal) || 0) + (parseInt(week.car) || 0);
+
                 });
 
+
+
                 const masterBalance = document.getElementById('totalIQDBalance');
+
                 if (masterBalance) masterBalance.innerText = totalIQD.toLocaleString() + ' IQD';
 
+
+
                 let weeklySavingsTotal = 0;
+
                 budgetState.weeks.forEach(w => weeklySavingsTotal += (parseInt(w.saved) || 0));
+
                 const tsDisplay = document.getElementById('totalSavingsDisplay');
+
                 if (tsDisplay) tsDisplay.innerText = weeklySavingsTotal.toLocaleString() + ' IQD';
 
+
+
                 const totalDebt = (budgetState.debts || []).reduce((sum, debt) => sum + (parseInt(debt.amount) || 0), 0);
+
                 const totalDebtDisplay = document.getElementById('totalDebtDisplay');
+
                 if (totalDebtDisplay) totalDebtDisplay.innerText = totalDebt.toLocaleString() + ' IQD';
 
+
+
                 // 3. RESTORE FULL WEEK GRID (UI Restoration)
+
                 const grid = document.getElementById('weekGrid');
+
                 if (grid) {
+
                     grid.innerHTML = '';
-                    budgetState.weeks.forEach((week, index) => {
+
+                    
+
+                    // Check if monthly filter is active
+
+                    if (window.showBalanceOnly) {
+
+                        // Show monthly transactions instead of week grid
+
+                        const currentMonth = new Date().getMonth();
+
+                        const currentYear = new Date().getFullYear();
+
+                        
+
+                        let monthlyTransactions = (budgetState.transactions || []).filter(tx => {
+
+                            const txDate = new Date(tx.effectiveAt);
+
+                            return txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear;
+
+                        });
+
+                        
+
+                        if (monthlyTransactions.length === 0) {
+
+                            grid.innerHTML = '<div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">No transactions this month</div>';
+
+                        } else {
+
+                            grid.innerHTML = '<div class="glass-card" style="text-align: center; padding: 2rem;"><h3 style="margin-bottom: 1rem; color: var(--accent-emerald);">This Month\'s Transactions</h3>';
+
+                            monthlyTransactions.forEach(tx => {
+
+                                const isPersonal = tx.category === 'personal';
+
+                                const isCar = tx.category === 'car';
+
+                                const icon = isPersonal ? 'fa-user' : isCar ? 'fa-car' : 'fa-piggy-bank';
+
+                                const iconBg = isPersonal ? 'rgba(0, 242, 254, 0.1)' : isCar ? 'rgba(16, 185, 129, 0.1)' : 'rgba(59, 130, 246, 0.14)';
+
+                                const iconColor = isPersonal ? 'var(--accent-teal)' : isCar ? 'var(--accent-emerald)' : '#60a5fa';
+
+                                
+
+                                grid.innerHTML += `
+
+                                    <div class="transaction-item fade-in">
+
+                                        <div class="tx-info">
+
+                                            <div class="tx-icon" style="background: ${iconBg}; color: ${iconColor};"><i class="fa-solid ${icon}"></i></div>
+
+                                            <div class="tx-details">
+
+                                                <h4>${tx.description || 'Spending'}</h4>
+
+                                                <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}</p>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="tx-side">
+
+                                            <div class="tx-amount">-${(tx.amount || 0).toLocaleString()}</div>
+
+                                            <div class="tx-actions">
+
+                                                <button class="mini-btn teal" onclick="editTransaction(${tx.id})">Edit</button>
+
+                                                <button class="mini-btn rose delete-tx-btn" data-tx-id="${tx.id}" style="background: var(--accent-rose) !important; color: white !important;">Delete</button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>`;
+
+                            });
+
+                        }
+
+                    } else {
+
+                        // Show normal week grid
+
+                        budgetState.weeks.forEach((week, index) => {
+
                         const weekNum = index + 1;
+
                         const totalLeft = (parseInt(week.personal) || 0) + (parseInt(week.car) || 0);
+
                         const totalMax = (parseInt(week.maxPersonal) || 1) + (parseInt(week.maxCar) || 1);
+
                         const isCurrent = budgetState.currentWeek === weekNum;
 
+
+
                         let cardClass = `glass-card week-card ${week.status} ${isCurrent ? 'active' : ''}`;
+
                         if (week.status === 'pending' && !isCurrent) cardClass += ' locked';
+
+
 
                         let statusText = isCurrent ? 'Current' : week.status.charAt(0).toUpperCase() + week.status.slice(1);
 
+
+
                         const totalSpent = (parseInt(week.maxPersonal) - parseInt(week.personal)) + (parseInt(week.maxCar) - parseInt(week.car));
 
-                        // Calculate days remaining: 7 for weeks 1-4, 3 for week 5
-                        const totalDaysForThisWeek = (weekNum < 5) ? 7 : 3;
+
+
+                        // Calculate days remaining using custom days
+
+                        const totalDaysForThisWeek = week.days || 7;
+
                         let daysRemaining = totalDaysForThisWeek;
 
+
+
                         if (isCurrent) {
+
                             const now = new Date().getTime();
+
                             const elapsedMs = now - budgetState.weekStartDate;
+
                             daysRemaining = Math.max(0, totalDaysForThisWeek - Math.floor(elapsedMs / (1000 * 60 * 60 * 24)));
+
                         } else if (week.status === 'completed') {
+
                             daysRemaining = 0;
+
                         }
+
+
 
                         grid.innerHTML += `
+
                             <div class="${cardClass}" onclick="setWeeklyBudget(${index})">
+
                                 <div class="week-header" style="align-items: flex-start;">
+
                                     <div>
+
                                         <div class="week-title">Week ${weekNum}</div>
+
                                         <div class="week-status ${isCurrent ? 'text-teal' : ''}">${statusText}</div>
+
                                     </div>
+
                                     <div style="text-align: right;">
+
                                         <div class="text-rose" style="font-size: 0.75rem; font-weight: 800;">-${totalSpent.toLocaleString()}</div>
-                                        <div class="text-muted" style="font-size: 0.6rem;">${daysRemaining} Days Left</div>
+
+                                        <div class="text-muted" style="font-size: 0.6rem;">${daysRemaining}/${totalDaysForThisWeek} Days</div>
+
                                     </div>
+
                                 </div>
+
                                 ${week.status === 'completed' ? `
+
                                     <div style="text-align: center;">
+
                                         <div class="text-muted" style="font-size: 0.7rem;">SAVED</div>
+
                                         <div class="text-emerald" style="font-size: 1.2rem; font-weight: 800;">+${(week.saved || 0).toLocaleString()}</div>
+
                                         <div class="text-muted" style="font-size: 0.6rem; margin-top: 5px;">Sent to Savings</div>
+
                                     </div>
+
                                 ` : `
+
                                     <div class="allowance-items">
+
                                         <div class="allowance-item">
+
                                             <div class="allowance-label">Personal <span>${((week.personal || 0) / 1000).toFixed(1)}k / ${(week.maxPersonal / 1000).toFixed(1)}k</span></div>
+
                                             <div class="allowance-bar"><div class="allowance-fill" style="width: ${(week.personal / week.maxPersonal) * 100}%;"></div></div>
+
                                         </div>
+
                                         <div class="allowance-item">
+
                                             <div class="allowance-label">Car <span>${((week.car || 0) / 1000).toFixed(1)}k / ${(week.maxCar / 1000).toFixed(1)}k</span></div>
+
                                             <div class="allowance-bar"><div class="allowance-fill" style="width: ${(week.car / week.maxCar) * 100}%; background: var(--accent-emerald);"></div></div>
+
                                         </div>
+
                                     </div>
+
                                 `}
+
                                 <div class="total-left">${totalLeft.toLocaleString()} <span>/ ${totalMax.toLocaleString()} IQD</span></div>
+
                                 ${!isCurrent && week.status !== 'completed' ? '<div style="font-size: 0.6rem; color: var(--accent-teal); margin-top: 5px;">Tap to Set Budget</div>' : ''}
+
                             </div>`;
+
                     });
+
+
 
                     // Show Reset if all finished
+
                     if (budgetState.weeks.every(w => w.status === 'completed')) {
+
                         const resetBtn = document.createElement('button');
+
                         resetBtn.className = 'save-btn';
+
                         resetBtn.style.marginTop = '1rem';
+
                         resetBtn.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+
                         resetBtn.style.color = '#fff';
+
                         resetBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Start New Month';
+
                         resetBtn.onclick = resetMonth;
+
                         grid.appendChild(resetBtn);
+
                     }
+
                 }
+
+
 
                 // 4. RESTORE DETAILED TRANSACTIONS
+
                 const txList = document.getElementById('transactionList');
+
                 if (txList) {
+
                     if (!budgetState.transactions || budgetState.transactions.length === 0) {
+
                         txList.innerHTML = '<div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">No transactions yet</div>';
+
                     } else {
+
                         txList.innerHTML = '';
-                        sortTransactionsByDate(budgetState.transactions).forEach(tx => {
+
+                        let transactionsToShow = budgetState.transactions;
+
+                        
+
+                        // Apply filters if active
+
+                        if (window.showBalanceOnly === true) {
+
+                            // Show total balance instead of individual transactions
+
+                            txList.innerHTML = `
+
+                                <div class="glass-card" style="text-align: center; padding: 2rem;">
+
+                                    <h3 style="margin-bottom: 1rem; color: var(--accent-emerald);">Total Balance</h3>
+
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--text-main);">
+
+                                        ${(budgetState.totalSavings || 0).toLocaleString()} IQD
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                            return;
+
+                        } else if (window.showWeeklyOnly === true) {
+
+                            transactionsToShow = budgetState.transactions.filter(tx => 
+
+                                tx.category === 'personal' || 
+
+                                tx.category === 'car' || 
+
+                                (tx.category && tx.category.startsWith('week_'))
+
+                            );
+
+                        } else if (window.showMonthlyOnly === true) {
+
+                            // Get current month
+
+                            const currentMonth = new Date().getMonth();
+
+                            const currentYear = new Date().getFullYear();
+
+                            
+
+                            transactionsToShow = budgetState.transactions.filter(tx => {
+
+                                const txDate = new Date(tx.effectiveAt);
+
+                                return txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear;
+
+                            });
+
+                        }
+
+                        
+
+                        sortTransactionsByDate(transactionsToShow).forEach(tx => {
+
                             const isPersonal = tx.category === 'personal';
+
                             const isCar = tx.category === 'car';
+
                             const icon = isPersonal ? 'fa-user' : isCar ? 'fa-car' : 'fa-piggy-bank';
+
                             const iconBg = isPersonal ? 'rgba(0, 242, 254, 0.1)' : isCar ? 'rgba(16, 185, 129, 0.1)' : 'rgba(59, 130, 246, 0.14)';
+
                             const iconColor = isPersonal ? 'var(--accent-teal)' : isCar ? 'var(--accent-emerald)' : '#60a5fa';
+
                             txList.innerHTML += `
+
                                 <div class="transaction-item fade-in">
+
                                     <div class="tx-info">
+
                                         <div class="tx-icon" style="background: ${iconBg}; color: ${iconColor};"><i class="fa-solid ${icon}"></i></div>
+
                                         <div class="tx-details">
+
                                             <h4>${tx.description || 'Spending'}</h4>
+
                                             <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}</p>
+
                                         </div>
+
                                     </div>
+
                                     <div class="tx-side">
+
                                         <div class="tx-amount">-${(tx.amount || 0).toLocaleString()}</div>
+
                                         <div class="tx-actions">
+
                                             <button class="mini-btn teal" onclick="editTransaction(${tx.id})">Edit</button>
+
+                                            <button class="mini-btn rose delete-tx-btn" data-tx-id="${tx.id}" style="background: var(--accent-rose) !important; color: white !important;">Delete</button>
+
                                         </div>
+
                                     </div>
+
                                 </div>`;
+
                         });
+
                     }
+
                 }
+
+
 
                 const debtList = document.getElementById('debtList');
+
                 if (debtList) {
+
                     if (!budgetState.debts || budgetState.debts.length === 0) {
+
                         debtList.innerHTML = '<div class="text-muted" style="text-align: center; padding: 1.5rem 0; font-size: 0.8rem;">No debts added yet</div>';
+
                     } else {
+
                         debtList.innerHTML = '';
+
                         budgetState.debts.slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).forEach(debt => {
+
                             debtList.innerHTML += `
+
                                 <div class="debt-item fade-in">
+
                                     <div class="debt-info">
+
                                         <div class="debt-icon" style="background: rgba(244, 63, 94, 0.12); color: var(--accent-rose);">
+
                                             <i class="fa-solid fa-hand-holding-dollar"></i>
+
                                         </div>
+
                                         <div class="debt-details">
+
                                             <h4>${debt.person}</h4>
+
                                             <p>${debt.note || 'No note added'}</p>
+
                                         </div>
+
                                     </div>
+
                                     <div class="debt-side">
+
                                         <div class="debt-amount">-${(debt.amount || 0).toLocaleString()}</div>
+
                                         <div class="debt-actions">
+
                                             <button class="mini-btn emerald" onclick="payDebt(${debt.id})">Pay</button>
+
                                             <button class="mini-btn teal" onclick="editDebt(${debt.id})">Edit</button>
-                                            <button class="mini-btn rose" onclick="deleteDebt(${debt.id})">Delete</button>
+
+                                            <button class="mini-btn rose delete-debt-btn" data-debt-id="${debt.id}" style="background: var(--accent-rose) !important; color: white !important; min-width: 60px !important;">Delete</button>
+
                                         </div>
+
                                     </div>
+
                                 </div>`;
+
                         });
+
                     }
+
                 }
+
+
 
                 localStorage.setItem('budgetState', JSON.stringify(budgetState));
+
+                
+
+                // Update balance filter display
+
+                updateBalanceDisplay();
+
+                
+
+                // Update salary display
+
+                updateSalaryDisplay();
+
+            }
+
             } catch (err) {
+
                 console.error("UI Update Error:", err);
+
             }
+
         }
 
-        window.hardReset = function () {
-            showModal({
-                title: "Erase Everything?",
-                desc: "This will wipe all your data and start the app fresh. There is no undo.",
-                danger: true,
-                actionLabel: "Yes, Erase All",
-                callback: (confirmed) => {
-                    if (confirmed) {
-                        localStorage.removeItem('budgetState');
-                        location.reload();
-                    }
-                }
-            });
-        };
 
-        window.toggleBoxVisibility = function (id) {
-            const box = budgetState.savingsBoxes.find(b => b.id === id);
-            if (box) {
-                box.hidden = !box.hidden;
-                updateUI();
-            }
-        };
 
-        window.deleteBox = function (id) {
-            if (!confirm("Delete this saving box?")) return;
-            budgetState.savingsBoxes = budgetState.savingsBoxes.filter(b => b.id !== id);
-            updateUI();
-        };
+        // Add event listener for delete buttons
 
-        // Modal Management
-        function showModal(config) {
-            const modal = document.getElementById('customModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDesc = document.getElementById('modalDesc');
-            const modalInput = document.getElementById('modalInput');
-            const modalOptions = document.getElementById('modalOptions');
-            const actionBtn = document.getElementById('modalActionBtn');
-            const cancelBtn = document.getElementById('modalCancelBtn');
+        document.addEventListener('click', function(e) {
 
-            // Reset
-            modalTitle.innerText = config.title || "Message";
-            modalDesc.innerText = config.desc || "";
-            modalInput.style.display = "none";
-            modalOptions.style.display = "none";
-            actionBtn.style.display = "block";
-            actionBtn.innerText = config.actionLabel || "Confirm";
-            actionBtn.className = "modal-btn primary";
-            if (config.danger) actionBtn.className = "modal-btn danger";
+            if (e.target && e.target.classList.contains('delete-debt-btn')) {
 
-            if (config.type) {
-                modalInput.style.display = "block";
-                modalInput.type = config.type;
-                modalInput.placeholder = config.placeholder || "";
-                modalInput.value = config.value || "";
-                ['min', 'max', 'step'].forEach(attr => modalInput.removeAttribute(attr));
-                if (config.inputAttributes) {
-                    Object.entries(config.inputAttributes).forEach(([key, value]) => {
-                        modalInput.setAttribute(key, value);
-                    });
-                }
-                setTimeout(() => modalInput.focus(), 100);
-            }
+                const debtId = e.target.getAttribute('data-debt-id');
 
-            if (config.options) {
-                modalOptions.style.display = "flex";
-                modalOptions.innerHTML = "";
-                actionBtn.style.display = "none"; // Hide action btn when choosing options
-                config.options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = `option-btn ${opt.class || ''}`;
-                    btn.innerHTML = `<i class="fa-solid ${opt.icon}"></i> <span>${opt.label}</span>`;
-                    btn.onclick = () => {
-                        closeModal();
-                        config.callback(opt.value);
-                    };
-                    modalOptions.appendChild(btn);
-                });
-            }
+                console.log('Delete button clicked, debtId:', debtId);
 
-            modalInput.onkeydown = (e) => {
-                if (e.key === 'Enter') actionBtn.click();
-            };
+                
 
-            actionBtn.onclick = () => {
-                const val = config.type ? modalInput.value : true;
-                if (config.type === "text" && !config.allowEmptyText && !val.trim()) return;
-                closeModal();
-                if (config.callback) config.callback(val);
-            };
+                if (confirm("Delete this debt entry?")) {
 
-            modal.classList.add('active');
-        }
+                    const debtToDelete = budgetState.debts.find(entry => entry.id == debtId);
 
-        window.closeModal = function () {
-            document.getElementById('customModal').classList.remove('active');
-        };
+                    if (debtToDelete) {
 
-        window.addSavingBox = function () {
-            showModal({
-                title: "New Saving Box",
-                desc: "Give your new savings goal a name.",
-                type: "text",
-                placeholder: "e.g. Haval, Travel, etc.",
-                actionLabel: "Create Box",
-                callback: (name) => {
-                    if (name) {
-                        const newBox = {
-                            id: generateId(),
-                            name: name,
-                            balance: 0
-                        };
-                        if (!budgetState.savingsBoxes) budgetState.savingsBoxes = [];
-                        budgetState.savingsBoxes.push(newBox);
+                        budgetState.debts = budgetState.debts.filter(entry => entry.id != debtId);
+
                         updateUI();
 
-                        // Show a temporary success toast
-                        const toast = document.createElement('div');
-                        toast.className = 'glass-card fade-in';
-                        toast.style.position = 'fixed';
-                        toast.style.bottom = '100px';
-                        toast.style.left = '50%';
-                        toast.style.transform = 'translateX(-50%)';
-                        toast.style.padding = '1rem 2rem';
-                        toast.style.background = 'var(--accent-emerald)';
-                        toast.style.color = '#000';
-                        toast.style.zIndex = '2000';
-                        toast.style.fontWeight = 'bold';
-                        toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> Box "${name}" Created!`;
-                        document.body.appendChild(toast);
-                        setTimeout(() => toast.remove(), 2000);
+                        console.log('Debt deleted successfully');
+
+                    } else {
+
+                        console.log('Debt not found for ID:', debtId);
+
                     }
+
                 }
-            });
-        };
 
-        window.addDebt = function () {
-            showModal({
-                title: "Who do you owe?",
-                desc: "Add the person's name or business.",
-                type: "text",
-                placeholder: "e.g. Ali, Bank, Karim",
-                actionLabel: "Next",
-                callback: (person) => {
-                    showModal({
-                        title: "Debt Amount",
-                        desc: "How much do you owe?",
-                        type: "number",
-                        placeholder: "e.g. 250000",
-                        actionLabel: "Next",
-                        callback: (amountValue) => {
-                            const amount = parseInt(amountValue);
-                            if (isNaN(amount) || amount <= 0) return;
-                            showModal({
-                                title: "Note",
-                                desc: "Optional reminder for this debt.",
-                                type: "text",
-                                placeholder: "e.g. Car repair, borrowed cash",
-                                allowEmptyText: true,
-                                actionLabel: "Save Debt",
-                                callback: (note) => {
-                                    budgetState.debts.push({
-                                        id: generateId(),
-                                        person: person.trim(),
-                                        amount,
-                                        note: note.trim(),
-                                        createdAt: Date.now()
-                                    });
-                                    updateUI();
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        };
-
-        window.updateBox = function (id, amount) {
-            const box = budgetState.savingsBoxes.find(b => b.id === id);
-            if (!box) return;
-
-            if (amount === 'custom') {
-                showModal({
-                    title: `Update ${box.name}`,
-                    desc: "Add or deduct money (use - to deduct).",
-                    type: "number",
-                    placeholder: "IQD Amount",
-                    callback: (val) => {
-                        const parsed = parseInt(val);
-                        if (!isNaN(parsed)) {
-                            box.balance += parsed;
-                            if (box.balance < 0) box.balance = 0;
-                            updateUI();
-                        }
-                    }
-                });
-            } else {
-                box.balance += amount;
-                if (box.balance < 0) box.balance = 0;
-                updateUI();
             }
-        };
 
-        window.resetMonth = function () {
-            showModal({
-                title: "Reset Month?",
-                desc: "This will reset all 5 weeks. Your saving boxes and total savings will be preserved.",
-                danger: true,
-                actionLabel: "Reset Now",
-                callback: (confirmed) => {
-                    if (!confirmed) return;
-                    budgetState.currentWeek = 1;
-                    budgetState.weekStartDate = new Date().getTime();
-                    budgetState.weeks = [
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active' },
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' },
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending' }
-                    ];
-                    updateUI();
-                }
-            });
-        };
+            
 
-        window.editDebt = function (id) {
-            const debt = budgetState.debts.find(entry => entry.id === id);
-            if (!debt) return;
+            if (e.target && e.target.classList.contains('delete-tx-btn')) {
 
-            showModal({
-                title: "Edit Creditor",
-                desc: "Update who you owe.",
-                type: "text",
-                value: debt.person,
-                actionLabel: "Next",
-                callback: (person) => {
-                    showModal({
-                        title: "Edit Amount",
-                        desc: "Update the remaining amount.",
-                        type: "number",
-                        value: debt.amount,
-                        actionLabel: "Next",
-                        callback: (amountValue) => {
-                            const amount = parseInt(amountValue);
-                            if (isNaN(amount) || amount <= 0) return;
-                            showModal({
-                                title: "Edit Note",
-                                desc: "Update the note if needed.",
-                                type: "text",
-                                value: debt.note || '',
-                                allowEmptyText: true,
-                                actionLabel: "Save Changes",
-                                callback: (note) => {
-                                    debt.person = person.trim();
-                                    debt.amount = amount;
-                                    debt.note = note.trim();
-                                    updateUI();
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        };
+                const txId = e.target.getAttribute('data-tx-id');
 
-        window.payDebt = function (id) {
-            const debt = budgetState.debts.find(entry => entry.id === id);
-            if (!debt) return;
+                console.log('Delete transaction clicked, txId:', txId);
 
-            showModal({
-                title: `Pay ${debt.person}`,
-                desc: `Enter how much you paid back. Remaining: ${debt.amount.toLocaleString()} IQD`,
-                type: "number",
-                placeholder: "e.g. 5000",
-                value: Math.min(5000, debt.amount),
-                actionLabel: "Apply Payment",
-                callback: (value) => {
-                    const payment = parseInt(value);
-                    if (isNaN(payment) || payment <= 0) return;
-                    debt.amount = Math.max(0, debt.amount - payment);
-                    if (debt.amount === 0) {
-                        budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
+                
+
+                if (confirm("Delete this transaction?")) {
+
+                    const txToDelete = budgetState.transactions.find(tx => tx.id == txId);
+
+                    if (txToDelete) {
+
+                        budgetState.transactions = budgetState.transactions.filter(tx => tx.id != txId);
+
+                        updateUI();
+
+                        console.log('Transaction deleted successfully');
+
+                    } else {
+
+                        console.log('Transaction not found for ID:', txId);
+
                     }
-                    updateUI();
+
                 }
-            });
+
+            }
+
+        });
+
+
+
+        window.clearAllDebts = function () {
+
+            if (confirm("Clear all debts? This will remove all debt entries.")) {
+
+                budgetState.debts = [];
+
+                updateUI();
+
+                console.log('All debts cleared');
+
+            }
+
         };
 
-        window.deleteDebt = function (id) {
-            if (!confirm("Delete this debt entry?")) return;
-            budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
-            updateUI();
+
+
+        window.toggleHomeBalanceFilter = function () {
+
+            window.showBalanceOnly = !window.showBalanceOnly;
+
+            const filterText = document.getElementById('homeFilterText');
+
+            const filterToggle = document.getElementById('homeBalanceFilterToggle');
+
+            
+
+            if (window.showBalanceOnly) {
+
+                filterText.textContent = 'Show Transactions';
+
+                filterToggle.style.background = 'var(--accent-teal)';
+
+            } else {
+
+                filterText.textContent = 'Show This Month';
+
+                filterToggle.style.background = 'rgba(59, 130, 246, 0.1)';
+
+            }
+
+            
+
+            updateUI(); // Refresh UI with new filter
+
         };
 
-        window.setWeeklyBudget = function (index) {
-            const week = budgetState.weeks[index];
-            if (week.status === 'completed') return;
+        
+
+        // Balance Filter Toggle Function
+
+        window.toggleBalanceFilter = function () {
+
+            let options = [
+
+                { label: "Total Savings", icon: "fa-piggy-bank", class: "emerald", value: "totalSavings" },
+
+                { label: "Weekly Cash Left", icon: "fa-wallet", class: "teal", value: "weeklyCash" },
+
+                { label: "Total Balance", icon: "fa-balance-scale", class: "rose", value: "totalBalance" }
+
+            ];
+
+
 
             showModal({
-                title: `Week ${index + 1} Personal`,
-                desc: "How much do you want to spend on yourself?",
+
+                title: "Select Balance View",
+
+                desc: "Choose what you want to see in the balance display",
+
+                options: options,
+
+                callback: (selectedFilter) => {
+
+                    if (!selectedFilter) return;
+
+                    currentBalanceFilter = selectedFilter;
+
+                    updateBalanceDisplay();
+
+                }
+
+            });
+
+        };
+
+
+
+        function updateBalanceDisplay() {
+
+            const balanceElement = document.getElementById('totalIQDBalance');
+
+            const filterTextElement = document.getElementById('filterText');
+
+            const filterBadge = document.querySelector('.clickable-filter');
+
+
+
+            if (!balanceElement || !filterTextElement || !filterBadge) return;
+
+
+
+            let displayValue = 0;
+
+            let displayText = '';
+
+            let iconClass = '';
+
+
+
+            switch (currentBalanceFilter) {
+
+                case 'totalSavings':
+
+                    // Calculate total savings from completed weeks
+
+                    displayValue = budgetState.weeks.reduce((sum, week) => sum + (parseInt(week.saved) || 0), 0);
+
+                    displayText = 'Total Savings';
+
+                    iconClass = 'fa-piggy-bank';
+
+                    filterBadge.className = 'trend-badge text-emerald clickable-filter';
+
+                    break;
+
+
+
+                case 'weeklyCash':
+
+                    // Calculate cash left in current active week
+
+                    const currentWeek = budgetState.weeks[budgetState.currentWeek - 1];
+
+                    if (currentWeek && currentWeek.status === 'active') {
+
+                        displayValue = (parseInt(currentWeek.personal) || 0) + (parseInt(currentWeek.car) || 0);
+
+                    }
+
+                    displayText = 'Weekly Cash Left';
+
+                    iconClass = 'fa-wallet';
+
+                    filterBadge.className = 'trend-badge text-teal clickable-filter';
+
+                    break;
+
+
+
+                case 'totalBalance':
+
+                    // Calculate total balance (savings boxes + all weeks cash)
+
+                    displayValue = 0;
+
+                    
+
+                    // Add savings from boxes
+
+                    if (budgetState.savingsBoxes) {
+
+                        budgetState.savingsBoxes.forEach(box => {
+
+                            if (!box.hidden) displayValue += (parseInt(box.balance) || 0);
+
+                        });
+
+                    }
+
+                    
+
+                    // Add cash from all 4 weeks
+
+                    if (budgetState.weeks) {
+
+                        budgetState.weeks.forEach(week => {
+
+                            displayValue += (parseInt(week.personal) || 0) + (parseInt(week.car) || 0);
+
+                        });
+
+                    }
+
+                    
+
+                    displayText = 'Total Balance';
+
+                    iconClass = 'fa-balance-scale';
+
+                    filterBadge.className = 'trend-badge text-rose clickable-filter';
+
+                    break;
+
+            }
+
+
+
+            balanceElement.innerText = displayValue.toLocaleString() + ' IQD';
+
+            filterTextElement.innerText = displayText;
+
+            filterBadge.innerHTML = `<i class="fa-solid ${iconClass}"></i> <span id="filterText">${displayText}</span>`;
+
+        }
+
+
+
+        // Salary Management Functions
+
+        window.addSalary = function () {
+
+            console.log('addSalary function called');
+
+            showModal({
+
+                title: "Add Monthly Salary",
+
+                desc: "Enter your monthly income amount",
+
                 type: "number",
-                value: week.maxPersonal,
-                callback: (pVal) => {
-                    const p = parseInt(pVal) || 0;
+
+                placeholder: "e.g. 800000",
+
+                callback: (amount) => {
+
+                    console.log('Salary amount entered:', amount);
+
+                    const salaryAmount = parseInt(amount);
+
+                    if (isNaN(salaryAmount) || salaryAmount <= 0) {
+
+                        console.log('Invalid salary amount:', salaryAmount);
+
+                        return;
+
+                    }
+
+
+
                     showModal({
-                        title: `Week ${index + 1} Car`,
-                        desc: "How much for car maintenance?",
-                        type: "number",
-                        value: week.maxCar,
-                        callback: (cVal) => {
-                            const c = parseInt(cVal) || 0;
-                            week.maxPersonal = p;
-                            week.personal = p;
-                            week.maxCar = c;
-                            week.car = c;
+
+                        title: "Salary Date",
+
+                        desc: "When did you receive this salary? (Leave blank for today)",
+
+                        type: "text",
+
+                        placeholder: "e.g. 2024-01-15 or leave blank for today",
+
+                        allowEmptyText: true,
+
+                        callback: (dateValue) => {
+
+                            console.log('Salary date entered:', dateValue);
+
+                            let salaryDate;
+
+                            if (dateValue) {
+
+                                salaryDate = new Date(dateValue).getTime();
+
+                                console.log('Parsed salary date:', salaryDate);
+
+                            } else {
+
+                                salaryDate = Date.now();
+
+                                console.log('Using current date as fallback');
+
+                            }
+
+                            if (isNaN(salaryDate)) {
+
+                                salaryDate = Date.now();
+
+                                console.log('Invalid date, using current time');
+
+                            }
+
+
+
+                            const salary = {
+
+                                id: generateId(),
+
+                                amount: salaryAmount,
+
+                                originalAmount: salaryAmount,
+
+                                date: salaryDate,
+
+                                distributed: 0,
+
+                                createdAt: Date.now()
+
+                            };
+
+
+
+                            budgetState.currentSalary = salary;
+
+                            budgetState.salaryHistory.push(salary);
+
+                            console.log('Salary created:', salary);
+
+                            console.log('Budget state after salary:', budgetState);
+
                             updateUI();
+
+
+
+                            // Show distribution modal immediately
+
+                            setTimeout(() => distributeSalary(), 500);
+
                         }
+
                     });
+
                 }
+
             });
+
         };
 
-        window.editTransaction = function (id) {
-            const transaction = budgetState.transactions.find(tx => tx.id === id);
-            if (!transaction) return;
+
+
+        window.distributeSalary = function () {
+
+            if (!budgetState.currentSalary) return;
+
+
+
+            const availableAmount = budgetState.currentSalary.amount - budgetState.currentSalary.distributed;
+
+            if (availableAmount <= 0) {
+
+                alert('No salary available to distribute');
+
+                return;
+
+            }
+
+
+
+            let options = [];
+
+
+
+            // Add weekly budget options
+
+            budgetState.weeks.forEach((week, index) => {
+
+                if (week.status === 'active' || week.status === 'pending') {
+
+                    const weekLabel = week.status === 'active' ? `Week ${index + 1} (Current)` : `Week ${index + 1}`;
+
+                    options.push({
+
+                        label: weekLabel,
+
+                        icon: "fa-calendar-week",
+
+                        class: "teal",
+
+                        value: `week_${index}`,
+
+                        subtitle: `Personal + Car budget`
+
+                    });
+
+                }
+
+            });
+
+
+
+            // Add savings boxes options
+
+            if (budgetState.savingsBoxes && budgetState.savingsBoxes.length > 0) {
+
+                budgetState.savingsBoxes.forEach(box => {
+
+                    options.push({
+
+                        label: box.name,
+
+                        icon: "fa-piggy-bank",
+
+                        class: "emerald",
+
+                        value: `box_${box.id}`,
+
+                        subtitle: `Current: ${(box.balance || 0).toLocaleString()} IQD`
+
+                    });
+
+                });
+
+            }
+
+
+
+            // Add quick distribution options
+
+            if (options.length > 0) {
+
+                options.push({
+
+                    label: "Distribute Equally",
+
+                    icon: "fa-equals",
+
+                    class: "rose",
+
+                    value: "equal",
+
+                    subtitle: "Split equally among all destinations"
+
+                });
+
+            }
+
+
+
+            if (options.length === 0) {
+
+                options.push({
+
+                    label: "Create Savings Box First",
+
+                    icon: "fa-plus",
+
+                    class: "teal",
+
+                    value: "create_box",
+
+                    subtitle: "You need at least one savings box or week budget"
+
+                });
+
+            }
+
+
 
             showModal({
-                title: "Edit Description",
-                desc: "Update the note for this transaction.",
-                type: "text",
-                value: transaction.description || '',
-                placeholder: "e.g. Coffee, Fuel, etc.",
-                allowEmptyText: true,
-                actionLabel: "Next",
-                callback: (description) => {
+
+                title: `Distribute Salary (${availableAmount.toLocaleString()} IQD available)`,
+
+                desc: "Choose where to allocate your salary",
+
+                options: options,
+
+                callback: (destination) => {
+
+                    if (!destination) return;
+
+                    if (destination === 'create_box') {
+
+                        addSavingBox();
+
+                        return;
+
+                    }
+
+                    if (destination === 'equal') {
+
+                        distributeEqually();
+
+                        return;
+
+                    }
+
+
+
+                    // Ask for amount to distribute
+
                     showModal({
-                        title: "Edit Transaction Date",
-                        desc: "Choose when this transaction actually happened.",
-                        type: "datetime-local",
-                        value: toLocalDateTimeValue(transaction.effectiveAt),
-                        actionLabel: "Save Changes",
-                        callback: (dateValue) => {
-                            transaction.description = description.trim();
-                            transaction.effectiveAt = parseTransactionDateInput(dateValue);
-                            transaction.date = formatTransactionDate(transaction.effectiveAt);
-                            updateUI();
+
+                        title: `Distribute to ${getDestinationName(destination)}`,
+
+                        desc: `How much to allocate? Available: ${availableAmount.toLocaleString()} IQD`,
+
+                        type: "number",
+
+                        value: Math.min(availableAmount, 250000),
+
+                        callback: (amountValue) => {
+
+                            const distributeAmount = parseInt(amountValue);
+
+                            if (isNaN(distributeAmount) || distributeAmount <= 0 || distributeAmount > availableAmount) return;
+
+
+
+                            distributeToDestination(destination, distributeAmount);
+
                         }
+
                     });
+
                 }
+
             });
+
         };
 
-        window.spendMoney = function (category, amount, description = "", effectiveDateValue = null) {
-            const effectiveAt = parseTransactionDateInput(effectiveDateValue);
 
-            // Handle Spending from a Saving Box
-            if (category.startsWith('box_')) {
-                const boxId = parseInt(category.replace('box_', ''));
+
+        function getDestinationName(destination) {
+
+            if (destination.startsWith('week_')) {
+
+                const weekIndex = parseInt(destination.replace('week_', ''));
+
+                return `Week ${weekIndex + 1}`;
+
+            }
+
+            if (destination.startsWith('box_')) {
+
+                const boxId = parseInt(destination.replace('box_', ''));
+
                 const box = budgetState.savingsBoxes.find(b => b.id === boxId);
 
-                if (!box) return;
-                if (box.balance < amount) {
-                    alert(`Not enough money in "${box.name}" box!`);
-                    return;
+                return box ? box.name : 'Savings Box';
+
+            }
+
+            return destination;
+
+        }
+
+
+
+        function distributeToDestination(destination, amount) {
+
+            if (destination.startsWith('week_')) {
+
+                const weekIndex = parseInt(destination.replace('week_', ''));
+
+                const week = budgetState.weeks[weekIndex];
+
+                if (week) {
+
+                    // Ask how to split between personal and car
+
+                    showModal({
+
+                        title: "Split Weekly Budget",
+
+                        desc: `How to split ${amount.toLocaleString()} IQD for Week ${weekIndex + 1}?`,
+
+                        type: "number",
+
+                        value: Math.floor(amount / 2),
+
+                        placeholder: "Personal amount",
+
+                        callback: (personalAmount) => {
+
+                            const personal = parseInt(personalAmount) || 0;
+
+                            const car = amount - personal;
+
+                            
+
+                            week.personal = (week.personal || 0) + personal;
+
+                            week.car = (week.car || 0) + car;
+
+                            week.maxPersonal = (week.maxPersonal || 0) + personal;
+
+                            week.maxCar = (week.maxCar || 0) + car;
+
+                            
+
+                            // Record transaction
+
+                            recordTransaction(`week_${weekIndex + 1}_personal`, personal, `Salary distribution - Week ${weekIndex + 1} Personal`, Date.now(), {
+
+                                sourceType: 'salary',
+
+                                sourceId: budgetState.currentSalary.id
+
+                            });
+
+                            
+
+                            recordTransaction(`week_${weekIndex + 1}_car`, car, `Salary distribution - Week ${weekIndex + 1} Car`, Date.now(), {
+
+                                sourceType: 'salary',
+
+                                sourceId: budgetState.currentSalary.id
+
+                            });
+
+                            
+
+                            updateSalaryDistribution(amount);
+
+                        }
+
+                    });
+
                 }
+
+            } else if (destination.startsWith('box_')) {
+
+                const boxId = parseInt(destination.replace('box_', ''));
+
+                const box = budgetState.savingsBoxes.find(b => b.id === boxId);
+
+                if (box) {
+
+                    box.balance = (box.balance || 0) + amount;
+
+                    
+
+                    // Record transaction
+
+                    recordTransaction(`box_${box.name}`, amount, `Salary distribution - ${box.name}`, Date.now(), {
+
+                        sourceType: 'salary',
+
+                        sourceId: budgetState.currentSalary.id
+
+                    });
+
+                    
+
+                    updateSalaryDistribution(amount);
+
+                }
+
+            }
+
+        }
+
+
+
+        function distributeEqually() {
+
+            if (!budgetState.currentSalary) return;
+
+            
+
+            const availableAmount = budgetState.currentSalary.amount - budgetState.currentSalary.distributed;
+
+            const destinations = [];
+
+            
+
+            // Count available destinations
+
+            budgetState.weeks.forEach((week, index) => {
+
+                if (week.status === 'active' || week.status === 'pending') {
+
+                    destinations.push(`week_${index}`);
+
+                }
+
+            });
+
+            
+
+            budgetState.savingsBoxes.forEach(box => {
+
+                destinations.push(`box_${box.id}`);
+
+            });
+
+            
+
+            if (destinations.length === 0) {
+
+                alert('No destinations available for equal distribution');
+
+                return;
+
+            }
+
+            
+
+            const equalAmount = Math.floor(availableAmount / destinations.length);
+
+            const remaining = availableAmount - (equalAmount * destinations.length);
+
+            
+
+            destinations.forEach((destination, index) => {
+
+                const amountToDistribute = equalAmount + (index === 0 ? remaining : 0);
+
+                distributeToDestination(destination, amountToDistribute);
+
+            });
+
+        }
+
+
+
+        function updateSalaryDistribution(amount) {
+
+            if (budgetState.currentSalary) {
+
+                budgetState.currentSalary.distributed += amount;
+
+            }
+
+            updateUI();
+
+        }
+
+
+
+        function updateSalaryDisplay() {
+
+            console.log('updateSalaryDisplay called');
+
+            const salaryContent = document.getElementById('salaryContent');
+
+            const availableDisplay = document.getElementById('salaryAvailableDisplay');
+
+            console.log('Salary elements found:', !!salaryContent, !!availableDisplay);
+
+            
+
+            if (!salaryContent || !availableDisplay) return;
+
+            
+
+            if (!budgetState.currentSalary) {
+
+                salaryContent.innerHTML = `
+
+                    <div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">
+
+                        <i class="fa-solid fa-money-bill-wave" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+
+                        No salary recorded yet. Click below to add your monthly income.
+
+                    </div>
+
+                `;
+
+                availableDisplay.innerText = '0 IQD';
+
+                return;
+
+            }
+
+            
+
+            const salary = budgetState.currentSalary;
+
+            const available = salary.amount - salary.distributed;
+
+            const distributedPercentage = (salary.distributed / salary.amount * 100).toFixed(1);
+
+            
+
+            salaryContent.innerHTML = `
+
+                <div style="margin-bottom: 1rem;">
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+
+                        <span class="text-muted">Total Salary</span>
+
+                        <span style="font-weight: 600;">${salary.amount.toLocaleString()} IQD</span>
+
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+
+                        <span class="text-muted">Distributed</span>
+
+                        <span style="color: var(--accent-emerald); font-weight: 600;">${salary.distributed.toLocaleString()} IQD (${distributedPercentage}%)</span>
+
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+
+                        <span class="text-muted">Date</span>
+
+                        <span style="font-weight: 600;">${new Date(salary.date).toLocaleDateString()}</span>
+
+                    </div>
+
+                    <div class="progress-bar-bg" style="height: 8px; margin-bottom: 1rem;">
+
+                        <div class="progress-fill" style="width: ${distributedPercentage}%; background: var(--accent-emerald);"></div>
+
+                    </div>
+
+                </div>
+
+                ${available > 0 ? `
+
+                    <button class="save-btn" style="background: var(--accent-teal); color: #000; margin-bottom: 0.5rem;" onclick="distributeSalary()">
+
+                        <i class="fa-solid fa-hand-holding-dollar"></i> Distribute ${available.toLocaleString()} IQD
+
+                    </button>
+
+                ` : `
+
+                    <div class="text-muted" style="text-align: center; padding: 1rem; font-size: 0.8rem;">
+
+                        <i class="fa-solid fa-check-circle" style="color: var(--accent-emerald); font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+
+                        All salary has been distributed!
+
+                    </div>
+
+                `}
+
+            `;
+
+            
+
+            availableDisplay.innerText = `${available.toLocaleString()} IQD`;
+
+        }
+
+
+
+        window.hardReset = function () {
+
+            showModal({
+
+                title: "Erase Everything?",
+
+                desc: "This will wipe all your data and start the app fresh. There is no undo.",
+
+                danger: true,
+
+                actionLabel: "Yes, Erase All",
+
+                callback: (confirmed) => {
+
+                    if (confirmed) {
+
+                        localStorage.removeItem('budgetState');
+
+                        location.reload();
+
+                    }
+
+                }
+
+            });
+
+        };
+
+
+
+        window.toggleBoxVisibility = function (id) {
+
+            const box = budgetState.savingsBoxes.find(b => b.id === id);
+
+            if (box) {
+
+                box.hidden = !box.hidden;
+
+                updateUI();
+
+            }
+
+        };
+
+
+
+        window.deleteBox = function (id) {
+
+            if (!confirm("Delete this saving box?")) return;
+
+            budgetState.savingsBoxes = budgetState.savingsBoxes.filter(b => b.id !== id);
+
+            updateUI();
+
+        };
+
+
+
+        // Modal Management
+
+        function showModal(config) {
+
+            const modal = document.getElementById('customModal');
+
+            const modalTitle = document.getElementById('modalTitle');
+
+            const modalDesc = document.getElementById('modalDesc');
+
+            const modalInput = document.getElementById('modalInput');
+
+            const modalOptions = document.getElementById('modalOptions');
+
+            const actionBtn = document.getElementById('modalActionBtn');
+
+            const cancelBtn = document.getElementById('modalCancelBtn');
+
+
+
+            // Reset
+
+            modalTitle.innerText = config.title || "Message";
+
+            modalDesc.innerText = config.desc || "";
+
+            modalInput.style.display = "none";
+
+            modalOptions.style.display = "none";
+
+            actionBtn.style.display = "block";
+
+            actionBtn.innerText = config.actionLabel || "Confirm";
+
+            actionBtn.className = "modal-btn primary";
+
+            if (config.danger) actionBtn.className = "modal-btn danger";
+
+
+
+            if (config.type) {
+
+                modalInput.style.display = "block";
+
+                modalInput.type = config.type;
+
+                modalInput.placeholder = config.placeholder || "";
+
+                modalInput.value = config.value || "";
+
+                ['min', 'max', 'step'].forEach(attr => modalInput.removeAttribute(attr));
+
+                if (config.inputAttributes) {
+
+                    Object.entries(config.inputAttributes).forEach(([key, value]) => {
+
+                        modalInput.setAttribute(key, value);
+
+                    });
+
+                }
+
+                setTimeout(() => modalInput.focus(), 100);
+
+            }
+
+
+
+            if (config.options) {
+
+                modalOptions.style.display = "flex";
+
+                modalOptions.innerHTML = "";
+
+                actionBtn.style.display = "none"; // Hide action btn when choosing options
+
+                config.options.forEach(opt => {
+
+                    const btn = document.createElement('button');
+
+                    btn.className = `option-btn ${opt.class || ''}`;
+
+                    btn.innerHTML = `<i class="fa-solid ${opt.icon}"></i> <span>${opt.label}</span>`;
+
+                    btn.onclick = () => {
+
+                        closeModal();
+
+                        config.callback(opt.value);
+
+                    };
+
+                    modalOptions.appendChild(btn);
+
+                });
+
+            }
+
+
+
+            modalInput.onkeydown = (e) => {
+
+                if (e.key === 'Enter') actionBtn.click();
+
+            };
+
+
+
+            actionBtn.onclick = () => {
+
+                const val = config.type ? modalInput.value : true;
+
+                if (config.type === "text" && !config.allowEmptyText && !val.trim()) return;
+
+                closeModal();
+
+                if (config.callback) config.callback(val);
+
+            };
+
+
+
+            modal.classList.add('active');
+
+        }
+
+
+
+        window.closeModal = function () {
+
+            document.getElementById('customModal').classList.remove('active');
+
+        };
+
+
+
+        window.addSavingBox = function () {
+
+            showModal({
+
+                title: "New Saving Box",
+
+                desc: "Give your new savings goal a name.",
+
+                type: "text",
+
+                placeholder: "e.g. Haval, Travel, etc.",
+
+                actionLabel: "Create Box",
+
+                callback: (name) => {
+
+                    if (name) {
+
+                        const newBox = {
+
+                            id: generateId(),
+
+                            name: name,
+
+                            balance: 0
+
+                        };
+
+                        if (!budgetState.savingsBoxes) budgetState.savingsBoxes = [];
+
+                        budgetState.savingsBoxes.push(newBox);
+
+                        updateUI();
+
+
+
+                        // Show a temporary success toast
+
+                        const toast = document.createElement('div');
+
+                        toast.className = 'glass-card fade-in';
+
+                        toast.style.position = 'fixed';
+
+                        toast.style.bottom = '100px';
+
+                        toast.style.left = '50%';
+
+                        toast.style.transform = 'translateX(-50%)';
+
+                        toast.style.padding = '1rem 2rem';
+
+                        toast.style.background = 'var(--accent-emerald)';
+
+                        toast.style.color = '#000';
+
+                        toast.style.zIndex = '2000';
+
+                        toast.style.fontWeight = 'bold';
+
+                        toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> Box "${name}" Created!`;
+
+                        document.body.appendChild(toast);
+
+                        setTimeout(() => toast.remove(), 2000);
+
+                    }
+
+                }
+
+            });
+
+        };
+
+
+
+        window.addDebt = function () {
+
+            showModal({
+
+                title: "Who do you owe?",
+
+                desc: "Add person's name or business.",
+
+                type: "text",
+
+                placeholder: "e.g. Ali, Bank, Karim",
+
+                actionLabel: "Next",
+
+                callback: (person) => {
+
+                    showModal({
+
+                        title: "Debt Amount",
+
+                        desc: "How much do you owe?",
+
+                        type: "number",
+
+                        placeholder: "e.g. 250000",
+
+                        actionLabel: "Next",
+
+                        callback: (amountValue) => {
+
+                            const amount = parseInt(amountValue);
+
+                            if (isNaN(amount) || amount <= 0) return;
+
+
+
+                            // Ask where money was deducted from
+
+                            let options = [
+
+                                { label: "Personal Budget", icon: "fa-user", class: "teal", value: "personal" },
+
+                                { label: "Car Budget", icon: "fa-car", class: "emerald", value: "car" }
+
+                            ];
+
+
+
+                            // Add active week option
+
+                            const currentWeek = budgetState.weeks[budgetState.currentWeek - 1];
+
+                            if (currentWeek && currentWeek.status === 'active') {
+
+                                options.push({
+
+                                    label: `Week ${budgetState.currentWeek} Budget`,
+
+                                    icon: "fa-calendar-week",
+
+                                    class: "teal",
+
+                                    value: `week_${budgetState.currentWeek}`
+
+                                });
+
+                            }
+
+
+
+                            // Add saving boxes options
+
+                            if (budgetState.savingsBoxes && budgetState.savingsBoxes.length > 0) {
+
+                                budgetState.savingsBoxes.forEach(box => {
+
+                                    options.push({
+
+                                        label: box.name,
+
+                                        icon: "fa-piggy-bank",
+
+                                        class: "emerald",
+
+                                        value: `box_${box.id}`
+
+                                    });
+
+                                });
+
+                            }
+
+
+
+                            showModal({
+
+                                title: "Where did you spend this money?",
+
+                                desc: "Select the source where this debt money came from",
+
+                                options: options,
+
+                                callback: (source) => {
+
+                                    if (!source) return;
+
+
+
+                                    showModal({
+
+                                        title: "Note",
+
+                                        desc: "Optional reminder for this debt.",
+
+                                        type: "text",
+
+                                        placeholder: "e.g. Car repair, borrowed cash",
+
+                                        allowEmptyText: true,
+
+                                        actionLabel: "Save Debt",
+
+                                        callback: (note) => {
+
+                                            budgetState.debts.push({
+
+                                                id: generateId(),
+
+                                                person: person.trim(),
+
+                                                amount,
+
+                                                note: note.trim(),
+
+                                                source: source, // Store where money came from
+
+                                                createdAt: Date.now()
+
+                                            });
+
+
+
+                                            // Deduct money from the source
+
+                                            if (source.startsWith('box_')) {
+
+                                                const boxId = parseInt(source.replace('box_', ''));
+
+                                                const box = budgetState.savingsBoxes.find(b => b.id === boxId);
+
+                                                if (box && box.balance >= amount) {
+
+                                                    box.balance -= amount;
+
+                                                } else {
+
+                                                    alert(`Not enough money in "${box.name}" box! Available: ${box.balance.toLocaleString()} IQD`);
+
+                                                    return;
+
+                                                }
+
+                                            } else if (source.startsWith('week_')) {
+
+                                                const weekIndex = parseInt(source.replace('week_', '')) - 1;
+
+                                                const week = budgetState.weeks[weekIndex];
+
+                                                if (week && week.status === 'active') {
+
+                                                    const totalAvailable = (week.personal || 0) + (week.car || 0);
+
+                                                    if (totalAvailable >= amount) {
+
+                                                        // Ask which category to deduct from
+
+                                                        showModal({
+
+                                                            title: "Deduct from which category?",
+
+                                                            desc: `Available: Personal ${(week.personal || 0).toLocaleString()}, Car ${(week.car || 0).toLocaleString()}`,
+
+                                                            options: [
+
+                                                                { label: "Personal Budget", icon: "fa-user", class: "teal", value: "personal" },
+
+                                                                { label: "Car Budget", icon: "fa-car", class: "emerald", value: "car" }
+
+                                                            ],
+
+                                                            callback: (category) => {
+
+                                                                if (category && week[category] >= amount) {
+
+                                                                    week[category] -= amount;
+
+                                                                    recordTransaction(`debt_${person}`, amount, `Debt to ${person}`, Date.now(), {
+
+                                                                        sourceType: 'weekly',
+
+                                                                        sourceId: category
+
+                                                                    });
+
+                                                                } else {
+
+                                                                    alert(`Not enough money in ${category} budget! Available: ${(week[category] || 0).toLocaleString()} IQD`);
+
+                                                                    return;
+
+                                                                }
+
+                                                            }
+
+                                                        });
+
+                                                        return;
+
+                                                    } else {
+
+                                                        alert(`Not enough money in Week ${weekIndex + 1} budget! Available: ${totalAvailable.toLocaleString()} IQD`);
+
+                                                        return;
+
+                                                    }
+
+                                                }
+
+                                            } else {
+
+                                                // Direct from personal or car budget
+
+                                                const week = budgetState.weeks[budgetState.currentWeek - 1];
+
+                                                if (week && week.status === 'active' && week[source] >= amount) {
+
+                                                    week[source] -= amount;
+
+                                                    recordTransaction(`debt_${person}`, amount, `Debt to ${person}`, Date.now(), {
+
+                                                        sourceType: 'weekly',
+
+                                                        sourceId: source
+
+                                                    });
+
+                                                } else {
+
+                                                    alert(`Not enough money in ${source} budget! Available: ${(week ? week[source] || 0 : 0).toLocaleString()} IQD`);
+
+                                                    return;
+
+                                                }
+
+                                            }
+
+                                            updateUI();
+
+                                        }
+
+                                    });
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        };
+
+
+
+        window.updateBox = function (id, amount) {
+
+            const box = budgetState.savingsBoxes.find(b => b.id === id);
+
+            if (!box) return;
+
+
+
+            if (amount === 'custom') {
+
+                showModal({
+
+                    title: `Update ${box.name}`,
+
+                    desc: "Add or deduct money (use - to deduct).",
+
+                    type: "number",
+
+                    placeholder: "IQD Amount",
+
+                    callback: (val) => {
+
+                        const parsed = parseInt(val);
+
+                        if (!isNaN(parsed)) {
+
+                            const oldBalance = box.balance;
+
+                            box.balance += parsed;
+
+                            if (box.balance < 0) box.balance = 0;
+
+                            
+
+                            // Record transaction only for additions (positive amounts)
+
+                            if (parsed > 0) {
+
+                                recordTransaction(`box_${box.name}`, parsed, `Added to ${box.name}`, Date.now(), {
+
+                                    sourceType: 'box',
+
+                                    sourceId: box.id
+
+                                });
+
+                            }
+
+                            updateUI();
+
+                        }
+
+                    }
+
+                });
+
+            } else {
+
+                const oldBalance = box.balance;
+
+                box.balance += amount;
+
+                if (box.balance < 0) box.balance = 0;
+
+                
+
+                // Record transaction only for additions (positive amounts)
+
+                if (amount > 0) {
+
+                    recordTransaction(`box_${box.name}`, amount, `Added to ${box.name}`, Date.now(), {
+
+                        sourceType: 'box',
+
+                        sourceId: box.id
+
+                    });
+
+                }
+
+                updateUI();
+
+            }
+
+        };
+
+
+
+        window.resetMonth = function () {
+
+            showModal({
+
+                title: "Reset Month?",
+
+                desc: "This will reset all 4 weeks. Your saving boxes and total savings will be preserved.",
+
+                danger: true,
+
+                actionLabel: "Reset Now",
+
+                callback: (confirmed) => {
+
+                    if (!confirmed) return;
+
+                    budgetState.currentWeek = 1;
+
+                    budgetState.weekStartDate = new Date().getTime();
+
+                    budgetState.weeks = [
+
+                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active', days: 7 },
+
+                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+
+                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+
+                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 }
+
+                    ];
+
+                    updateUI();
+
+                }
+
+            });
+
+        };
+
+
+
+        window.editDebt = function (id) {
+
+            const debt = budgetState.debts.find(entry => entry.id === id);
+
+            if (!debt) return;
+
+
+
+            showModal({
+
+                title: "Edit Creditor",
+
+                desc: "Update who you owe.",
+
+                type: "text",
+
+                value: debt.person,
+
+                actionLabel: "Next",
+
+                callback: (person) => {
+
+                    showModal({
+
+                        title: "Edit Amount",
+
+                        desc: "Update the remaining amount.",
+
+                        type: "number",
+
+                        value: debt.amount,
+
+                        actionLabel: "Next",
+
+                        callback: (amountValue) => {
+
+                            const amount = parseInt(amountValue);
+
+                            if (isNaN(amount) || amount <= 0) return;
+
+                            showModal({
+
+                                title: "Edit Note",
+
+                                desc: "Update the note if needed.",
+
+                                type: "text",
+
+                                value: debt.note || '',
+
+                                allowEmptyText: true,
+
+                                actionLabel: "Save Changes",
+
+                                callback: (note) => {
+
+                                    debt.person = person.trim();
+
+                                    debt.amount = amount;
+
+                                    debt.note = note.trim();
+
+                                    updateUI();
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        };
+
+
+
+        window.payDebt = function (id) {
+
+            console.log('payDebt called with id:', id);
+
+            const debt = budgetState.debts.find(entry => entry.id === id);
+
+            console.log('Found debt:', debt);
+
+            if (!debt) return;
+
+
+
+            // First ask for payment amount
+
+            showModal({
+
+                title: `Pay ${debt.person}`,
+
+                desc: `Enter how much you paid back. Remaining: ${debt.amount.toLocaleString()} IQD`,
+
+                type: "number",
+
+                placeholder: "e.g. 5000",
+
+                value: Math.min(5000, debt.amount),
+
+                actionLabel: "Next",
+
+                callback: (paymentValue) => {
+
+                    const payment = parseInt(paymentValue);
+
+                    if (isNaN(payment) || payment <= 0) return;
+
+
+
+                    // Then ask for source of funds
+
+                    let options = [
+
+                        { label: "Personal Budget", icon: "fa-user", class: "teal", value: "personal" },
+
+                        { label: "Car Budget", icon: "fa-car", class: "emerald", value: "car" }
+
+                    ];
+
+
+
+                    // Add active week option
+
+                    const currentWeek = budgetState.weeks[budgetState.currentWeek - 1];
+
+                    if (currentWeek && currentWeek.status === 'active') {
+
+                        options.push({
+
+                            label: `Week ${budgetState.currentWeek} Budget`,
+
+                            icon: "fa-calendar-week",
+
+                            class: "teal",
+
+                            value: `week_${budgetState.currentWeek}`
+
+                        });
+
+                    }
+
+
+
+                    // Add saving boxes options
+
+                    if (budgetState.savingsBoxes && budgetState.savingsBoxes.length > 0) {
+
+                        budgetState.savingsBoxes.forEach(box => {
+
+                            options.push({
+
+                                label: box.name,
+
+                                icon: "fa-piggy-bank",
+
+                                class: "emerald",
+
+                                value: `box_${box.id}`
+
+                            });
+
+                        });
+
+                    }
+
+
+
+                    showModal({
+
+                        title: "Where did the money come from?",
+
+                        desc: "Select the source of funds for this payment",
+
+                        options: options,
+
+                        callback: (source) => {
+
+                            if (!source) return;
+
+
+
+                            // Process the payment based on source
+
+                            let paymentSuccessful = false;
+
+
+
+                            if (source.startsWith('box_')) {
+
+                                // From saving box
+
+                                const boxId = parseInt(source.replace('box_', ''));
+
+                                const box = budgetState.savingsBoxes.find(b => b.id === boxId);
+
+                                console.log('Payment from box:', box.name, 'available:', box.balance, 'payment:', payment);
+
+                                if (box && box.balance >= payment) {
+
+                                    box.balance -= payment;
+
+                                    console.log('Payment deducted from box. New balance:', box.balance);
+
+                                    paymentSuccessful = true;
+
+                                } else {
+
+                                    alert(`Not enough money in "${box.name}" box! Available: ${box.balance.toLocaleString()} IQD`);
+
+                                    return;
+
+                                }
+
+                            } else if (source.startsWith('week_')) {
+
+                                // From weekly budget
+
+                                const weekIndex = parseInt(source.replace('week_', '')) - 1;
+
+                                const week = budgetState.weeks[weekIndex];
+
+                                if (week && week.status === 'active') {
+
+                                    const totalAvailable = (week.personal || 0) + (week.car || 0);
+
+                                    if (totalAvailable >= payment) {
+
+                                        // Ask which category to deduct from
+
+                                        showModal({
+
+                                            title: "Deduct from which category?",
+
+                                            desc: `Available: Personal ${(week.personal || 0).toLocaleString()}, Car ${(week.car || 0).toLocaleString()}`,
+
+                                            options: [
+
+                                                { label: "Personal Budget", icon: "fa-user", class: "teal", value: "personal" },
+
+                                                { label: "Car Budget", icon: "fa-car", class: "emerald", value: "car" }
+
+                                            ],
+
+                                            callback: (category) => {
+
+                                                if (category && week[category] >= payment) {
+
+                                                    week[category] -= payment;
+
+                                                    applyDebtPayment(debt, id, payment, `Week ${weekIndex + 1} ${category}`);
+
+                                                } else {
+
+                                                    alert(`Not enough money in ${category} budget! Available: ${(week[category] || 0).toLocaleString()} IQD`);
+
+                                                }
+
+                                            }
+
+                                        });
+
+                                        return;
+
+                                    } else {
+
+                                        alert(`Not enough money in Week ${weekIndex + 1} budget! Available: ${totalAvailable.toLocaleString()} IQD`);
+
+                                        return;
+
+                                    }
+
+                                }
+
+                            } else {
+
+                                // Direct from personal or car budget
+
+                                const week = budgetState.weeks[budgetState.currentWeek - 1];
+
+                                if (week && week.status === 'active' && week[source] >= payment) {
+
+                                    week[source] -= payment;
+
+                                    paymentSuccessful = true;
+
+                                } else {
+
+                                    alert(`Not enough money in ${source} budget! Available: ${(week ? week[source] || 0 : 0).toLocaleString()} IQD`);
+
+                                    return;
+
+                                }
+
+                            }
+
+
+
+                            if (paymentSuccessful) {
+
+                                applyDebtPayment(debt, id, payment, source);
+
+                            }
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        };
+
+
+
+        function applyDebtPayment(debt, id, payment, source) {
+
+            alert(`applyDebtPayment called for ${debt.person}, amount: ${debt.amount}, payment: ${payment}, source: ${debt.source}`);
+
+            console.log('applyDebtPayment called:', {debt, id, payment, source});
+
+            // Store the original debt amount before modifying it
+
+            const originalDebtAmount = debt.amount;
+
+            console.log('Original debt amount:', originalDebtAmount);
+
+            
+
+            debt.amount = Math.max(0, debt.amount - payment);
+
+            console.log('New debt amount:', debt.amount);
+
+            
+
+            // Record transaction
+
+            recordTransaction(`debt_payment_${debt.person}`, payment, `Payment to ${debt.person}`, Date.now(), {
+
+                sourceType: source.startsWith('box_') ? 'box' : 'weekly',
+
+                sourceId: source.startsWith('box_') ? parseInt(source.replace('box_', '')) : source
+
+            });
+
+
+
+            if (debt.amount === 0) {
+
+                // Debt is fully paid - return full original amount to original source
+
+                console.log('Debt fully paid, returning to source:', debt.source, 'amount:', originalDebtAmount);
+
+                alert(`Debt fully paid! Returning ${originalDebtAmount.toLocaleString()} IQD to source: ${debt.source}`);
+
+                
+
+                if (debt.source) {
+
+                    // Return money to original source where debt was created
+
+                    if (debt.source.startsWith('box_')) {
+
+                        // Return to saving box
+
+                        const boxId = parseInt(debt.source.replace('box_', ''));
+
+                        console.log('Returning to box ID:', boxId);
+
+                        const box = budgetState.savingsBoxes.find(b => b.id === boxId);
+
+                        console.log('Found box:', box);
+
+                        if (box) {
+
+                            // Return the full original debt amount
+
+                            const oldBalance = box.balance;
+
+                            box.balance += originalDebtAmount;
+
+                            console.log(`Box balance updated: ${oldBalance} -> ${box.balance}`);
+
+                            alert(`Money returned to ${box.name}!\nOld balance: ${oldBalance.toLocaleString()} IQD\nNew balance: ${box.balance.toLocaleString()} IQD`);
+
+                            recordTransaction(`box_${box.name}`, originalDebtAmount, `Debt repayment returned to ${box.name}`, Date.now(), {
+
+                                sourceType: 'debt_payment',
+
+                                sourceId: box.id
+
+                            });
+
+                        } else {
+
+                            console.error('Box not found for ID:', boxId);
+
+                            alert(`ERROR: Box not found for ID ${boxId}`);
+
+                        }
+
+                    } else if (debt.source.startsWith('week_')) {
+
+                        // Return to weekly budget
+
+                        const weekIndex = parseInt(debt.source.replace('week_', '')) - 1;
+
+                        const week = budgetState.weeks[weekIndex];
+
+                        if (week) {
+
+                            // Return full original debt amount proportionally between personal and car
+
+                            const personalRatio = (week.maxPersonal || 0) / ((week.maxPersonal || 0) + (week.maxCar || 0)) || 0.5;
+
+                            const carRatio = (week.maxCar || 0) / ((week.maxPersonal || 0) + (week.maxCar || 0)) || 0.5;
+
+                            
+
+                            const personalReturn = Math.round(originalDebtAmount * personalRatio);
+
+                            const carReturn = Math.round(originalDebtAmount * carRatio);
+
+                            
+
+                            week.personal += personalReturn;
+
+                            week.car += carReturn;
+
+                            
+
+                            recordTransaction(`week_${weekIndex + 1}_personal`, personalReturn, `Debt repayment returned to Week ${weekIndex + 1} Personal`, Date.now(), {
+
+                                sourceType: 'debt_payment',
+
+                                sourceId: `week_${weekIndex + 1}_personal`
+
+                            });
+
+                            recordTransaction(`week_${weekIndex + 1}_car`, carReturn, `Debt repayment returned to Week ${weekIndex + 1} Car`, Date.now(), {
+
+                                sourceType: 'debt_payment',
+
+                                sourceId: `week_${weekIndex + 1}_car`
+
+                            });
+
+                        }
+
+                    } else {
+
+                        // Return to direct budget category
+
+                        const week = budgetState.weeks[budgetState.currentWeek - 1];
+
+                        if (week) {
+
+                            week[debt.source] += originalDebtAmount;
+
+                            recordTransaction(`week_${budgetState.currentWeek}_${debt.source}`, originalDebtAmount, `Debt repayment returned to Week ${budgetState.currentWeek} ${debt.source}`, Date.now(), {
+
+                                sourceType: 'debt_payment',
+
+                                sourceId: `week_${budgetState.currentWeek}_${debt.source}`
+
+                            });
+
+                        }
+
+                    }
+
+                }
+
+                
+
+                budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
+
+            }
+
+            updateUI();
+
+        }
+
+
+
+        window.deleteDebt = function (id) {
+
+            alert('Delete function called! ID: ' + id + ' (type: ' + typeof id + ')');
+
+            console.log('deleteDebt called with id:', id, 'type:', typeof id);
+
+            console.log('current debts:', budgetState.debts);
+
+            
+
+            // Convert id to number if it's a string
+
+            const debtId = parseInt(id);
+
+            console.log('parsed debtId:', debtId);
+
+            
+
+            if (!confirm("Delete this debt entry?")) {
+
+                console.log('User cancelled deletion');
+
+                return;
+
+            }
+
+            
+
+            const debtToDelete = budgetState.debts.find(entry => entry.id === debtId || entry.id === id);
+
+            console.log('debt to delete:', debtToDelete);
+
+            
+
+            if (!debtToDelete) {
+
+                alert('Debt not found! ID: ' + id);
+
+                console.log('Debt not found for ID:', id);
+
+                return;
+
+            }
+
+            
+
+            budgetState.debts = budgetState.debts.filter(entry => entry.id !== debtId && entry.id !== id);
+
+            console.log('debts after deletion:', budgetState.debts);
+
+            
+
+            updateUI();
+
+            console.log('updateUI called');
+
+            alert('Debt deleted successfully!');
+
+        };
+
+
+
+        window.setWeeklyBudget = function (index) {
+
+            const week = budgetState.weeks[index];
+
+            if (week.status === 'completed') return;
+
+
+
+            showModal({
+
+                title: `Week ${index + 1} Personal`,
+
+                desc: "How much do you want to spend on yourself?",
+
+                type: "number",
+
+                value: week.maxPersonal,
+
+                callback: (pVal) => {
+
+                    const p = parseInt(pVal) || 0;
+
+                    showModal({
+
+                        title: `Week ${index + 1} Car`,
+
+                        desc: "How much for car maintenance?",
+
+                        type: "number",
+
+                        value: week.maxCar,
+
+                        callback: (cVal) => {
+
+                            const c = parseInt(cVal) || 0;
+
+                            showModal({
+
+                                title: `Week ${index + 1} Duration`,
+
+                                desc: "How many days should this week last?",
+
+                                type: "number",
+
+                                value: week.days || 7,
+
+                                inputAttributes: { min: 1, max: 30 },
+
+                                callback: (dVal) => {
+
+                                    const d = parseInt(dVal) || 7;
+
+                                    week.maxPersonal = p;
+
+                                    week.personal = p;
+
+                                    week.maxCar = c;
+
+                                    week.car = c;
+
+                                    week.days = Math.max(1, Math.min(30, d));
+
+                                    updateUI();
+
+                                }
+
+                            });
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        };
+
+
+
+        window.editTransaction = function (id) {
+
+            const transaction = budgetState.transactions.find(tx => tx.id === id);
+
+            if (!transaction) return;
+
+
+
+            showModal({
+
+                title: "Edit Description",
+
+                desc: "Update the note for this transaction.",
+
+                type: "text",
+
+                value: transaction.description || '',
+
+                placeholder: "e.g. Coffee, Fuel, etc.",
+
+                allowEmptyText: true,
+
+                actionLabel: "Next",
+
+                callback: (description) => {
+
+                    showModal({
+
+                        title: "Edit Transaction Date",
+
+                        desc: "Choose when this transaction actually happened.",
+
+                        type: "datetime-local",
+
+                        value: toLocalDateTimeValue(transaction.effectiveAt),
+
+                        actionLabel: "Save Changes",
+
+                        callback: (dateValue) => {
+
+                            transaction.description = description.trim();
+
+                            transaction.effectiveAt = parseTransactionDateInput(dateValue);
+
+                            transaction.date = formatTransactionDate(transaction.effectiveAt);
+
+                            updateUI();
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        };
+
+
+
+        window.spendMoney = function (category, amount, description = "", effectiveDateValue = null) {
+
+            const effectiveAt = parseTransactionDateInput(effectiveDateValue);
+
+
+
+            // Handle Spending from a Saving Box
+
+            if (category.startsWith('box_')) {
+
+                const boxId = parseInt(category.replace('box_', ''));
+
+                const box = budgetState.savingsBoxes.find(b => b.id === boxId);
+
+
+
+                if (!box) return;
+
+                if (box.balance < amount) {
+
+                    alert(`Not enough money in "${box.name}" box!`);
+
+                    return;
+
+                }
+
+
 
                 box.balance -= amount;
 
+
+
                 recordTransaction(box.name, amount, description, effectiveAt, {
+
                     sourceType: 'box',
+
                     sourceId: box.id
+
                 });
 
+
+
                 updateUI();
+
                 return;
+
             }
+
+
 
             // Handle Weekly Budget Spending
+
             const week = budgetState.weeks[budgetState.currentWeek - 1];
+
             if (week.status !== 'active') return;
+
+
 
             if (week[category] >= amount) {
+
                 week[category] -= amount;
 
+
+
                 // Record transaction
+
                 recordTransaction(category, amount, description, effectiveAt, {
+
                     sourceType: 'weekly',
+
                     sourceId: category
+
                 });
 
+
+
                 updateUI();
+
             } else {
+
                 alert('Not enough budget left in ' + category);
+
             }
+
         };
 
+
+
         window.completeWeek = function () {
+
             const index = budgetState.currentWeek - 1;
+
             const week = budgetState.weeks[index];
+
+
 
             if (week.status !== 'active') return;
 
+
+
             // Calculate savings
+
             const remaining = week.personal + week.car;
+
             week.saved = remaining;
+
             week.status = 'completed';
+
             budgetState.totalSavings += remaining;
 
+
+
             // Unlock next week
-            if (budgetState.currentWeek < 5) {
+
+            if (budgetState.currentWeek < 4) {
+
                 budgetState.currentWeek++;
+
                 budgetState.weeks[budgetState.currentWeek - 1].status = 'active';
+
             }
+
+
 
             updateUI();
 
+
+
             // Add a notification effect
+
             const btn = event.currentTarget;
+
             btn.innerHTML = '<i class="fa-solid fa-piggy-bank"></i> Saved to Account!';
+
             setTimeout(() => {
+
                 btn.innerHTML = '<i class="fa-solid fa-check-circle"></i> End Week & Save Remaining';
+
             }, 2000);
+
         };
+
+
 
         function updateLiveDateTime() {
+
             const now = new Date();
+
             const options = { weekday: 'short', month: 'short', day: 'numeric' };
+
             const dateStr = now.toLocaleDateString('en-US', options);
+
             const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
+
+
             const display = document.getElementById('headerDateTime');
+
             if (display) display.innerText = `${dateStr} • ${timeStr}`;
+
         }
+
+
 
         // Theme Toggle Logic
+
         window.toggleTheme = function () {
+
             const body = document.body;
+
             body.classList.toggle('light-mode');
+
             const isLight = body.classList.contains('light-mode');
+
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
+
             updateThemeUI();
+
         };
 
+
+
         function updateThemeUI() {
+
             const isLight = document.body.classList.contains('light-mode');
+
             const btn = document.getElementById('themeToggleBtn');
+
             if (btn) {
+
                 btn.innerHTML = isLight ? '<i class="fa-solid fa-moon"></i> Switch to Dark Mode' : '<i class="fa-solid fa-sun"></i> Switch to Light Mode';
+
             }
+
         }
+
+
 
         // Initialize Theme
+
         if (localStorage.getItem('theme') === 'light') {
+
             document.body.classList.add('light-mode');
+
         }
+
         updateThemeUI();
 
+
+
         updateLiveDateTime();
+
         setInterval(updateLiveDateTime, 30000);
+
         updateUI();
+
     </script>
+
 </body>
+
+
 
 </html>
