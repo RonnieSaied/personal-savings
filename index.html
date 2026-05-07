@@ -5408,9 +5408,9 @@ migrateData();
 
             showModal({
 
-                title: `Pay ${debt.person}`,
+                title: `Receive Payment from ${debt.person}`,
 
-                desc: `Enter how much you paid back. Remaining: ${debt.amount.toLocaleString()} IQD`,
+                desc: `Enter how much you received. Remaining: ${debt.amount.toLocaleString()} IQD`,
 
                 type: "number",
 
@@ -5428,47 +5428,15 @@ migrateData();
 
 
 
-                    // Then ask for source of funds
+                    // Then ask which savings box to add the money TO
 
-                    let options = [
-
-                        { label: "Personal Budget", icon: "fa-user", class: "teal", value: "personal" },
-
-                        { label: "Car Budget", icon: "fa-car", class: "emerald", value: "car" }
-
-                    ];
-
-
-
-                    // Add active week option
-
-                    const currentWeek = budgetState.weeks[budgetState.currentWeek - 1];
-
-                    if (currentWeek && currentWeek.status === 'active') {
-
-                        options.push({
-
-                            label: `Week ${budgetState.currentWeek} Budget`,
-
-                            icon: "fa-calendar-week",
-
-                            class: "teal",
-
-                            value: `week_${budgetState.currentWeek}`
-
-                        });
-
-                    }
-
-
-
-                    // Add saving boxes options
+                    const savingsOptions = [];
 
                     if (budgetState.savingsBoxes && budgetState.savingsBoxes.length > 0) {
 
                         budgetState.savingsBoxes.forEach(box => {
 
-                            options.push({
+                            savingsOptions.push({
 
                                 label: box.name,
 
@@ -5486,139 +5454,97 @@ migrateData();
 
 
 
+                    if (savingsOptions.length === 0) {
+
+                        alert('No savings boxes available! Please create a savings box first.');
+
+                        return;
+
+                    }
+
+
+
                     showModal({
 
-                        title: "Where did the money come from?",
+                        title: "Add money to which savings box?",
 
-                        desc: "Select the source of funds for this payment",
+                        desc: `Select where to add the ${payment.toLocaleString()} IQD payment`,
 
-                        options: options,
+                        options: savingsOptions,
 
-                        callback: (source) => {
+                        callback: (destination) => {
 
-                            if (!source) return;
-
-
-
-                            // Process the payment based on source
-
-                            let paymentSuccessful = false;
+                            if (!destination) return;
 
 
 
-                            if (source.startsWith('box_')) {
+                            // Add money to the selected savings box
 
-                                // From saving box
+                            if (destination.startsWith('box_')) {
 
-                                const boxId = parseInt(source.replace('box_', ''));
+                                const boxId = parseInt(destination.replace('box_', ''));
 
                                 const box = budgetState.savingsBoxes.find(b => b.id === boxId);
 
-                                console.log('Payment from box:', box.name, 'available:', box.balance, 'payment:', payment);
+                                if (box) {
 
-                                if (box && box.balance >= payment) {
+                                    const oldBalance = box.balance;
 
-                                    box.balance -= payment;
+                                    box.balance += payment;
 
-                                    console.log('Payment deducted from box. New balance:', box.balance);
+                                    console.log(`Payment added to ${box.name}: ${oldBalance} -> ${box.balance}`);
 
-                                    paymentSuccessful = true;
+                                    
 
-                                } else {
+                                    // Record the transaction
 
-                                    alert(`Not enough money in "${box.name}" box! Available: ${box.balance.toLocaleString()} IQD`);
+                                    recordTransaction(`box_${box.name}`, payment, `Payment received from ${debt.person}`, Date.now(), {
 
-                                    return;
+                                        sourceType: 'debt_payment',
 
-                                }
+                                        sourceId: box.id
 
-                            } else if (source.startsWith('week_')) {
+                                    });
 
-                                // From weekly budget
+                                    
 
-                                const weekIndex = parseInt(source.replace('week_', '')) - 1;
+                                    // Reduce the debt amount
 
-                                const week = budgetState.weeks[weekIndex];
+                                    debt.amount = Math.max(0, debt.amount - payment);
 
-                                if (week && week.status === 'active') {
+                                    
 
-                                    const totalAvailable = (week.personal || 0) + (week.car || 0);
+                                    // Record debt payment transaction
 
-                                    if (totalAvailable >= payment) {
+                                    recordTransaction(`debt_payment_${debt.person}`, payment, `Payment received from ${debt.person}`, Date.now(), {
 
-                                        // Ask which category to deduct from
+                                        sourceType: 'debt',
 
-                                        showModal({
+                                        sourceId: debt.id
 
-                                            title: "Deduct from which category?",
+                                    });
 
-                                            desc: `Available: Personal ${(week.personal || 0).toLocaleString()}, Car ${(week.car || 0).toLocaleString()}`,
+                                    
 
-                                            options: [
+                                    // If debt is fully paid, remove it
 
-                                                { label: "Personal Budget", icon: "fa-user", class: "teal", value: "personal" },
+                                    if (debt.amount === 0) {
 
-                                                { label: "Car Budget", icon: "fa-car", class: "emerald", value: "car" }
+                                        budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
 
-                                            ],
-
-                                            callback: (category) => {
-
-                                                if (category && week[category] >= payment) {
-
-                                                    week[category] -= payment;
-
-                                                    applyDebtPayment(debt, id, payment, `Week ${weekIndex + 1} ${category}`);
-
-                                                } else {
-
-                                                    alert(`Not enough money in ${category} budget! Available: ${(week[category] || 0).toLocaleString()} IQD`);
-
-                                                }
-
-                                            }
-
-                                        });
-
-                                        return;
-
-                                    } else {
-
-                                        alert(`Not enough money in Week ${weekIndex + 1} budget! Available: ${totalAvailable.toLocaleString()} IQD`);
-
-                                        return;
+                                        alert(`Debt fully paid! ${debt.person} has paid the full amount.`);
 
                                     }
 
-                                }
+                                    
 
-                            } else {
-
-                                // Direct from personal or car budget
-
-                                const week = budgetState.weeks[budgetState.currentWeek - 1];
-
-                                if (week && week.status === 'active' && week[source] >= payment) {
-
-                                    week[source] -= payment;
-
-                                    paymentSuccessful = true;
+                                    updateUI();
 
                                 } else {
 
-                                    alert(`Not enough money in ${source} budget! Available: ${(week ? week[source] || 0 : 0).toLocaleString()} IQD`);
-
-                                    return;
+                                    alert('Savings box not found!');
 
                                 }
-
-                            }
-
-
-
-                            if (paymentSuccessful) {
-
-                                applyDebtPayment(debt, id, payment, source);
 
                             }
 
@@ -5634,174 +5560,7 @@ migrateData();
 
 
 
-        function applyDebtPayment(debt, id, payment, source) {
-
-            alert(`applyDebtPayment called for ${debt.person}, amount: ${debt.amount}, payment: ${payment}, source: ${debt.source}`);
-
-            console.log('applyDebtPayment called:', {debt, id, payment, source});
-
-            // Store the original debt amount before modifying it
-
-            const originalDebtAmount = debt.amount;
-
-            console.log('Original debt amount:', originalDebtAmount);
-
-            
-
-            debt.amount = Math.max(0, debt.amount - payment);
-
-            console.log('New debt amount:', debt.amount);
-
-            
-
-            // Record transaction
-
-            recordTransaction(`debt_payment_${debt.person}`, payment, `Payment to ${debt.person}`, Date.now(), {
-
-                sourceType: source.startsWith('box_') ? 'box' : 'weekly',
-
-                sourceId: source.startsWith('box_') ? parseInt(source.replace('box_', '')) : source
-
-            });
-
-
-
-            if (debt.amount === 0) {
-
-                // Debt is fully paid - return full original amount to original source
-
-                console.log('Debt fully paid, returning to source:', debt.source, 'amount:', originalDebtAmount);
-
-                alert(`Debt fully paid! Returning ${originalDebtAmount.toLocaleString()} IQD to source: ${debt.source}`);
-
-                
-
-                if (debt.source) {
-
-                    // Return money to original source where debt was created
-
-                    if (debt.source.startsWith('box_')) {
-
-                        // Return to saving box
-
-                        const boxId = parseInt(debt.source.replace('box_', ''));
-
-                        console.log('Returning to box ID:', boxId);
-
-                        const box = budgetState.savingsBoxes.find(b => b.id === boxId);
-
-                        console.log('Found box:', box);
-
-                        if (box) {
-
-                            // Return the full original debt amount
-
-                            const oldBalance = box.balance;
-
-                            box.balance += originalDebtAmount;
-
-                            console.log(`Box balance updated: ${oldBalance} -> ${box.balance}`);
-
-                            alert(`Money returned to ${box.name}!\nOld balance: ${oldBalance.toLocaleString()} IQD\nNew balance: ${box.balance.toLocaleString()} IQD`);
-
-                            recordTransaction(`box_${box.name}`, originalDebtAmount, `Debt repayment returned to ${box.name}`, Date.now(), {
-
-                                sourceType: 'debt_payment',
-
-                                sourceId: box.id
-
-                            });
-
-                        } else {
-
-                            console.error('Box not found for ID:', boxId);
-
-                            alert(`ERROR: Box not found for ID ${boxId}`);
-
-                        }
-
-                    } else if (debt.source.startsWith('week_')) {
-
-                        // Return to weekly budget
-
-                        const weekIndex = parseInt(debt.source.replace('week_', '')) - 1;
-
-                        const week = budgetState.weeks[weekIndex];
-
-                        if (week) {
-
-                            // Return full original debt amount proportionally between personal and car
-
-                            const personalRatio = (week.maxPersonal || 0) / ((week.maxPersonal || 0) + (week.maxCar || 0)) || 0.5;
-
-                            const carRatio = (week.maxCar || 0) / ((week.maxPersonal || 0) + (week.maxCar || 0)) || 0.5;
-
-                            
-
-                            const personalReturn = Math.round(originalDebtAmount * personalRatio);
-
-                            const carReturn = Math.round(originalDebtAmount * carRatio);
-
-                            
-
-                            week.personal += personalReturn;
-
-                            week.car += carReturn;
-
-                            
-
-                            recordTransaction(`week_${weekIndex + 1}_personal`, personalReturn, `Debt repayment returned to Week ${weekIndex + 1} Personal`, Date.now(), {
-
-                                sourceType: 'debt_payment',
-
-                                sourceId: `week_${weekIndex + 1}_personal`
-
-                            });
-
-                            recordTransaction(`week_${weekIndex + 1}_car`, carReturn, `Debt repayment returned to Week ${weekIndex + 1} Car`, Date.now(), {
-
-                                sourceType: 'debt_payment',
-
-                                sourceId: `week_${weekIndex + 1}_car`
-
-                            });
-
-                        }
-
-                    } else {
-
-                        // Return to direct budget category
-
-                        const week = budgetState.weeks[budgetState.currentWeek - 1];
-
-                        if (week) {
-
-                            week[debt.source] += originalDebtAmount;
-
-                            recordTransaction(`week_${budgetState.currentWeek}_${debt.source}`, originalDebtAmount, `Debt repayment returned to Week ${budgetState.currentWeek} ${debt.source}`, Date.now(), {
-
-                                sourceType: 'debt_payment',
-
-                                sourceId: `week_${budgetState.currentWeek}_${debt.source}`
-
-                            });
-
-                        }
-
-                    }
-
-                }
-
-                
-
-                budgetState.debts = budgetState.debts.filter(entry => entry.id !== id);
-
-            }
-
-            updateUI();
-
-        }
-
+        
 
 
         window.deleteDebt = function (id) {
