@@ -12,6 +12,16 @@
 
     <title>Personal Finance Management Dashboard</title>
 
+    <script>
+        try {
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.classList.add('light-mode');
+            }
+        } catch (error) {
+            console.warn('Theme preference could not be loaded.', error);
+        }
+    </script>
+
     <!-- Fonts -->
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,27 +38,40 @@
 
         :root {
 
-            /* Color Palette */
+            /* Comfort dark theme: semantic tokens */
+            color-scheme: dark;
+            --color-bg-app: #12141C;
+            --color-surface: #1E2230;
+            --color-surface-subtle: #252A3A;
+            --color-text-primary: #F3F4F6;
+            --color-text-secondary: #9CA3AF;
+            --color-border: #2D3244;
+            --color-brand: #2DD4BF;
+            --color-brand-text: #2DD4BF;
+            --color-on-brand: #12141C;
+            --color-danger: #F87171;
+            --color-on-danger: #12141C;
+            --color-focus: #5EEAD4;
+            --color-overlay: rgba(9, 11, 16, 0.78);
+            --color-hero-surface: #1E2230;
+            --priority-primary: #34D399;
+            --priority-primary-bg: rgba(52, 211, 153, 0.1);
+            --priority-secondary: #60A5FA;
+            --priority-secondary-bg: rgba(96, 165, 250, 0.1);
+            --priority-nonessential: #FB7185;
+            --priority-nonessential-bg: rgba(251, 113, 133, 0.1);
 
-            --bg-deep-navy: #050b14;
-
-            --bg-slate: #0f172a;
-
-            --card-glass: rgba(15, 23, 42, 0.45);
-
-            --card-border: rgba(255, 255, 255, 0.08);
-
-            --text-main: #f8fafc;
-
-            --text-muted: #94a3b8;
-
-            --accent-teal: #00f2fe;
-
-            --accent-teal-glow: rgba(0, 242, 254, 0.3);
-
-            --accent-emerald: #10b981;
-
-            --accent-rose: #f43f5e;
+            /* Backwards-compatible aliases */
+            --bg-deep-navy: var(--color-bg-app);
+            --bg-slate: var(--color-surface);
+            --card-glass: var(--color-surface);
+            --card-border: var(--color-border);
+            --text-main: var(--color-text-primary);
+            --text-muted: var(--color-text-secondary);
+            --accent-teal: var(--color-brand);
+            --accent-teal-glow: rgba(45, 212, 191, 0.2);
+            --accent-emerald: var(--color-brand);
+            --accent-rose: var(--color-danger);
 
             --font-family: 'Inter', sans-serif;
 
@@ -60,28 +83,62 @@
 
 
 
+        html.light-mode body,
         body.light-mode {
+            color-scheme: light;
+            --color-bg-app: #F4F6F8;
+            --color-surface: #FFFFFF;
+            --color-surface-subtle: #F8FAFC;
+            --color-text-primary: #1E293B;
+            --color-text-secondary: #5F6D7E;
+            --color-border: #E2E8F0;
+            --color-brand: #0D9488;
+            --color-brand-text: #0F766E;
+            --color-on-brand: #101F1E;
+            --color-danger: #DC2626;
+            --color-on-danger: #F9FAFB;
+            --color-focus: #0284C7;
+            --color-overlay: rgba(26, 29, 36, 0.62);
+            --color-hero-surface: #FFFFFF;
+            --priority-primary: #047857;
+            --priority-primary-bg: #ECFDF5;
+            --priority-secondary: #1D4ED8;
+            --priority-secondary-bg: #EFF6FF;
+            --priority-nonessential: #BE123C;
+            --priority-nonessential-bg: #FFF1F2;
+            --accent-teal-glow: rgba(13, 148, 136, 0.16);
+            background-color: var(--color-bg-app);
+            color: var(--color-text-primary);
 
-            --bg-deep-navy: #f4f1ea;
+        }
 
-            --bg-slate: #fdfcf8;
+        html.light-mode,
+        html.light-mode body,
+        body.light-mode {
+            background-color: #F4F6F8 !important;
+        }
 
-            --card-glass: rgba(255, 255, 255, 0.95);
+        html.light-mode body,
+        body.light-mode {
+            background-image:
+                radial-gradient(circle at 8% 0%, rgba(2, 132, 199, 0.07), transparent 30rem),
+                radial-gradient(circle at 100% 100%, rgba(13, 148, 136, 0.06), transparent 28rem),
+                linear-gradient(180deg, #F8FAFC 0%, #F4F6F8 48%, #EEF2F6 100%) !important;
+            background-attachment: fixed;
+        }
 
-            --card-border: rgba(0, 0, 0, 0.1);
+        html.light-mode body .app-container,
+        body.light-mode .app-container {
+            background-color: #F4F6F8;
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(244, 246, 248, 0.95));
+            border-color: #DCE3EB;
+        }
 
-            --text-main: #000000;
-
-            /* Pure Black for maximum readability */
-
-            --text-muted: #111111;
-
-            /* Deep charcoal for secondary text */
-
-            background-color: #fdfcf8;
-
-            color: #000000;
-
+        html.light-mode body .main-content,
+        html.light-mode body .tab-content,
+        body.light-mode .main-content,
+        body.light-mode .tab-content {
+            background-color: transparent;
         }
 
 
@@ -106,9 +163,13 @@
 
         body {
 
-            background-color: #000;
+            background-color: var(--color-bg-app);
 
-            color: var(--text-main);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            letter-spacing: 0.015em;
 
             display: flex;
 
@@ -120,10 +181,15 @@
 
             background-image:
 
-                radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.1), transparent 50%),
+                radial-gradient(circle at 50% 0%, var(--accent-teal-glow), transparent 50%),
 
-                radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.05), transparent 40%);
+                radial-gradient(circle at 100% 100%, rgba(45, 212, 191, 0.04), transparent 40%);
+            transition: background-color 0.2s ease, color 0.2s ease;
 
+        }
+
+        body.light-mode {
+            letter-spacing: 0;
         }
 
 
@@ -150,9 +216,9 @@
 
             position: relative;
 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: none;
 
-            border: 8px solid #1e293b;
+            border: 8px solid var(--color-border);
 
             /* Realistic phone bezel */
 
@@ -176,7 +242,8 @@
 
             font-weight: 600;
 
-            letter-spacing: -0.02em;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
 
         }
 
@@ -340,7 +407,7 @@
 
             font-size: 1.8rem;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             margin-bottom: 0.2rem;
 
@@ -370,6 +437,138 @@
 
             box-shadow: 0 0 15px var(--accent-teal-glow);
 
+        }
+
+        .home-hero-header {
+            position: relative;
+            isolation: isolate;
+            min-height: 128px;
+            margin-top: 0.25rem;
+            padding: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 88% 15%, color-mix(in srgb, var(--color-brand) 20%, transparent), transparent 34%),
+                linear-gradient(135deg, color-mix(in srgb, var(--color-surface-subtle) 94%, transparent), var(--color-surface));
+            box-shadow: 0 14px 35px rgba(4, 8, 18, 0.2);
+        }
+
+        .home-hero-header::after {
+            position: absolute;
+            right: -32px;
+            bottom: -55px;
+            z-index: -1;
+            width: 130px;
+            height: 130px;
+            border: 1px solid color-mix(in srgb, var(--color-brand) 24%, transparent);
+            border-radius: 50%;
+            content: '';
+        }
+
+        .home-brand-block {
+            display: flex;
+            min-width: 0;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .home-brand-mark {
+            display: grid;
+            width: 46px;
+            height: 46px;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid color-mix(in srgb, var(--color-brand) 38%, var(--color-border));
+            border-radius: 15px;
+            background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface));
+            color: var(--color-brand-text);
+            box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+        }
+
+        .home-eyebrow {
+            display: block;
+            margin-bottom: 0.15rem;
+            color: var(--color-brand-text);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.13em;
+        }
+
+        .home-hero-header .greeting h1 {
+            margin: 0;
+            font-size: clamp(1.4rem, 5.8vw, 1.8rem);
+            line-height: 1.15;
+        }
+
+        .brand-dot {
+            color: var(--color-brand-text);
+        }
+
+        .home-date-row {
+            display: flex;
+            margin-top: 0.45rem;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--color-text-secondary);
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+        .home-time-pill {
+            display: inline-flex;
+            min-height: 28px;
+            padding: 0.25rem 0.5rem;
+            align-items: center;
+            gap: 0.3rem;
+            border: 1px solid var(--color-border);
+            border-radius: 999px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .profile-btn.home-profile {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            flex: 0 0 auto;
+            border: 1px solid color-mix(in srgb, var(--color-brand) 42%, var(--color-border));
+            border-radius: 17px;
+            background: var(--color-surface) !important;
+            color: var(--color-text-primary) !important;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            box-shadow: 0 8px 20px rgba(4, 8, 18, 0.2) !important;
+        }
+
+        .home-profile-status {
+            position: absolute;
+            right: -2px;
+            bottom: -2px;
+            width: 14px;
+            height: 14px;
+            border: 3px solid var(--color-surface);
+            border-radius: 50%;
+            background: var(--priority-primary);
+        }
+
+        @media (max-width: 360px) {
+            .home-brand-mark {
+                display: none;
+            }
+
+            .home-hero-header {
+                min-height: 116px;
+                padding: 0.85rem;
+            }
+
+            .home-date-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
         }
 
 
@@ -478,7 +677,7 @@
 
             font-weight: 800;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             letter-spacing: -1px;
 
@@ -488,6 +687,141 @@
 
             display: block;
 
+        }
+
+        /* Phase 1.1 dashboard metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .metric-card {
+            min-width: 0;
+            padding: 1rem;
+            border-radius: 20px;
+            overflow: visible;
+        }
+
+        .metric-card::before {
+            border-radius: 20px;
+        }
+
+        .metric-label-row {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            min-width: 0;
+            margin-bottom: 0.55rem;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            color: var(--text-main);
+            font-size: clamp(0.95rem, 5vw, 1.25rem);
+            font-weight: 800;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .metric-value.savings {
+            color: var(--accent-emerald);
+        }
+
+        .metric-value.debt {
+            color: var(--accent-rose);
+        }
+
+        .metric-value.net-worth {
+            color: var(--accent-teal);
+        }
+
+        .metric-info {
+            position: relative;
+            display: inline-flex;
+            flex: 0 0 auto;
+        }
+
+        .metric-info-button {
+            width: 2.75rem;
+            height: 2.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.12);
+            color: var(--text-muted);
+            cursor: help;
+            font-size: 0.72rem;
+        }
+
+        .metric-info-button:focus-visible {
+            outline: 2px solid var(--accent-teal);
+            outline-offset: 2px;
+        }
+
+        .metric-tooltip {
+            position: absolute;
+            z-index: 20;
+            left: 0;
+            top: calc(100% + 0.45rem);
+            width: min(240px, calc(100vw - 4rem));
+            padding: 0.7rem;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            background: var(--bg-slate);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            color: var(--text-main);
+            font-size: 0.72rem;
+            font-weight: 400;
+            line-height: 1.45;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-4px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .metric-info:hover .metric-tooltip,
+        .metric-info:focus-within .metric-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .metric-card {
+                position: relative;
+            }
+
+            .metric-info {
+                position: static;
+            }
+
+            .metric-tooltip {
+                top: calc(100% - 0.25rem);
+                right: 1rem;
+                left: 1rem;
+                width: auto;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .metrics-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .metric-tooltip {
+                width: auto;
+            }
         }
 
 
@@ -622,7 +956,7 @@
 
             font-weight: 600;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
         }
 
@@ -682,7 +1016,9 @@
 
             transition: var(--transition);
 
-            width: 20%;
+            width: auto;
+            min-width: 0;
+            flex: 1;
 
         }
 
@@ -818,7 +1154,7 @@
 
             font-size: 1.1rem;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
         }
 
@@ -944,7 +1280,7 @@
 
             display: grid;
 
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr);
 
             gap: 0.5rem;
 
@@ -954,28 +1290,129 @@
 
         .week-card {
 
-            aspect-ratio: 1 / 1;
+            min-height: 0;
 
             display: flex;
 
             flex-direction: column;
 
-            justify-content: space-between;
+            justify-content: flex-start;
 
-            padding: 0.8rem;
+            gap: 1rem;
 
             position: relative;
 
+            overflow: hidden;
+
+            padding: 1.05rem;
+
+            border-radius: 22px;
+
+        }
+
+        .week-focus-header {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr) 44px;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.8rem;
+            padding: 0.45rem;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+        }
+
+        .week-focus-title {
+            min-width: 0;
+            text-align: center;
+        }
+
+        .week-date-range {
+            color: var(--text-main);
+            font-size: clamp(0.82rem, 3.4vw, 1rem);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .week-countdown {
+            min-height: 1.25rem;
+            margin-top: 0.2rem;
+            color: var(--accent-teal);
+            font-size: 0.74rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .week-nav-btn {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 14px;
+            background: var(--color-surface-subtle);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .week-nav-btn:hover:not(:disabled),
+        .week-nav-btn:focus-visible {
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+            outline: 3px solid var(--color-focus);
+            outline-offset: 3px;
+        }
+
+        .week-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .week-view-label {
+            margin-bottom: 0.35rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .week-card.preview {
+            border-style: dashed;
+        }
+
+        .week-dev-action {
+            display: none;
+            min-height: 44px;
+            margin-top: 0.75rem;
+            border: 1px dashed var(--card-border);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 100%;
         }
 
 
 
         .week-card.active {
 
-            border-color: var(--accent-teal);
+            border-color: var(--color-border);
 
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+            box-shadow: 0 12px 30px rgba(4, 8, 18, 0.18);
 
+        }
+
+        .week-card.active::before {
+            position: absolute;
+            top: 0;
+            left: 1.05rem;
+            width: 58px;
+            height: 3px;
+            border-radius: 0 0 999px 999px;
+            background: var(--color-brand);
+            content: '';
         }
 
 
@@ -992,9 +1429,9 @@
 
         .week-card.locked {
 
-            opacity: 0.5;
+            opacity: 0.72;
 
-            filter: grayscale(0.5);
+            filter: grayscale(0.2);
 
         }
 
@@ -1002,7 +1439,7 @@
 
         .week-title {
 
-            font-size: 0.77rem;
+            font-size: 0.78rem;
 
             font-weight: 700;
 
@@ -1018,13 +1455,13 @@
 
         .week-status {
 
-            font-size: 0.66rem;
+            font-size: 0.72rem;
 
-            padding: 0.2rem 0.5rem;
+            padding: 0.3rem 0.55rem;
 
-            border-radius: 6px;
+            border-radius: 999px;
 
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--color-surface-subtle);
 
             width: fit-content;
 
@@ -1034,7 +1471,15 @@
 
         .allowance-item {
 
-            margin-top: 0.5rem;
+            margin-top: 0;
+
+            padding: 0.75rem;
+
+            border: 1px solid var(--color-border);
+
+            border-radius: 14px;
+
+            background: color-mix(in srgb, var(--color-surface-subtle) 76%, transparent);
 
         }
 
@@ -1042,7 +1487,7 @@
 
         .allowance-label {
 
-            font-size: 0.66rem;
+            font-size: 0.78rem;
 
             color: var(--text-muted);
 
@@ -1050,7 +1495,7 @@
 
             justify-content: space-between;
 
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.45rem;
 
         }
 
@@ -1058,11 +1503,11 @@
 
         .allowance-bar {
 
-            height: 4px;
+            height: 6px;
 
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--color-border);
 
-            border-radius: 2px;
+            border-radius: 999px;
 
             overflow: hidden;
 
@@ -1078,19 +1523,21 @@
 
             transition: width 0.3s ease;
 
+            border-radius: inherit;
+
         }
 
 
 
         .total-left {
 
-            font-size: 1rem;
+            font-size: 1.55rem;
 
             font-weight: 700;
 
-            margin-top: 0.5rem;
+            margin-top: 0.15rem;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
         }
 
@@ -1098,7 +1545,7 @@
 
         .total-left span {
 
-            font-size: 0.7rem;
+            font-size: 0.78rem;
 
             color: var(--text-muted);
 
@@ -1107,6 +1554,139 @@
         }
 
 
+
+        .week-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .week-card-identity {
+            display: grid;
+            gap: 0.4rem;
+        }
+
+        .week-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .week-days-pill,
+        .week-edit-btn {
+            min-height: 44px;
+            border: 1px solid var(--color-border);
+            border-radius: 11px;
+            background: var(--color-surface-subtle);
+            color: var(--color-text-secondary);
+        }
+
+        .week-days-pill {
+            display: inline-flex;
+            padding: 0.4rem 0.6rem;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .week-edit-btn {
+            display: grid;
+            width: 44px;
+            padding: 0;
+            place-items: center;
+            color: var(--color-brand-text);
+            cursor: pointer;
+        }
+
+        .week-balance-panel {
+            padding: 0.9rem;
+            border-radius: 16px;
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--color-brand) 12%, transparent), transparent 70%),
+                var(--color-surface-subtle);
+        }
+
+        .week-balance-label {
+            display: block;
+            margin-bottom: 0.2rem;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .week-balance-summary {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .week-spending-summary {
+            display: grid;
+            flex-shrink: 0;
+            gap: 0.15rem;
+            color: var(--color-text-secondary);
+            font-size: 0.72rem;
+            text-align: right;
+        }
+
+        .week-spending-summary strong {
+            color: var(--color-danger);
+            font-size: 0.78rem;
+        }
+
+        .allowance-items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+
+        .week-closed-panel {
+            padding: 1.1rem;
+            border: 1px solid color-mix(in srgb, var(--priority-primary) 28%, var(--color-border));
+            border-radius: 16px;
+            background: var(--priority-primary-bg);
+            text-align: center;
+        }
+
+        .week-preview-note {
+            color: var(--color-brand-text);
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .weekly-finish-btn {
+            min-height: 52px;
+            margin-top: 0.8rem !important;
+            border-radius: 17px;
+            font-size: 0.82rem;
+            box-shadow: 0 8px 20px color-mix(in srgb, var(--color-brand) 18%, transparent);
+        }
+
+        @media (max-width: 390px) {
+            .allowance-items {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .week-card-top {
+                align-items: center;
+            }
+
+            .week-balance-summary {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .week-spending-summary {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                text-align: left;
+            }
+        }
 
         .save-btn {
 
@@ -1198,7 +1778,7 @@
 
             font-weight: 800;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             margin-bottom: 0.5rem;
 
@@ -1234,7 +1814,7 @@
 
             background: rgba(255, 255, 255, 0.05);
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             transition: var(--transition);
 
@@ -1392,7 +1972,7 @@
 
             font-size: 0.95rem;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             margin-bottom: 0.2rem;
 
@@ -1484,7 +2064,7 @@
 
             transition: var(--transition);
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             background: rgba(255, 255, 255, 0.08);
 
@@ -1696,7 +2276,7 @@
 
             padding: 1rem;
 
-            color: #fff;
+            color: var(--color-text-primary);
 
             font-size: 1rem;
 
@@ -1836,7 +2416,7 @@
 
             background: var(--accent-teal);
 
-            color: #000;
+            color: var(--color-on-brand);
 
         }
 
@@ -1860,6 +2440,866 @@
 
         }
 
+        /* Accessible theme application */
+        p,
+        li,
+        label,
+        input,
+        button,
+        .text-muted,
+        .tx-details p,
+        .debt-details p {
+            line-height: 1.6;
+        }
+
+        strong,
+        .metric-value,
+        .total-left,
+        .tx-amount,
+        .box-amount {
+            font-weight: 700;
+        }
+
+        .glass-card,
+        .week-card,
+        .transaction-item,
+        .debt-item,
+        .saving-goal,
+        .bottom-nav,
+        .modal-content,
+        .option-btn,
+        .modal-input {
+            background-color: var(--color-surface);
+            border-color: var(--color-border);
+            color: var(--color-text-primary);
+            box-shadow: none;
+            transition:
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .glass-card::before {
+            display: none;
+        }
+
+        .glass-card:active {
+            background: var(--color-surface-subtle);
+        }
+
+        .net-worth-card {
+            background: var(--color-hero-surface);
+            border-color: var(--color-border);
+        }
+
+        .net-worth-card::after {
+            background: radial-gradient(circle at 80% 20%, var(--accent-teal-glow), transparent 60%);
+        }
+
+        .net-worth-main .amount,
+        .al-details .al-amount,
+        .total-left,
+        .box-amount,
+        .greeting h1,
+        .chart-header h2,
+        .tx-details h4,
+        .debt-details h4 {
+            color: var(--color-text-primary);
+        }
+
+        .box-btn,
+        .mini-btn {
+            background: var(--color-surface-subtle);
+            color: var(--color-text-primary);
+        }
+
+        .bottom-nav {
+            background: var(--color-surface);
+            background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+        }
+
+        .metric-tooltip,
+        .week-nav-btn,
+        .profile-btn.return-btn {
+            background: var(--color-surface-subtle) !important;
+            border-color: var(--color-border);
+            color: var(--color-text-primary) !important;
+            box-shadow: none !important;
+        }
+
+        .week-status,
+        .saving-goal,
+        .allowance-bar,
+        .progress-bar-bg,
+        .option-btn,
+        .modal-input,
+        .modal-btn.secondary {
+            background: var(--color-surface-subtle);
+        }
+
+        .modal-overlay {
+            background: var(--color-overlay);
+        }
+
+        .modal-input {
+            color: var(--color-text-primary);
+            caret-color: var(--color-brand);
+        }
+
+        .modal-input::placeholder {
+            color: var(--color-text-secondary);
+            opacity: 1;
+        }
+
+        .modal-btn.primary,
+        .save-btn {
+            background: var(--color-brand);
+            color: var(--color-on-brand);
+        }
+
+        .modal-btn.danger {
+            background: var(--color-danger);
+            color: var(--color-on-danger);
+        }
+
+        .text-teal,
+        .text-emerald,
+        .nav-item.active,
+        .trend-badge,
+        .al-icon.up,
+        .saving-icon,
+        .week-countdown,
+        .week-nav-btn:hover:not(:disabled),
+        .week-nav-btn:focus-visible,
+        .box-btn.add,
+        .mini-btn.teal,
+        .mini-btn.emerald,
+        .option-btn.teal i,
+        .option-btn.emerald i,
+        .metric-value.savings,
+        .metric-value.net-worth {
+            color: var(--color-brand-text);
+        }
+
+        .text-rose,
+        .metric-value.debt {
+            color: var(--color-danger);
+        }
+
+        .metric-label,
+        .week-title,
+        .week-status,
+        .allowance-label,
+        .nav-item span,
+        .box-btn,
+        .mini-btn,
+        .week-card .text-muted {
+            font-size: 0.75rem !important;
+            line-height: 1.5;
+        }
+
+        .app-container,
+        .bottom-nav,
+        .modal-overlay {
+            transition:
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+            outline: 3px solid var(--color-focus);
+            outline-offset: 3px;
+        }
+
+        body.light-mode .glass-card,
+        body.light-mode .week-card,
+        body.light-mode .transaction-item,
+        body.light-mode .debt-item,
+        body.light-mode .saving-goal,
+        body.light-mode .modal-content {
+            border-color: var(--color-border);
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+        }
+
+        body.light-mode .bottom-nav {
+            border-color: var(--color-border);
+            box-shadow: 0 -2px 8px rgba(15, 23, 42, 0.05);
+        }
+
+        body.light-mode .profile-btn:not(.return-btn),
+        body.light-mode .fab {
+            background: var(--color-brand);
+            color: var(--color-on-brand);
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08);
+        }
+
+        body.light-mode .clickable-filter:hover {
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08);
+        }
+
+        body.light-mode .modal-input {
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+        }
+
+        body.light-mode .modal-input:focus-visible {
+            border: 3px solid var(--color-focus);
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.18);
+        }
+
+        body.light-mode :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+            outline: 2px solid var(--color-focus);
+            outline-offset: 3px;
+        }
+
+        body.light-mode .text-muted,
+        body.light-mode .net-worth-main h2,
+        body.light-mode .metric-label,
+        body.light-mode .al-details h3,
+        body.light-mode .nav-item span,
+        body.light-mode .week-view-label,
+        body.light-mode .week-dev-action,
+        body.light-mode .week-title,
+        body.light-mode .week-status,
+        body.light-mode .allowance-label,
+        body.light-mode .total-left span,
+        body.light-mode .week-days-pill,
+        body.light-mode .week-balance-label,
+        body.light-mode .week-spending-summary,
+        body.light-mode .savings-box h4,
+        body.light-mode .tx-details p,
+        body.light-mode .debt-details p,
+        body.light-mode .modal-content p,
+        body.light-mode .add-box-btn {
+            font-size: 0.875rem !important;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .modal-content.expense-wizard {
+            max-width: 440px;
+            max-height: min(88vh, 760px);
+            overflow-y: auto;
+        }
+
+        .wizard-progress {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .wizard-progress-step {
+            height: 4px;
+            border-radius: 999px;
+            background: var(--color-border);
+        }
+
+        .wizard-progress-step.active {
+            background: var(--color-brand);
+        }
+
+        .merchant-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.65rem;
+            animation: wizardSlideIn 0.2s ease both;
+        }
+
+        .merchant-choice {
+            min-height: 72px;
+            padding: 0.65rem 0.4rem;
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            background: var(--color-surface-subtle);
+            color: var(--color-text-primary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1.3;
+            cursor: pointer;
+        }
+
+        .merchant-choice i {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--color-brand-text);
+            font-size: 1.15rem;
+        }
+
+        .priority-grid {
+            display: grid;
+            gap: 0.75rem;
+            animation: wizardSlideIn 0.2s ease both;
+        }
+
+        @keyframes wizardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .priority-tier {
+            padding: 0.85rem;
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .priority-tier.highlighted {
+            border-width: 2px;
+        }
+
+        .priority-tier.primary {
+            background: var(--priority-primary-bg);
+        }
+
+        .priority-tier.secondary {
+            background: var(--priority-secondary-bg);
+        }
+
+        .priority-tier.non-essential {
+            background: var(--priority-nonessential-bg);
+        }
+
+        .priority-tier.primary.highlighted {
+            border-color: var(--priority-primary);
+        }
+
+        .priority-tier.secondary.highlighted {
+            border-color: var(--priority-secondary);
+        }
+
+        .priority-tier.non-essential.highlighted {
+            border-color: var(--priority-nonessential);
+        }
+
+        .priority-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .priority-heading strong {
+            font-size: 0.85rem;
+        }
+
+        .priority-tier.primary .priority-heading strong {
+            color: var(--priority-primary);
+        }
+
+        .priority-tier.secondary .priority-heading strong {
+            color: var(--priority-secondary);
+        }
+
+        .priority-tier.non-essential .priority-heading strong {
+            color: var(--priority-nonessential);
+        }
+
+        .priority-heading span {
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .priority-items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+        }
+
+        .wizard-item {
+            width: 100%;
+            min-height: 48px;
+            padding: 0.6rem;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.35;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .wizard-item-shell {
+            position: relative;
+            min-width: 0;
+        }
+
+        .wizard-item-shell.has-delete .wizard-item {
+            padding-right: 3.2rem;
+        }
+
+        .wizard-item-check {
+            display: none;
+            margin-right: 0.35rem;
+        }
+
+        .wizard-item[aria-pressed="true"] .wizard-item-check {
+            display: inline;
+        }
+
+        .custom-item-delete {
+            position: absolute;
+            top: 50%;
+            right: 0.35rem;
+            z-index: 1;
+            display: grid;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            place-items: center;
+            transform: translateY(-50%);
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+
+        .wizard-item[aria-pressed="true"] + .custom-item-delete {
+            color: var(--color-on-brand);
+        }
+
+        .custom-item-delete:hover,
+        .custom-item-delete:focus-visible {
+            background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+            color: var(--color-danger);
+        }
+
+        .wizard-item[aria-pressed="true"] {
+            border-color: var(--color-brand);
+            background: var(--color-brand);
+            color: var(--color-on-brand);
+        }
+
+        .wizard-item-number {
+            display: inline-grid;
+            width: 1.35rem;
+            height: 1.35rem;
+            margin-right: 0.3rem;
+            place-items: center;
+            border-radius: 6px;
+            background: var(--color-surface-subtle);
+            color: var(--color-text-secondary);
+            font-size: 0.68rem;
+        }
+
+        .wizard-item[aria-pressed="true"] .wizard-item-number {
+            background: color-mix(in srgb, var(--color-on-brand) 14%, transparent);
+            color: var(--color-on-brand);
+        }
+
+        .wizard-shortcuts {
+            margin-top: 0.75rem;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .custom-item-area {
+            margin-top: 0.75rem;
+        }
+
+        .custom-item-trigger {
+            width: 100%;
+            min-height: 46px;
+            border: 1px dashed var(--color-brand);
+            border-radius: 12px;
+            background: color-mix(in srgb, var(--color-brand) 8%, transparent);
+            color: var(--color-brand-text);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .custom-item-form {
+            display: grid;
+            gap: 0.75rem;
+            padding: 0.85rem;
+            border: 1px solid var(--color-brand);
+            border-radius: 14px;
+            background: var(--color-surface-subtle);
+        }
+
+        .custom-item-form[hidden] {
+            display: none;
+        }
+
+        .custom-item-name {
+            width: 100%;
+            min-height: 46px;
+            padding: 0.7rem 0.8rem;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font: inherit;
+        }
+
+        .custom-priority-group {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.4rem;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .custom-priority-group legend {
+            margin-bottom: 0.4rem;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .custom-priority-choice {
+            position: relative;
+        }
+
+        .custom-priority-choice input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .custom-priority-choice span {
+            display: grid;
+            min-height: 42px;
+            padding: 0.35rem;
+            place-items: center;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            background: var(--color-surface);
+            color: var(--color-text-secondary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .custom-priority-choice input:checked + span {
+            border-color: var(--color-brand);
+            background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface));
+            color: var(--color-text-primary);
+        }
+
+        .custom-priority-choice input:focus-visible + span {
+            outline: 3px solid var(--color-focus);
+            outline-offset: 2px;
+        }
+
+        .custom-save-choice {
+            display: flex;
+            min-height: 44px;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--color-text-secondary);
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+
+        .custom-save-choice input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-brand);
+        }
+
+        .custom-item-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .custom-item-actions button {
+            min-height: 44px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .custom-item-actions .custom-item-submit {
+            border-color: var(--color-brand);
+            background: var(--color-brand);
+            color: var(--color-on-brand);
+        }
+
+        .wizard-error {
+            display: none;
+            margin: 0 0 0.8rem;
+            padding: 0.7rem;
+            border: 1px solid var(--color-danger);
+            border-radius: 12px;
+            background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+            color: var(--color-danger);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        body.light-mode .priority-heading span,
+        body.light-mode .wizard-shortcuts,
+        body.light-mode .custom-priority-group legend,
+        body.light-mode .custom-save-choice {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        body.light-mode .wizard-item-number {
+            color: var(--color-text-primary);
+        }
+
+        .app-toast {
+            position: fixed;
+            z-index: 2200;
+            right: max(1rem, env(safe-area-inset-right));
+            bottom: max(1rem, env(safe-area-inset-bottom));
+            max-width: min(360px, calc(100vw - 2rem));
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .archive-grid {
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .archive-card {
+            width: 100%;
+            padding: 1.1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            text-align: left;
+            cursor: pointer;
+            box-shadow: none;
+            transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .archive-card:hover,
+        .archive-card:focus-visible {
+            border-color: var(--color-brand);
+            transform: translateY(-2px);
+        }
+
+        body.light-mode .archive-card {
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+        }
+
+        .archive-card-header,
+        .archive-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .archive-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .archive-card-total {
+            margin-top: 0.25rem;
+            color: var(--color-brand-text);
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .archive-split-bar {
+            display: flex;
+            height: 8px;
+            margin: 0.9rem 0 0.65rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: var(--color-surface-subtle);
+        }
+
+        .archive-split-primary {
+            background: var(--priority-primary);
+        }
+
+        .archive-split-flexible {
+            background: var(--priority-secondary);
+        }
+
+        .archive-card-footer {
+            color: var(--color-text-secondary);
+            font-size: 0.78rem;
+        }
+
+        .modal-content.archive-report {
+            max-width: 520px;
+            max-height: min(90vh, 820px);
+            overflow-y: auto;
+        }
+
+        .archive-search {
+            width: 100%;
+            min-height: 46px;
+            padding: 0.75rem 0.9rem;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            background: var(--color-surface-subtle);
+            color: var(--color-text-primary);
+            font: inherit;
+        }
+
+        .archive-search:focus-visible {
+            border-color: var(--color-focus);
+            outline: 2px solid var(--color-focus);
+            outline-offset: 2px;
+        }
+
+        .archive-report-totals {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.6rem;
+        }
+
+        .archive-total-box {
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            background: var(--color-surface-subtle);
+        }
+
+        .archive-total-box span {
+            display: block;
+            color: var(--color-text-secondary);
+            font-size: 0.72rem;
+        }
+
+        .archive-total-box strong {
+            display: block;
+            margin-top: 0.2rem;
+            overflow-wrap: anywhere;
+            font-size: 0.85rem;
+        }
+
+        .archive-section-title {
+            margin: 1.1rem 0 0.65rem;
+            font-size: 0.9rem;
+        }
+
+        .archive-category-list,
+        .archive-transaction-log {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .archive-category-row,
+        .archive-transaction-row {
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            background: var(--color-surface-subtle);
+        }
+
+        .archive-category-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .archive-category-value {
+            text-align: right;
+        }
+
+        .archive-percentage {
+            display: inline-block;
+            margin-left: 0.35rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 999px;
+            background: var(--priority-secondary-bg);
+            color: var(--priority-secondary);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .archive-transaction-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 0.35rem 0.75rem;
+        }
+
+        .archive-transaction-meta {
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.45;
+        }
+
+        .archive-priority-badge {
+            display: inline-block;
+            margin-top: 0.3rem;
+            padding: 0.15rem 0.45rem;
+            border-radius: 999px;
+            background: var(--color-surface);
+            color: var(--color-text-secondary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        body.light-mode .bottom-nav .nav-item span {
+            color: var(--color-text-primary);
+            font-size: 0.7rem !important;
+        }
+
+        body.light-mode .archive-card-footer,
+        body.light-mode .archive-total-box span,
+        body.light-mode .archive-transaction-meta,
+        body.light-mode .archive-priority-badge {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 390px) {
+            .merchant-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .priority-items {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .archive-report-totals {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
 
 
         /* Media Query for Desktop Browser Frame (Optional) */
@@ -1868,7 +3308,7 @@
 
             body {
 
-                background: #0a0a0a;
+                background: var(--color-bg-app);
 
             }
 
@@ -1886,7 +3326,7 @@
 
                 overflow: hidden;
 
-                border: 8px solid #1a1a1a;
+                border: 8px solid var(--color-border);
 
             }
 
@@ -1914,20 +3354,27 @@
 
             <div id="home-tab" class="tab-content active">
 
-                <header class="header fade-in">
-
-                    <div class="greeting">
-
-                        <h1>NovaVest</h1>
-
-                        <p class="text-muted" id="headerDateTime">Calculating date...</p>
-
+                <header class="header home-hero-header fade-in">
+                    <div class="home-brand-block">
+                        <div class="home-brand-mark" aria-hidden="true">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="greeting">
+                            <span class="home-eyebrow">NOVAVEST · MONEY AT A GLANCE</span>
+                            <h1><span id="headerGreeting">Welcome back</span><span class="brand-dot">.</span></h1>
+                            <div class="home-date-row">
+                                <span id="headerDateTime">Calculating date...</span>
+                                <span class="home-time-pill">
+                                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                                    <span id="headerTime">--:--</span>
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="profile-btn">
-
-                        <i class="fa-solid fa-user"></i>
-
+                    <div class="profile-btn home-profile" role="img" aria-label="NovaVest profile">
+                        <span>NV</span>
+                        <span class="home-profile-status" aria-hidden="true"></span>
                     </div>
 
                     
@@ -1936,23 +3383,51 @@
 
 
 
-                <!-- Net Worth Hero -->
+                <!-- Financial Metrics -->
 
-                <section class="glass-card net-worth-card fade-in delay-1">
+                <section class="metrics-grid fade-in delay-1" aria-label="Financial overview">
 
-                    <div class="net-worth-main">
-
-                        <h2>Total IQD Balance</h2>
-
-                        <div class="amount" id="totalIQDBalance">0 IQD</div>
-
-                        <div class="trend-badge text-emerald clickable-filter" style="margin-top: 10px; cursor: pointer;" onclick="toggleBalanceFilter()">
-
-                            <i class="fa-solid fa-piggy-bank"></i> <span id="filterText">Total Savings</span>
-
+                    <article class="glass-card metric-card">
+                        <div class="metric-label-row">
+                            <h2 class="metric-label">Available Cash</h2>
+                            <span class="metric-info">
+                                <button class="metric-info-button" type="button"
+                                    aria-label="About Available Cash" aria-describedby="availableCashHelp">
+                                    <i class="fa-solid fa-info" aria-hidden="true"></i>
+                                </button>
+                                <span class="metric-tooltip" id="availableCashHelp" role="tooltip">Spendable money: undistributed current salary plus remaining cash in active or pending weekly budgets. Savings are excluded.</span>
+                            </span>
                         </div>
+                        <div class="metric-value" id="availableCashMetric">0 IQD</div>
+                    </article>
 
-                    </div>
+                    <article class="glass-card metric-card">
+                        <div class="metric-label-row">
+                            <h2 class="metric-label">Total Savings</h2>
+                            <span class="metric-info">
+                                <button class="metric-info-button" type="button"
+                                    aria-label="About Total Savings" aria-describedby="totalSavingsHelp">
+                                    <i class="fa-solid fa-info" aria-hidden="true"></i>
+                                </button>
+                                <span class="metric-tooltip" id="totalSavingsHelp" role="tooltip">Money set aside: all savings-box balances plus completed-week savings stored in totalSavings. Available cash is excluded.</span>
+                            </span>
+                        </div>
+                        <div class="metric-value savings" id="totalSavingsMetric">0 IQD</div>
+                    </article>
+
+                    <article class="glass-card metric-card">
+                        <div class="metric-label-row">
+                            <h2 class="metric-label">Total Debt</h2>
+                        </div>
+                        <div class="metric-value debt" id="totalDebtMetric">0 IQD</div>
+                    </article>
+
+                    <article class="glass-card metric-card">
+                        <div class="metric-label-row">
+                            <h2 class="metric-label">Net Worth</h2>
+                        </div>
+                        <div class="metric-value net-worth" id="netWorthMetric">0 IQD</div>
+                    </article>
 
                 </section>
 
@@ -1963,43 +3438,52 @@
                 <section class="fade-in delay-1">
 
                     <div class="chart-header" style="margin-bottom: 1rem;">
-
                         <div>
-
                             <h2>Weekly Allowance</h2>
-
-                            <span class="text-muted">IQD 50,000 / week</span>
-
+                            <span class="text-muted" id="weeklyLimitSummary">0 IQD until you set a budget</span>
                         </div>
-
                         <div style="text-align: right;">
-
                             <div class="text-muted" style="font-size: 0.7rem;">TOTAL SAVED</div>
-
                             <div class="text-emerald" id="totalSavingsDisplay"
-
                                 style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
-
                         </div>
+                    </div>
 
+                    <div class="week-focus-header" aria-label="Week navigation">
+                        <button class="week-nav-btn" id="previousWeekBtn" type="button"
+                            onclick="navigateWeek(-1)" aria-label="View previous week">
+                            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                        </button>
+                        <div class="week-focus-title" aria-live="polite">
+                            <div class="week-date-range" id="activeWeekDateRange">Calculating week…</div>
+                            <div class="week-countdown" id="activeWeekCountdown">Calculating time remaining…</div>
+                        </div>
+                        <button class="week-nav-btn" id="nextWeekBtn" type="button"
+                            onclick="navigateWeek(1)" aria-label="View next week">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                        </button>
                     </div>
 
                     <div class="allowance-grid" id="weekGrid">
 
-                        <!-- Week Cubes will be injected here by JS -->
+                        <!-- The selected week is injected here by JS -->
 
                     </div>
 
 
 
-                    <button class="save-btn"
-
-                        style="margin-top: 1rem; background: linear-gradient(135deg, #10b981, #059669); color: #fff;"
+                    <button class="save-btn weekly-finish-btn" id="endWeekBtn"
 
                         onclick="completeWeek()">
 
-                        <i class="fa-solid fa-check-circle"></i> End Week & Save Remaining
+                        <i class="fa-solid fa-check"></i> Finish Week &amp; Save Remaining
 
+                    </button>
+
+                    <button class="week-dev-action" id="fastForwardWeekBtn" type="button"
+                        onclick="fastForwardToWeekEnd()">
+                        <i class="fa-solid fa-forward" aria-hidden="true"></i>
+                        Fast-forward time to end of week
                     </button>
 
                 </section>
@@ -2044,7 +3528,7 @@
 
                     </div>
 
-                    <button class="save-btn" style="margin-top: 1rem; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000;" onclick="addSalary()">
+                    <button class="save-btn" style="margin-top: 1rem; background: var(--color-brand); color: var(--color-on-brand);" onclick="addSalary()">
 
                         <i class="fa-solid fa-plus"></i> Add Salary
 
@@ -2074,7 +3558,8 @@
 
                         
 
-                        <div class="profile-btn return-btn" onclick="showTab('home')">
+                        <div class="profile-btn return-btn" role="button" tabindex="0" data-keyboard-click
+                            aria-label="Return home" onclick="showTab('home')">
 
                             <i class="fa-solid fa-arrow-left"></i>
 
@@ -2112,7 +3597,8 @@
 
                     <div class="header-actions">
 
-                        <div class="profile-btn return-btn" onclick="showTab('home')"
+                        <div class="profile-btn return-btn" role="button" tabindex="0" data-keyboard-click
+                            aria-label="Return home" onclick="showTab('home')"
 
                             style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); box-shadow: none;">
 
@@ -2122,9 +3608,10 @@
 
                         </div>
 
-                        <div class="profile-btn" onclick="openSavingsActionMenu()"
+                        <div class="profile-btn" role="button" tabindex="0" data-keyboard-click
+                            aria-label="Add savings action" onclick="openSavingsActionMenu()"
 
-                            style="background: var(--accent-teal); color: #000;">
+                            style="background: var(--color-brand); color: var(--color-on-brand);">
 
                             <i class="fa-solid fa-plus"></i>
 
@@ -2160,7 +3647,8 @@
 
                     <div class="header-actions">
 
-                        <div class="profile-btn return-btn" onclick="showTab('home')"
+                        <div class="profile-btn return-btn" role="button" tabindex="0" data-keyboard-click
+                            aria-label="Return home" onclick="showTab('home')"
 
                             style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); box-shadow: none;">
 
@@ -2170,9 +3658,10 @@
 
                         </div>
 
-                        <div class="profile-btn" onclick="addDebt()"
+                        <div class="profile-btn" role="button" tabindex="0" data-keyboard-click
+                            aria-label="Add debt" onclick="addDebt()"
 
-                            style="background: var(--accent-rose); color: #fff;">
+                            style="background: var(--color-danger); color: var(--color-on-danger);">
 
                             <i class="fa-solid fa-plus"></i>
 
@@ -2230,6 +3719,25 @@
 
 
 
+            <!-- History Tab -->
+            <div id="history-tab" class="tab-content">
+                <header class="header">
+                    <div class="greeting">
+                        <h1>History &amp; Vault</h1>
+                        <p class="text-muted">Monthly reports preserved automatically</p>
+                    </div>
+                    <div class="profile-btn return-btn" role="button" tabindex="0" data-keyboard-click
+                        aria-label="Return home" onclick="showTab('home')">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                        <span>Return</span>
+                    </div>
+                </header>
+                <div class="archive-grid" id="archiveGrid" aria-live="polite">
+                    <div class="text-muted" style="text-align: center; padding: 2rem;">No archived months yet.</div>
+                </div>
+            </div>
+
+
             <!-- Settings Tab -->
 
             <div id="settings-tab" class="tab-content">
@@ -2244,7 +3752,8 @@
 
                     </div>
 
-                    <div class="profile-btn return-btn" onclick="showTab('home')">
+                    <div class="profile-btn return-btn" role="button" tabindex="0" data-keyboard-click
+                        aria-label="Return home" onclick="showTab('home')">
 
                         <i class="fa-solid fa-arrow-left"></i>
 
@@ -2294,7 +3803,8 @@
 
         <!-- Custom Modal -->
 
-        <div class="modal-overlay" id="customModal">
+        <div class="modal-overlay" id="customModal" role="dialog" aria-modal="true"
+            aria-labelledby="modalTitle" aria-describedby="modalDesc">
 
             <div class="glass-card modal-content">
 
@@ -2332,7 +3842,7 @@
 
         <!-- Action FAB -->
 
-        <div class="fab">
+        <div class="fab" role="button" tabindex="0" data-keyboard-click aria-label="Add transaction">
 
             <i class="fa-solid fa-plus"></i>
 
@@ -2376,6 +3886,11 @@
 
             </a>
 
+            <a href="#" class="nav-item" onclick="showTab('history')">
+                <i class="fa-solid fa-box-archive"></i>
+                <span>History</span>
+            </a>
+
             <a href="#" class="nav-item" onclick="showTab('settings')">
 
                 <i class="fa-solid fa-gear"></i>
@@ -2394,6 +3909,7 @@
 
         // Set up Chart.js defaults for darker theme
 
+        if (typeof Chart !== 'undefined') {
         Chart.defaults.color = '#94a3b8';
 
         Chart.defaults.font.family = "'Inter', sans-serif";
@@ -2405,6 +3921,7 @@
         Chart.defaults.plugins.tooltip.padding = 10;
 
         Chart.defaults.plugins.tooltip.cornerRadius = 8;
+        }
 
 
 
@@ -2414,7 +3931,10 @@
 
             // Cash Flow Chart (Bar)
 
-            const ctxFlow = document.getElementById('cashFlowChart').getContext('2d');
+            const flowCanvas = document.getElementById('cashFlowChart');
+            const categoryCanvas = document.getElementById('categoryChart');
+            if (!flowCanvas || !categoryCanvas || typeof Chart === 'undefined') return;
+            const ctxFlow = flowCanvas.getContext('2d');
 
 
 
@@ -2512,7 +4032,7 @@
 
             // Spending Breakdown (Doughnut)
 
-            const ctxCat = document.getElementById('categoryChart').getContext('2d');
+            const ctxCat = categoryCanvas.getContext('2d');
 
             new Chart(ctxCat, {
 
@@ -2602,6 +4122,15 @@
 
                 navItems[0].classList.add('active');
 
+            }
+
+            const actionFab = document.querySelector('.fab');
+            if (actionFab) {
+                actionFab.style.display = ['history', 'settings'].includes(tabId) ? 'none' : 'flex';
+            }
+            if (tabId === 'history') {
+                runMonthlyArchiveCheck();
+                renderArchiveCards();
             }
 
         };
@@ -2705,6 +4234,22 @@
             const effectiveAt = Number.isFinite(Number(tx.effectiveAt)) ? Number(tx.effectiveAt) : fallbackTime;
 
             const createdAt = Number.isFinite(Number(tx.createdAt)) ? Number(tx.createdAt) : effectiveAt;
+            const validPriorities = ['primary', 'secondary', 'non-essential'];
+            const selectedItems = Array.isArray(tx.selectedItems)
+                ? tx.selectedItems
+                    .filter(item => item && item.name && validPriorities.includes(item.priority))
+                    .map(item => ({
+                        name: String(item.name),
+                        priority: item.priority,
+                        ...(item.isCustom ? {
+                            isCustom: true,
+                            customItemId: String(item.customItemId || item.id || ''),
+                            isSavedForFuture: item.isSavedForFuture === true
+                        } : {})
+                    }))
+                : [];
+            const priorityTiers = [...new Set(selectedItems.map(item => item.priority))];
+            const itemCategories = selectedItems.map(item => item.name);
 
             return {
 
@@ -2724,7 +4269,19 @@
 
                 sourceType: tx.sourceType || ((tx.category === 'personal' || tx.category === 'car') ? 'weekly' : 'box'),
 
-                sourceId: tx.sourceId ?? null
+                sourceId: tx.sourceId ?? null,
+
+                location: tx.location ? String(tx.location) : '',
+
+                selectedItems,
+
+                priority: validPriorities.includes(tx.priority) ? tx.priority : (priorityTiers[0] || null),
+
+                priorityTiers,
+
+                itemCategories,
+
+                notes: tx.notes ? String(tx.notes) : ''
 
             };
 
@@ -2778,7 +4335,15 @@
 
                 sourceType: sourceMeta.sourceType,
 
-                sourceId: sourceMeta.sourceId
+                sourceId: sourceMeta.sourceId,
+
+                location: sourceMeta.location,
+
+                selectedItems: sourceMeta.selectedItems,
+
+                priority: sourceMeta.priority,
+
+                notes: sourceMeta.notes
 
             });
 
@@ -2822,7 +4387,7 @@
 
 
 
-        window.openTransactionWizard = function () {
+        window.openLegacyTransactionWizard = function () {
 
             let options = [
 
@@ -2950,40 +4515,666 @@
 
         };
 
+        const EXPENSE_MERCHANTS = [
+            { name: 'Supermarket', icon: 'fa-cart-shopping' },
+            { name: 'Pharmacy', icon: 'fa-prescription-bottle-medical' },
+            { name: 'Gym', icon: 'fa-dumbbell' },
+            { name: 'Restaurant', icon: 'fa-utensils' },
+            { name: 'Cafe', icon: 'fa-mug-hot' },
+            { name: 'Taxi', icon: 'fa-taxi' }
+        ];
+
+        const EXPENSE_PRIORITY_TIERS = [
+            {
+                priority: 'primary',
+                label: 'Tier 1 · Primary',
+                hint: 'Essentials / Needs',
+                items: ['Food (Groceries)', 'Medicines/Prescriptions', 'Bills (Water/Electricity)', 'Rent']
+            },
+            {
+                priority: 'secondary',
+                label: 'Tier 2 · Secondary',
+                hint: 'Wants / Quality of Life',
+                items: ['Gym Membership', 'Restaurant Meal', 'Transportation', 'Clothing']
+            },
+            {
+                priority: 'non-essential',
+                label: 'Tier 3 · Non-Essential',
+                hint: 'Splurges / Luxuries',
+                items: ['Cafes/Coffee', 'Entertainment (Movies/Gaming)', 'Snacks', 'Subscriptions']
+            }
+        ];
+
+        const DEFAULT_EXPENSE_ITEMS = Object.freeze(
+            EXPENSE_PRIORITY_TIERS.flatMap(tier =>
+                tier.items.map((name, index) => Object.freeze({
+                    id: `default-${tier.priority}-${index + 1}`,
+                    name,
+                    priority: tier.priority,
+                    isSavedForFuture: true,
+                    isCustom: false
+                }))
+            )
+        );
+
+        function normalizeCustomItem(item) {
+            const validPriorities = ['primary', 'secondary', 'non-essential'];
+            const name = String(item?.name || '').trim();
+            const priority = validPriorities.includes(item?.priority) ? item.priority : null;
+            if (!name || !priority) return null;
+            return {
+                id: String(item.id || `custom-item-${generateId()}`),
+                name,
+                priority,
+                isSavedForFuture: item.isSavedForFuture !== false,
+                isCustom: true
+            };
+        }
+
+        function loadUserCustomItems() {
+            try {
+                const storedItems = JSON.parse(localStorage.getItem('user_custom_items') || '[]');
+                return Array.isArray(storedItems)
+                    ? storedItems.map(normalizeCustomItem).filter(Boolean)
+                    : [];
+            } catch (error) {
+                console.error('Unable to load custom expense items:', error);
+                return [];
+            }
+        }
+
+        function persistUserCustomItems() {
+            localStorage.setItem(
+                'user_custom_items',
+                JSON.stringify((budgetState.userCustomItems || []).filter(item => item.isSavedForFuture))
+            );
+        }
+
+        const EXPENSE_CONTEXT_RULES = [
+            { match: 'pharmacy', priority: 'primary', item: 'Medicines/Prescriptions' },
+            { match: 'supermarket', priority: 'primary', item: 'Food (Groceries)' },
+            { match: 'gym', priority: 'secondary', item: 'Gym Membership' },
+            { match: 'restaurant', priority: 'secondary', item: 'Restaurant Meal' },
+            { match: 'taxi', priority: 'secondary', item: 'Transportation' },
+            { match: 'cafe', priority: 'non-essential', item: 'Cafes/Coffee' }
+        ];
+
+        let transactionWizardState = null;
+
+        function getExpenseModalElements() {
+            const modal = document.getElementById('customModal');
+            return {
+                modal,
+                content: modal.querySelector('.modal-content'),
+                title: document.getElementById('modalTitle'),
+                desc: document.getElementById('modalDesc'),
+                input: document.getElementById('modalInput'),
+                options: document.getElementById('modalOptions'),
+                action: document.getElementById('modalActionBtn'),
+                cancel: document.getElementById('modalCancelBtn')
+            };
+        }
+
+        function renderWizardProgress(activeStep) {
+            return `
+                <div class="wizard-progress" aria-label="Expense entry progress">
+                    <span class="wizard-progress-step active"></span>
+                    <span class="wizard-progress-step ${activeStep === 2 ? 'active' : ''}"></span>
+                </div>
+                <div class="wizard-error" id="expenseWizardError" role="alert"></div>
+            `;
+        }
+
+        function showExpenseWizardError(message) {
+            const error = document.getElementById('expenseWizardError');
+            if (!error) return;
+            error.textContent = message;
+            error.style.display = 'block';
+        }
+
+        function openExpenseLocationStep() {
+            const elements = getExpenseModalElements();
+            elements.content.classList.add('expense-wizard');
+            elements.content.onkeydown = null;
+            elements.title.textContent = 'Where did you spend it?';
+            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} · Type a merchant or choose a common location.`;
+            elements.input.style.display = 'block';
+            elements.input.type = 'search';
+            elements.input.value = transactionWizardState.location || '';
+            elements.input.placeholder = 'e.g. Carrefour or Local Pharmacy';
+            elements.input.setAttribute('aria-label', 'Merchant or spending location');
+            elements.input.oninput = null;
+            elements.options.style.display = 'flex';
+            elements.options.innerHTML = `
+                ${renderWizardProgress(1)}
+                <div class="merchant-grid" aria-label="Common merchants">
+                    ${EXPENSE_MERCHANTS.map(merchant => `
+                        <button type="button" class="merchant-choice" data-location="${merchant.name}">
+                            <i class="fa-solid ${merchant.icon}" aria-hidden="true"></i>
+                            ${merchant.name}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            elements.action.style.display = 'block';
+            elements.action.textContent = 'Continue';
+            elements.action.className = 'modal-btn primary';
+            elements.cancel.textContent = 'Cancel';
+            elements.cancel.onclick = closeModal;
+            elements.action.onclick = () => continueExpenseLocation(elements.input.value);
+            elements.input.onkeydown = event => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    continueExpenseLocation(elements.input.value);
+                }
+            };
+            elements.options.querySelectorAll('[data-location]').forEach(button => {
+                button.addEventListener('click', () => continueExpenseLocation(button.dataset.location));
+            });
+            elements.modal.classList.add('active');
+            setTimeout(() => elements.input.focus(), 50);
+        }
+
+        function continueExpenseLocation(rawLocation) {
+            const location = String(rawLocation || '').trim();
+            if (!location) {
+                showExpenseWizardError('Enter or select a location to continue.');
+                return;
+            }
+
+            const locationChanged = transactionWizardState.location !== location;
+            transactionWizardState.location = location;
+            if (locationChanged) transactionWizardState.selectedItems = [];
+            const context = EXPENSE_CONTEXT_RULES.find(rule =>
+                location.toLowerCase().includes(rule.match)
+            );
+            transactionWizardState.highlightedPriority = context?.priority || null;
+            if (context && locationChanged) {
+                transactionWizardState.selectedItems.push({
+                    name: context.item,
+                    priority: context.priority
+                });
+            }
+            openExpenseItemsStep();
+        }
+
+        function isExpenseItemSelected(name, priority) {
+            return transactionWizardState.selectedItems.some(item =>
+                item.name === name && item.priority === priority
+            );
+        }
+
+        function getExpenseItemsForTier(priority) {
+            const defaults = (budgetState.defaultItems || DEFAULT_EXPENSE_ITEMS)
+                .filter(item => item.priority === priority);
+            const savedCustomItems = (budgetState.userCustomItems || [])
+                .filter(item => item.priority === priority && item.isSavedForFuture);
+            const selectedOneTimeItems = (transactionWizardState.selectedItems || [])
+                .filter(item =>
+                    item.priority === priority &&
+                    item.isCustom &&
+                    !savedCustomItems.some(saved => saved.id === item.customItemId)
+                )
+                .map(item => ({
+                    id: item.customItemId,
+                    name: item.name,
+                    priority: item.priority,
+                    isSavedForFuture: false,
+                    isCustom: true
+                }));
+            return [...defaults, ...savedCustomItems, ...selectedOneTimeItems].filter(
+                (item, index, items) => items.findIndex(candidate =>
+                    candidate.name.toLocaleLowerCase() === item.name.toLocaleLowerCase()
+                ) === index
+            );
+        }
+
+        function renderExpenseWizardItem(item, shortcut) {
+            const selected = isExpenseItemSelected(item.name, item.priority);
+            const isCustom = item.isCustom === true;
+            return `
+                <div class="wizard-item-shell ${isCustom ? 'has-delete' : ''}">
+                    <button type="button" class="wizard-item"
+                        data-item-id="${escapeHTML(item.id)}"
+                        data-item="${escapeHTML(item.name)}"
+                        data-priority="${item.priority}"
+                        data-custom="${isCustom}"
+                        data-saved-for-future="${item.isSavedForFuture === true}"
+                        ${shortcut ? `data-shortcut="${shortcut}"` : ''}
+                        aria-pressed="${selected}">
+                        ${shortcut ? `<span class="wizard-item-number">${shortcut}</span>` : ''}
+                        <span class="wizard-item-check"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+                        ${escapeHTML(item.name)}
+                    </button>
+                    ${isCustom ? `
+                        <button type="button" class="custom-item-delete"
+                            data-delete-custom-item="${escapeHTML(item.id)}"
+                            aria-label="Delete custom item ${escapeHTML(item.name)}">
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function setCustomExpenseFormVisible(isVisible) {
+            const trigger = document.getElementById('customItemTrigger');
+            const form = document.getElementById('customItemForm');
+            if (!trigger || !form) return;
+            trigger.hidden = isVisible;
+            form.hidden = !isVisible;
+            if (isVisible) {
+                setTimeout(() => document.getElementById('customItemName')?.focus(), 30);
+            } else {
+                trigger.focus();
+            }
+        }
+
+        function addCustomExpenseItem(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('customItemName');
+            const priorityInput = document.querySelector('input[name="customItemPriority"]:checked');
+            const saveInput = document.getElementById('saveCustomItem');
+            const name = String(nameInput?.value || '').trim().replace(/\s+/g, ' ');
+            const priority = priorityInput?.value;
+            const isSavedForFuture = saveInput?.checked === true;
+            if (!name) {
+                showExpenseWizardError('Enter a name for your custom item.');
+                nameInput?.focus();
+                return;
+            }
+            if (name.length > 60) {
+                showExpenseWizardError('Custom item names must be 60 characters or fewer.');
+                nameInput?.focus();
+                return;
+            }
+
+            const existingItems = [
+                ...(budgetState.defaultItems || DEFAULT_EXPENSE_ITEMS),
+                ...(budgetState.userCustomItems || []),
+                ...(transactionWizardState.selectedItems || [])
+            ];
+            if (existingItems.some(item => item.name.toLocaleLowerCase() === name.toLocaleLowerCase())) {
+                showExpenseWizardError(`“${name}” is already available in the quick-select list.`);
+                nameInput?.focus();
+                return;
+            }
+
+            const customItem = {
+                id: `custom-item-${generateId()}`,
+                name,
+                priority,
+                isSavedForFuture,
+                isCustom: true
+            };
+            transactionWizardState.selectedItems = [
+                ...transactionWizardState.selectedItems,
+                {
+                    name,
+                    priority,
+                    isCustom: true,
+                    customItemId: customItem.id,
+                    isSavedForFuture
+                }
+            ];
+            if (isSavedForFuture) {
+                budgetState.userCustomItems.push(customItem);
+                persistBudgetState();
+            }
+            openExpenseItemsStep(customItem.id);
+            showAppToast(`${name} added${isSavedForFuture ? ' to your quick-select list' : ' for this transaction'}.`);
+        }
+
+        function deleteCustomExpenseItem(customItemId) {
+            const customItem = (budgetState.userCustomItems || []).find(item => item.id === customItemId)
+                || (transactionWizardState.selectedItems || []).find(item => item.customItemId === customItemId);
+            if (!customItem) return;
+            budgetState.userCustomItems = (budgetState.userCustomItems || [])
+                .filter(item => item.id !== customItemId);
+            transactionWizardState.selectedItems = transactionWizardState.selectedItems
+                .filter(item => item.customItemId !== customItemId);
+            persistBudgetState();
+            openExpenseItemsStep();
+            showAppToast(`${customItem.name} removed from custom items.`);
+        }
+
+        function toggleExpenseItem(button) {
+            const item = {
+                name: button.dataset.item,
+                priority: button.dataset.priority,
+                ...(button.dataset.custom === 'true' ? {
+                    isCustom: true,
+                    customItemId: button.dataset.itemId,
+                    isSavedForFuture: button.dataset.savedForFuture === 'true'
+                } : {})
+            };
+            const selected = isExpenseItemSelected(item.name, item.priority);
+            transactionWizardState.selectedItems = selected
+                ? transactionWizardState.selectedItems.filter(entry =>
+                    entry.name !== item.name || entry.priority !== item.priority
+                )
+                : [...transactionWizardState.selectedItems, item];
+            button.setAttribute('aria-pressed', String(!selected));
+        }
+
+        function handleExpenseItemsKeyboard(event, elements) {
+            if (event.target.closest('.custom-item-form')) return;
+            if (event.target === elements.input) {
+                if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+                    event.preventDefault();
+                    saveSmartExpense();
+                }
+                return;
+            }
+
+            const itemButtons = [...elements.options.querySelectorAll('.wizard-item')];
+            const currentIndex = itemButtons.indexOf(document.activeElement);
+            if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) {
+                event.preventDefault();
+                const columns = window.matchMedia('(max-width: 390px)').matches ? 1 : 2;
+                const direction = event.key === 'ArrowRight'
+                    ? 1
+                    : event.key === 'ArrowLeft'
+                        ? -1
+                        : event.key === 'ArrowDown' ? columns : -columns;
+                const nextIndex = currentIndex < 0
+                    ? 0
+                    : (currentIndex + direction + itemButtons.length) % itemButtons.length;
+                itemButtons[nextIndex]?.focus();
+                return;
+            }
+
+            if (/^[1-9]$/.test(event.key)) {
+                const shortcut = elements.options.querySelector(`[data-shortcut="${event.key}"]`);
+                if (shortcut) {
+                    event.preventDefault();
+                    shortcut.click();
+                    shortcut.focus();
+                }
+            } else if (event.key === '0') {
+                event.preventDefault();
+                saveSmartExpense();
+            }
+        }
+
+        function openExpenseItemsStep(focusItemId = null) {
+            const elements = getExpenseModalElements();
+            elements.content.classList.add('expense-wizard');
+            elements.title.textContent = 'What did you buy?';
+            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} at ${transactionWizardState.location}. Select one or more items.`;
+            elements.input.style.display = 'block';
+            elements.input.type = 'text';
+            elements.input.value = transactionWizardState.notes || '';
+            elements.input.placeholder = 'Optional note';
+            elements.input.setAttribute('aria-label', 'Optional transaction note');
+            elements.input.oninput = () => {
+                transactionWizardState.notes = elements.input.value;
+            };
+            elements.input.onkeydown = null;
+            elements.options.style.display = 'flex';
+
+            let shortcutIndex = 1;
+            elements.options.innerHTML = `
+                ${renderWizardProgress(2)}
+                <div class="priority-grid">
+                    ${EXPENSE_PRIORITY_TIERS.map(tier => `
+                        <section class="priority-tier ${tier.priority} ${transactionWizardState.highlightedPriority === tier.priority ? 'highlighted' : ''}">
+                            <div class="priority-heading">
+                                <strong>${tier.label}</strong>
+                                <span>${tier.hint}</span>
+                            </div>
+                            <div class="priority-items">
+                                ${getExpenseItemsForTier(tier.priority).map(item => {
+                                    const shortcut = shortcutIndex <= 9 ? shortcutIndex++ : null;
+                                    return renderExpenseWizardItem(item, shortcut);
+                                }).join('')}
+                            </div>
+                        </section>
+                    `).join('')}
+                </div>
+                <div class="custom-item-area">
+                    <button type="button" class="custom-item-trigger" id="customItemTrigger">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Custom Item
+                    </button>
+                    <form class="custom-item-form" id="customItemForm" hidden>
+                        <input class="custom-item-name" id="customItemName" type="text"
+                            maxlength="60" autocomplete="off" placeholder="Item name, e.g. Dog Toys"
+                            aria-label="Custom item name">
+                        <fieldset class="custom-priority-group">
+                            <legend>Choose its budget priority</legend>
+                            <label class="custom-priority-choice">
+                                <input type="radio" name="customItemPriority" value="primary" checked>
+                                <span>Primary</span>
+                            </label>
+                            <label class="custom-priority-choice">
+                                <input type="radio" name="customItemPriority" value="secondary">
+                                <span>Secondary</span>
+                            </label>
+                            <label class="custom-priority-choice">
+                                <input type="radio" name="customItemPriority" value="non-essential">
+                                <span>Non-Essential</span>
+                            </label>
+                        </fieldset>
+                        <label class="custom-save-choice">
+                            <input type="checkbox" id="saveCustomItem" checked>
+                            <span>Save to quick-select list?</span>
+                        </label>
+                        <div class="custom-item-actions">
+                            <button type="button" id="cancelCustomItem">Cancel</button>
+                            <button type="submit" class="custom-item-submit">Add Item</button>
+                        </div>
+                    </form>
+                </div>
+                <p class="wizard-shortcuts">Arrow keys move · 1–9 select · 0 saves · Ctrl+Enter saves from notes</p>
+            `;
+
+            elements.options.querySelectorAll('.wizard-item').forEach(button => {
+                button.addEventListener('click', () => toggleExpenseItem(button));
+            });
+            elements.options.querySelectorAll('[data-delete-custom-item]').forEach(button => {
+                button.addEventListener('click', event => {
+                    event.stopPropagation();
+                    deleteCustomExpenseItem(button.dataset.deleteCustomItem);
+                });
+            });
+            document.getElementById('customItemTrigger')
+                ?.addEventListener('click', () => setCustomExpenseFormVisible(true));
+            document.getElementById('cancelCustomItem')
+                ?.addEventListener('click', () => setCustomExpenseFormVisible(false));
+            document.getElementById('customItemForm')
+                ?.addEventListener('submit', addCustomExpenseItem);
+            elements.action.style.display = 'block';
+            elements.action.textContent = `Save ${formatIQD(transactionWizardState.amount)}`;
+            elements.action.className = 'modal-btn primary';
+            elements.action.onclick = saveSmartExpense;
+            elements.cancel.textContent = 'Back';
+            elements.cancel.onclick = openExpenseLocationStep;
+            elements.content.onkeydown = event => handleExpenseItemsKeyboard(event, elements);
+            elements.modal.classList.add('active');
+
+            const focusedCustomItem = focusItemId
+                ? elements.options.querySelector(`[data-item-id="${CSS.escape(focusItemId)}"]`)
+                : null;
+            const selectedButton = elements.options.querySelector('.wizard-item[aria-pressed="true"]');
+            setTimeout(() => (focusedCustomItem || selectedButton || elements.options.querySelector('.wizard-item'))?.focus(), 50);
+        }
+
+        function getSmartExpensePriority(selectedItems) {
+            const priorityOrder = ['primary', 'secondary', 'non-essential'];
+            return priorityOrder.find(priority =>
+                selectedItems.some(item => item.priority === priority)
+            ) || null;
+        }
+
+        function spendFromActiveWeek(amount, prefersCar) {
+            const week = getActiveWeek();
+            if (!week || week.isClosed) return false;
+            const totalAvailable = toIntegerAmount(week.personal) + toIntegerAmount(week.car);
+            if (totalAvailable < amount) return false;
+
+            const firstBucket = prefersCar ? 'car' : 'personal';
+            const secondBucket = prefersCar ? 'personal' : 'car';
+            const firstDeduction = Math.min(toIntegerAmount(week[firstBucket]), amount);
+            week[firstBucket] -= firstDeduction;
+            week[secondBucket] -= amount - firstDeduction;
+            return true;
+        }
+
+        function showAppToast(message) {
+            document.querySelector('.app-toast')?.remove();
+            const toast = document.createElement('div');
+            toast.className = 'app-toast';
+            toast.setAttribute('role', 'status');
+            toast.setAttribute('aria-live', 'polite');
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        function saveSmartExpense() {
+            const selectedItems = transactionWizardState?.selectedItems || [];
+            if (!selectedItems.length) {
+                showExpenseWizardError('Select at least one item before saving.');
+                return;
+            }
+
+            const amount = transactionWizardState.amount;
+            const prefersCar =
+                selectedItems.some(item => item.name === 'Transportation') ||
+                /taxi|car|fuel/i.test(transactionWizardState.location);
+            if (!spendFromActiveWeek(amount, prefersCar)) {
+                showExpenseWizardError(`Not enough active weekly cash for ${formatIQD(amount)}.`);
+                return;
+            }
+
+            const itemNames = selectedItems.map(item => item.name);
+            const description = `${itemNames.join(', ')} · ${transactionWizardState.location}`;
+            recordTransaction(
+                itemNames[0],
+                amount,
+                description,
+                Date.now(),
+                {
+                    sourceType: 'weekly',
+                    sourceId: 'smart-expense',
+                    location: transactionWizardState.location,
+                    selectedItems,
+                    priority: getSmartExpensePriority(selectedItems),
+                    notes: transactionWizardState.notes
+                }
+            );
+
+            persistBudgetState();
+            updateUI();
+            closeModal();
+            showAppToast(`${formatIQD(amount)} saved at ${transactionWizardState.location}.`);
+            fab.style.background = 'var(--color-brand)';
+            fab.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
+            setTimeout(() => {
+                fab.style.background = '';
+                fab.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i>';
+            }, 1500);
+            transactionWizardState = null;
+        }
+
+        window.openTransactionWizard = function () {
+            showModal({
+                title: 'How much did you spend?',
+                desc: 'Enter the expense amount in IQD.',
+                type: 'number',
+                placeholder: 'e.g. 25,000',
+                inputAttributes: { min: 1, step: 1, inputmode: 'numeric' },
+                actionLabel: 'Continue',
+                validate: value => toIntegerAmount(value) > 0 ? '' : 'Enter a valid IQD amount greater than zero.',
+                callback: amountValue => {
+                    const amount = toIntegerAmount(amountValue);
+                    if (amount <= 0) {
+                        showAppToast('Enter a valid expense amount.');
+                        return;
+                    }
+                    transactionWizardState = {
+                        amount,
+                        location: '',
+                        selectedItems: [],
+                        notes: ''
+                    };
+                    openExpenseLocationStep();
+                }
+            });
+        };
 
 
-        // Weekly Allowance Logic
 
-        let budgetState = JSON.parse(localStorage.getItem('budgetState')) || {
+        // Sequential weekly allowance state
+        const WEEK_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
+        const DEFAULT_WEEKLY_LIMIT = 0;
 
-            currentWeek: 1,
+        function getInitialWeekStart() {
+            const start = new Date();
+            start.setHours(0, 0, 0, 0);
+            return start.getTime();
+        }
 
-            weekStartDate: new Date().getTime(),
+        function createBudgetWeek(weekNumber, startTimestamp, template = {}) {
+            const maxPersonal = Math.max(0, Number(template.maxPersonal ?? 0) || 0);
+            const maxCar = Math.max(0, Number(template.maxCar ?? 0) || 0);
 
-            weeks: [
+            return {
+                ...template,
+                id: `week-${weekNumber}`,
+                weekNumber,
+                startDate: new Date(startTimestamp).toISOString(),
+                endDate: new Date(startTimestamp + WEEK_DURATION_MS).toISOString(),
+                isClosed: false,
+                personal: Math.max(0, Number(template.personal ?? maxPersonal) || 0),
+                car: Math.max(0, Number(template.car ?? maxCar) || 0),
+                maxPersonal,
+                maxCar,
+                saved: Math.max(0, Number(template.saved) || 0),
+                days: 7,
+                isInitialized: template.isInitialized !== false,
+                status: 'pending'
+            };
+        }
 
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active', days: 7 },
+        function createInitialWeeks(count = 4, startTimestamp = getInitialWeekStart()) {
+            return Array.from({ length: count }, (_, index) =>
+                createBudgetWeek(index + 1, startTimestamp + (index * WEEK_DURATION_MS))
+            );
+        }
 
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
+        function loadBudgetState() {
+            const storedState = localStorage.getItem('budgetState');
+            if (!storedState) return null;
+            try {
+                const parsedState = JSON.parse(storedState);
+                if (!parsedState || typeof parsedState !== 'object' || Array.isArray(parsedState)) {
+                    throw new TypeError('Saved budget state must be an object.');
+                }
+                return parsedState;
+            } catch (error) {
+                console.error('Unable to parse saved budget state:', error);
+                localStorage.setItem('budgetStateRecovery', storedState);
+                return null;
+            }
+        }
 
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
-
-                { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 }
-
-            ],
-
+        let budgetState = loadBudgetState() || {
+            currentActiveWeekId: 'week-1',
+            viewedWeekId: 'week-1',
+            weeklyLimit: DEFAULT_WEEKLY_LIMIT,
+            weeks: createInitialWeeks(),
+            pendingRollovers: [],
             savingsBoxes: [],
-
             debts: [],
-
             transactions: [],
-
+            defaultItems: DEFAULT_EXPENSE_ITEMS,
+            userCustomItems: loadUserCustomItems(),
+            archivedMonths: [],
+            activeMonthId: getMonthId(Date.now()),
             totalSavings: 0,
-
             currentSalary: null,
-
             salaryHistory: []
-
         };
 
 
@@ -3001,6 +5192,25 @@
             if (!budgetState.transactions || !Array.isArray(budgetState.transactions)) budgetState.transactions = [];
 
             budgetState.transactions = budgetState.transactions.map(normalizeTransaction);
+            budgetState.defaultItems = DEFAULT_EXPENSE_ITEMS;
+            const customItemCandidates = [
+                ...(Array.isArray(budgetState.userCustomItems) ? budgetState.userCustomItems : []),
+                ...loadUserCustomItems()
+            ].map(normalizeCustomItem).filter(item => item && item.isSavedForFuture);
+            const defaultItemNames = new Set(
+                DEFAULT_EXPENSE_ITEMS.map(item => item.name.toLocaleLowerCase())
+            );
+            budgetState.userCustomItems = [...new Map(
+                customItemCandidates
+                    .filter(item => !defaultItemNames.has(item.name.toLocaleLowerCase()))
+                    .map(item => [item.name.toLocaleLowerCase(), item])
+            ).values()];
+            budgetState.archivedMonths = Array.isArray(budgetState.archivedMonths)
+                ? budgetState.archivedMonths.filter(month => month && /^\d{4}-\d{2}$/.test(month.id))
+                : [];
+            budgetState.activeMonthId = /^\d{4}-\d{2}$/.test(budgetState.activeMonthId || '')
+                ? budgetState.activeMonthId
+                : getMonthId(Date.now());
 
             if (!budgetState.savingsBoxes || !Array.isArray(budgetState.savingsBoxes)) {
 
@@ -3056,7 +5266,7 @@
 
             if (!budgetState.salaryHistory || !Array.isArray(budgetState.salaryHistory)) budgetState.salaryHistory = [];
 
-            if (!budgetState.weeks || !Array.isArray(budgetState.weeks) || budgetState.weeks.length !== 4) {
+            if (!budgetState.weeks || !Array.isArray(budgetState.weeks) || budgetState.weeks.length === 0) {
 
                 const defaultWeeks = [
 
@@ -3070,24 +5280,6 @@
 
                 ];
 
-                // Preserve existing week data if expanding
-
-                if (budgetState.weeks && Array.isArray(budgetState.weeks)) {
-
-                    budgetState.weeks.forEach((w, i) => { if (i < 4) defaultWeeks[i] = w; });
-
-                }
-
-                // Force migration from 5 weeks to 4 weeks
-
-                if (budgetState.weeks && budgetState.weeks.length === 5) {
-
-                    console.log('Migrating from 5 weeks to 4 weeks - removing week 5');
-
-                    localStorage.setItem('migratedTo4Weeks', 'true');
-
-                }
-
                 budgetState.weeks = defaultWeeks;
 
             }
@@ -3100,56 +5292,615 @@
 
                 w.car = parseInt(w.car) || 0;
 
-                w.maxPersonal = parseInt(w.maxPersonal) || 25000;
+                w.maxPersonal = Number.isFinite(Number(w.maxPersonal))
+                    ? Math.max(0, parseInt(w.maxPersonal))
+                    : 0;
 
-                w.maxCar = parseInt(w.maxCar) || 25000;
+                w.maxCar = Number.isFinite(Number(w.maxCar))
+                    ? Math.max(0, parseInt(w.maxCar))
+                    : 0;
 
                 w.days = parseInt(w.days) || 7;
 
             });
 
-            localStorage.setItem('budgetState', JSON.stringify(budgetState));
+            const legacyActiveIndex = Math.max(0, (parseInt(budgetState.currentWeek) || 1) - 1);
+            const legacyActiveStart = Number.isFinite(Number(budgetState.weekStartDate))
+                ? Number(budgetState.weekStartDate)
+                : getInitialWeekStart();
+            const existingSequentialState = budgetState.weeks.every(week =>
+                typeof week.id === 'string' &&
+                Number.isFinite(Date.parse(week.startDate)) &&
+                Number.isFinite(Date.parse(week.endDate))
+            );
+            const sequenceStart = existingSequentialState
+                ? Date.parse(budgetState.weeks[0].startDate)
+                : legacyActiveStart - (legacyActiveIndex * WEEK_DURATION_MS);
+            let nextSequentialStart = sequenceStart;
+
+            budgetState.weeks = budgetState.weeks.map((week, index) => {
+                const storedDuration = existingSequentialState
+                    ? Date.parse(week.endDate) - Date.parse(week.startDate)
+                    : WEEK_DURATION_MS;
+                const duration = storedDuration > 0 ? storedDuration : WEEK_DURATION_MS;
+                const startTimestamp = nextSequentialStart;
+                const normalized = createBudgetWeek(index + 1, startTimestamp, week);
+                normalized.startDate = new Date(startTimestamp).toISOString();
+                normalized.endDate = new Date(startTimestamp + duration).toISOString();
+                nextSequentialStart = startTimestamp + duration;
+                normalized.id = typeof week.id === 'string' ? week.id : `week-${index + 1}`;
+                normalized.isClosed = week.isClosed === true || week.status === 'completed';
+                normalized.status = normalized.isClosed ? 'completed' : 'pending';
+                normalized.isInitialized = existingSequentialState
+                    ? week.isInitialized !== false
+                    : week.status !== 'pending' || normalized.personal + normalized.car > 0;
+                return normalized;
+            });
+
+            let activeWeek = budgetState.weeks[legacyActiveIndex];
+            if (!activeWeek || activeWeek.isClosed) {
+                activeWeek = budgetState.weeks.find(week => !week.isClosed);
+            }
+            if (!activeWeek) {
+                const previousWeek = budgetState.weeks[budgetState.weeks.length - 1];
+                activeWeek = createBudgetWeek(
+                    previousWeek.weekNumber + 1,
+                    Date.parse(previousWeek.endDate)
+                );
+                budgetState.weeks.push(activeWeek);
+            }
+
+            budgetState.currentActiveWeekId =
+                budgetState.weeks.some(week => week.id === budgetState.currentActiveWeekId && !week.isClosed)
+                    ? budgetState.currentActiveWeekId
+                    : activeWeek.id;
+            // Always open the dashboard on the true active week. Navigation only
+            // changes the selected historical/preview week for the current session.
+            budgetState.viewedWeekId = budgetState.currentActiveWeekId;
+            budgetState.weeklyLimit = Math.max(0, parseInt(budgetState.weeklyLimit) || DEFAULT_WEEKLY_LIMIT);
+            budgetState.pendingRollovers = Array.isArray(budgetState.pendingRollovers)
+                ? budgetState.pendingRollovers
+                : [];
+
+            persistBudgetState();
 
         }
 
-        // Force clear old 5-week data
+        function getActiveWeek() {
+            return budgetState.weeks.find(week => week.id === budgetState.currentActiveWeekId) || null;
+        }
 
-if (localStorage.getItem('migratedTo4Weeks') !== 'true') {
+        function getViewedWeek() {
+            return budgetState.weeks.find(week => week.id === budgetState.viewedWeekId) || getActiveWeek();
+        }
 
-    localStorage.removeItem('budgetState');
+        function syncLegacyWeekFields() {
+            const activeWeek = getActiveWeek();
+            const activeIndex = Math.max(0, budgetState.weeks.findIndex(week => week.id === budgetState.currentActiveWeekId));
+            budgetState.currentWeek = activeIndex + 1;
+            budgetState.weekStartDate = activeWeek ? Date.parse(activeWeek.startDate) : getInitialWeekStart();
+            budgetState.weeks.forEach(week => {
+                week.status = week.isClosed
+                    ? 'completed'
+                    : week.id === budgetState.currentActiveWeekId ? 'active' : 'pending';
+            });
+        }
 
-    console.log('Cleared old 5-week data');
+        function persistBudgetState() {
+            syncLegacyWeekFields();
+            persistUserCustomItems();
+            localStorage.setItem('budgetState', JSON.stringify(budgetState));
+        }
 
-}
+        function getMonthId(timestamp = Date.now()) {
+            const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+            const safeDate = Number.isNaN(date.getTime()) ? new Date() : date;
+            return `${safeDate.getFullYear()}-${String(safeDate.getMonth() + 1).padStart(2, '0')}`;
+        }
 
-migrateData();
+        function getMonthName(monthId) {
+            const [year, month] = monthId.split('-').map(Number);
+            return new Date(year, month - 1, 1).toLocaleDateString('en-US', {
+                month: 'long',
+                year: 'numeric'
+            });
+        }
 
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            })[character]);
+        }
 
+        function isSpendingTransaction(transaction) {
+            const description = String(transaction.description || '').toLowerCase();
+            const category = String(transaction.category || '').toLowerCase();
+            if (toIntegerAmount(transaction.amount) <= 0) return false;
+            if (transaction.sourceType === 'salary' || transaction.sourceType === 'debt_payment') return false;
+            if (category.startsWith('box_')) return false;
+            if (
+                description.startsWith('salary distribution') ||
+                description.startsWith('added to ') ||
+                description.startsWith('payment received')
+            ) return false;
+            return true;
+        }
 
-        function checkWeekProgression() {
+        function inferArchivePriority(label) {
+            const value = String(label || '').toLowerCase();
+            if (/food|grocer|medicine|pharmacy|prescription|bill|water|electric|rent/.test(value)) return 'primary';
+            if (/cafe|coffee|entertain|movie|gaming|snack|subscription/.test(value)) return 'non-essential';
+            return 'secondary';
+        }
 
-            const now = new Date().getTime();
+        function getArchiveItems(transaction) {
+            if (Array.isArray(transaction.selectedItems) && transaction.selectedItems.length) {
+                return transaction.selectedItems;
+            }
+            const name = getTransactionLabel(transaction.category || 'Other') || 'Other';
+            return [{
+                name,
+                priority: transaction.priority || inferArchivePriority(name)
+            }];
+        }
 
-            const currentWeekData = budgetState.weeks[budgetState.currentWeek - 1];
+        function compileArchivedMonth(monthId, sourceTransactions) {
+            const monthTransactions = sortTransactionsByDate(
+                sourceTransactions
+                    .filter(transaction => getMonthId(transaction.effectiveAt) === monthId)
+                    .map(transaction => normalizeTransaction(transaction))
+            );
+            const spendingByCategory = {};
+            const spendingByPriority = {
+                primary: 0,
+                secondary: 0,
+                nonEssential: 0
+            };
+            let totalSpent = 0;
 
-            const daysInThisWeek = currentWeekData ? currentWeekData.days : 7;
+            monthTransactions.forEach(transaction => {
+                const amount = Math.max(0, toIntegerAmount(transaction.amount));
+                if (!isSpendingTransaction(transaction)) return;
+                totalSpent += amount;
+                const items = getArchiveItems(transaction);
+                const baseShare = Math.floor(amount / items.length);
+                let remainder = amount - (baseShare * items.length);
 
-            const weekDuration = daysInThisWeek * 24 * 60 * 60 * 1000;
+                items.forEach(item => {
+                    const allocatedAmount = baseShare + (remainder > 0 ? 1 : 0);
+                    remainder = Math.max(0, remainder - 1);
+                    const category = item.name || 'Other';
+                    const priority = item.priority || inferArchivePriority(category);
+                    if (!spendingByCategory[category]) {
+                        spendingByCategory[category] = {
+                            amountSpent: 0,
+                            percentage: 0,
+                            transactionCount: 0
+                        };
+                    }
+                    spendingByCategory[category].amountSpent += allocatedAmount;
+                    spendingByCategory[category].transactionCount += 1;
+                    if (priority === 'primary') spendingByPriority.primary += allocatedAmount;
+                    else if (priority === 'non-essential') spendingByPriority.nonEssential += allocatedAmount;
+                    else spendingByPriority.secondary += allocatedAmount;
+                });
+            });
 
-            const elapsed = now - budgetState.weekStartDate;
+            Object.values(spendingByCategory).forEach(category => {
+                category.percentage = totalSpent
+                    ? Number(((category.amountSpent / totalSpent) * 100).toFixed(1))
+                    : 0;
+            });
 
+            const savingsTransfers = monthTransactions
+                .filter(transaction => String(transaction.category || '').startsWith('box_'))
+                .reduce((sum, transaction) => sum + Math.max(0, toIntegerAmount(transaction.amount)), 0);
+            const closedWeekSavings = budgetState.weeks
+                .filter(week => week.closedAt && getMonthId(week.closedAt) === monthId)
+                .reduce((sum, week) => sum + Math.max(0, toIntegerAmount(week.saved)), 0);
+            const totalIncome = budgetState.salaryHistory
+                .filter(salary => salary && getMonthId(salary.date || salary.createdAt) === monthId)
+                .reduce((sum, salary) => sum + Math.max(0, toIntegerAmount(salary.amount)), 0);
 
+            return {
+                id: monthId,
+                monthName: getMonthName(monthId),
+                totalIncome,
+                totalSpent,
+                totalSaved: savingsTransfers + closedWeekSavings,
+                spendingByCategory,
+                spendingByPriority,
+                transactions: monthTransactions.map(transaction => ({
+                    ...transaction,
+                    archivedAt: new Date().toISOString()
+                })),
+                createdAt: new Date().toISOString()
+            };
+        }
 
-            if (elapsed >= weekDuration && budgetState.currentWeek <= 4) {
+        function saveMonthlyArchiveFailsafe(reason) {
+            try {
+                localStorage.setItem('monthlyArchiveFailsafe', JSON.stringify({
+                    createdAt: new Date().toISOString(),
+                    reason,
+                    state: budgetState
+                }));
+                return true;
+            } catch (error) {
+                console.error('Monthly archive backup failed:', error);
+                showAppToast('Archive paused: a safety backup could not be created.');
+                return false;
+            }
+        }
 
-                completeWeek(); // Automatically finish the current week
+        function runMonthlyArchiveCheck(now = Date.now()) {
+            const currentMonthId = getMonthId(now);
+            const candidateMonths = new Set();
+            const archivedMonthIds = new Set(
+                (budgetState.archivedMonths || []).map(month => month.id)
+            );
+            if (budgetState.activeMonthId && budgetState.activeMonthId < currentMonthId) {
+                candidateMonths.add(budgetState.activeMonthId);
+            }
+            budgetState.transactions.forEach(transaction => {
+                const monthId = getMonthId(transaction.effectiveAt);
+                if (monthId < currentMonthId) candidateMonths.add(monthId);
+            });
+            budgetState.salaryHistory.forEach(salary => {
+                const monthId = getMonthId(salary.date || salary.createdAt);
+                if (monthId < currentMonthId && !archivedMonthIds.has(monthId)) candidateMonths.add(monthId);
+            });
+            budgetState.weeks.forEach(week => {
+                if (!week.closedAt) return;
+                const monthId = getMonthId(week.closedAt);
+                if (monthId < currentMonthId && !archivedMonthIds.has(monthId)) candidateMonths.add(monthId);
+            });
 
-                budgetState.weekStartDate = now; // Reset timer for the new week
+            const monthsToArchive = [...candidateMonths].sort();
+            const hasPastTransactions = budgetState.transactions.some(transaction =>
+                getMonthId(transaction.effectiveAt) < currentMonthId
+            );
+            const monthChanged = budgetState.activeMonthId !== currentMonthId;
+            if (!monthsToArchive.length && !hasPastTransactions && !monthChanged) return false;
+            if (!saveMonthlyArchiveFailsafe(`Month transition to ${currentMonthId}`)) return false;
 
-                updateUI();
+            monthsToArchive.forEach(monthId => {
+                const existingArchive = budgetState.archivedMonths.find(month => month.id === monthId);
+                const combinedTransactions = [
+                    ...(existingArchive?.transactions || []),
+                    ...budgetState.transactions.filter(transaction => getMonthId(transaction.effectiveAt) === monthId)
+                ];
+                const uniqueTransactions = [...new Map(
+                    combinedTransactions.map(transaction => [String(transaction.id), transaction])
+                ).values()];
+                const compiledArchive = compileArchivedMonth(monthId, uniqueTransactions);
+                budgetState.archivedMonths = budgetState.archivedMonths.filter(month => month.id !== monthId);
+                budgetState.archivedMonths.push(compiledArchive);
+            });
 
+            budgetState.transactions = budgetState.transactions.filter(transaction =>
+                getMonthId(transaction.effectiveAt) >= currentMonthId
+            );
+            budgetState.activeMonthId = currentMonthId;
+            budgetState.archivedMonths.sort((a, b) => b.id.localeCompare(a.id));
+            persistBudgetState();
+            renderArchiveCards();
+            if (monthsToArchive.length) {
+                showAppToast(`${monthsToArchive.length} monthly report${monthsToArchive.length === 1 ? '' : 's'} archived safely.`);
+            }
+            return true;
+        }
+
+        function renderArchiveCards() {
+            const grid = document.getElementById('archiveGrid');
+            if (!grid) return;
+            const archives = [...(budgetState.archivedMonths || [])].sort((a, b) => b.id.localeCompare(a.id));
+            if (!archives.length) {
+                grid.innerHTML = `
+                    <div class="glass-card text-muted" style="text-align: center; padding: 2rem;">
+                        <i class="fa-solid fa-box-archive" style="display: block; font-size: 2rem; margin-bottom: 0.75rem;" aria-hidden="true"></i>
+                        Your completed monthly reports will appear here automatically.
+                    </div>
+                `;
+                return;
             }
 
+            grid.innerHTML = archives.map(archive => {
+                const priorities = archive.spendingByPriority || {};
+                const primary = Math.max(0, toIntegerAmount(priorities.primary));
+                const flexible = Math.max(
+                    0,
+                    toIntegerAmount(priorities.secondary) + toIntegerAmount(priorities.nonEssential)
+                );
+                const total = primary + flexible;
+                const primaryWidth = total ? (primary / total) * 100 : 0;
+                const flexibleWidth = total ? 100 - primaryWidth : 0;
+                return `
+                    <button type="button" class="archive-card" data-archive-id="${archive.id}">
+                        <div class="archive-card-header">
+                            <div>
+                                <div class="archive-card-title">${escapeHTML(archive.monthName)}</div>
+                                <div class="archive-card-total">${formatIQD(archive.totalSpent)}</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-muted" aria-hidden="true"></i>
+                        </div>
+                        <div class="archive-split-bar" aria-label="${primaryWidth.toFixed(0)}% primary needs">
+                            <span class="archive-split-primary" style="width: ${primaryWidth}%"></span>
+                            <span class="archive-split-flexible" style="width: ${flexibleWidth}%"></span>
+                        </div>
+                        <div class="archive-card-footer">
+                            <span>Needs ${primaryWidth.toFixed(0)}%</span>
+                            <span>Saved ${formatIQD(archive.totalSaved)}</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            grid.querySelectorAll('[data-archive-id]').forEach(card => {
+                card.addEventListener('click', () => openArchivedMonth(card.dataset.archiveId));
+            });
+        }
+
+        function renderArchiveReportBody(archive, query = '') {
+            const body = document.getElementById('archiveReportBody');
+            if (!body) return;
+            const normalizedQuery = query.trim().toLowerCase();
+            const categories = Object.entries(archive.spendingByCategory || {})
+                .sort(([, a], [, b]) => b.amountSpent - a.amountSpent);
+            const transactions = (archive.transactions || []).filter(transaction => {
+                if (!normalizedQuery) return true;
+                return [
+                    transaction.description,
+                    transaction.category,
+                    transaction.location,
+                    transaction.notes,
+                    transaction.amount,
+                    ...(transaction.itemCategories || [])
+                ].some(value => String(value || '').toLowerCase().includes(normalizedQuery));
+            });
+
+            body.innerHTML = `
+                <div class="archive-report-totals">
+                    <div class="archive-total-box"><span>Total Income</span><strong>${formatIQD(archive.totalIncome)}</strong></div>
+                    <div class="archive-total-box"><span>Total Spent</span><strong>${formatIQD(archive.totalSpent)}</strong></div>
+                    <div class="archive-total-box"><span>Total Saved</span><strong>${formatIQD(archive.totalSaved)}</strong></div>
+                </div>
+                <h3 class="archive-section-title">How Much I Spent on What</h3>
+                <div class="archive-category-list">
+                    ${categories.length ? categories.map(([name, data]) => `
+                        <div class="archive-category-row">
+                            <span>${escapeHTML(name)} <small class="text-muted">(${data.transactionCount})</small></span>
+                            <span class="archive-category-value">
+                                <strong>${formatIQD(data.amountSpent)}</strong>
+                                <span class="archive-percentage">${data.percentage}%</span>
+                            </span>
+                        </div>
+                    `).join('') : '<div class="text-muted">No spending categories recorded.</div>'}
+                </div>
+                <h3 class="archive-section-title">Transaction Log</h3>
+                <div class="archive-transaction-log">
+                    ${transactions.length ? transactions.map(transaction => `
+                        <div class="archive-transaction-row">
+                            <div>
+                                <strong>${escapeHTML(transaction.description || getTransactionLabel(transaction.category))}</strong>
+                                <div class="archive-transaction-meta">
+                                    ${escapeHTML(formatTransactionDate(transaction.effectiveAt))}
+                                    ${transaction.location ? ` · ${escapeHTML(transaction.location)}` : ''}
+                                    ${transaction.notes ? ` · ${escapeHTML(transaction.notes)}` : ''}
+                                </div>
+                                <span class="archive-priority-badge">${escapeHTML(transaction.priority || 'uncategorized')}</span>
+                            </div>
+                            <strong>${formatIQD(transaction.amount)}</strong>
+                        </div>
+                    `).join('') : '<div class="text-muted">No transactions match your search.</div>'}
+                </div>
+            `;
+        }
+
+        window.openArchivedMonth = function (archiveId) {
+            const archive = budgetState.archivedMonths.find(month => month.id === archiveId);
+            if (!archive) return;
+            const modal = document.getElementById('customModal');
+            const content = modal.querySelector('.modal-content');
+            const title = document.getElementById('modalTitle');
+            const desc = document.getElementById('modalDesc');
+            const input = document.getElementById('modalInput');
+            const options = document.getElementById('modalOptions');
+            const action = document.getElementById('modalActionBtn');
+            const cancel = document.getElementById('modalCancelBtn');
+
+            content.classList.remove('expense-wizard');
+            content.classList.add('archive-report');
+            content.onkeydown = null;
+            title.textContent = archive.monthName;
+            desc.textContent = 'A read-only snapshot preserved in your History Vault.';
+            input.style.display = 'none';
+            input.oninput = null;
+            options.style.display = 'flex';
+            options.innerHTML = `
+                <input class="archive-search" id="archiveSearchInput" type="search"
+                    placeholder="Search transactions, notes, locations…" aria-label="Search archived transactions">
+                <div id="archiveReportBody"></div>
+            `;
+            action.style.display = 'none';
+            cancel.textContent = 'Close';
+            cancel.onclick = closeModal;
+            renderArchiveReportBody(archive);
+            const search = document.getElementById('archiveSearchInput');
+            search.addEventListener('input', () => renderArchiveReportBody(archive, search.value));
+            modal.classList.add('active');
+            setTimeout(() => search.focus(), 50);
+        };
+
+        migrateData();
+        runMonthlyArchiveCheck();
+
+
+
+        function checkWeekProgression(now = Date.now()) {
+
+            const activeWeek = getActiveWeek();
+
+            if (!activeWeek || activeWeek.isClosed || now < Date.parse(activeWeek.endDate)) return false;
+
+            expireActiveWeek(activeWeek, now);
+
+            return true;
+
+        }
+
+        function toIntegerAmount(value) {
+            const amount = Number(value);
+            return Number.isFinite(amount) ? Math.trunc(amount) : 0;
+        }
+
+        function formatIQD(value) {
+            return `${toIntegerAmount(value).toLocaleString('en-US')} IQD`;
+        }
+
+        function calculateFinancialMetrics(state) {
+            const weeks = Array.isArray(state && state.weeks) ? state.weeks : [];
+            const savingsBoxes = Array.isArray(state && state.savingsBoxes) ? state.savingsBoxes : [];
+            const debts = Array.isArray(state && state.debts) ? state.debts : [];
+            const salary = state && state.currentSalary;
+
+            const weeklyCash = weeks.reduce((sum, week) => {
+                if (!week || week.status === 'completed') return sum;
+                return sum + toIntegerAmount(week.personal) + toIntegerAmount(week.car);
+            }, 0);
+
+            const undistributedSalary = salary
+                ? Math.max(0, toIntegerAmount(salary.amount) - toIntegerAmount(salary.distributed))
+                : 0;
+
+            const savingsBoxTotal = savingsBoxes.reduce(
+                (sum, box) => sum + Math.max(0, toIntegerAmount(box && box.balance)),
+                0
+            );
+
+            // totalSavings is the persistent completed-week accumulator. week.saved
+            // mirrors its current-month entries, so adding both would double-count them.
+            const completedWeekSavings = Math.max(0, toIntegerAmount(state && state.totalSavings));
+            const totalDebt = debts.reduce(
+                (sum, debt) => sum + Math.max(0, toIntegerAmount(debt && debt.amount)),
+                0
+            );
+
+            const availableCash = weeklyCash + undistributedSalary;
+            const totalSavings = savingsBoxTotal + completedWeekSavings;
+
+            return {
+                availableCash,
+                totalSavings,
+                totalDebt,
+                netWorth: availableCash + totalSavings - totalDebt
+            };
+        }
+
+        function updateFinancialMetrics(state) {
+            const metrics = calculateFinancialMetrics(state);
+            const metricElements = {
+                availableCash: document.getElementById('availableCashMetric'),
+                totalSavings: document.getElementById('totalSavingsMetric'),
+                totalDebt: document.getElementById('totalDebtMetric'),
+                netWorth: document.getElementById('netWorthMetric')
+            };
+
+            Object.entries(metricElements).forEach(([metric, element]) => {
+                if (element) element.innerText = formatIQD(metrics[metric]);
+            });
+        }
+
+        function formatWeekDateRange(week) {
+            if (!week) return 'No active week';
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            const start = new Date(week.startDate).toLocaleDateString('en-US', options);
+            const end = new Date(week.endDate).toLocaleDateString('en-US', options);
+            return `${start} – ${end}`;
+        }
+
+        function formatCountdown(milliseconds) {
+            const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        function updateWeekHeader(now = Date.now()) {
+            const viewedWeek = getViewedWeek();
+            const activeWeek = getActiveWeek();
+            const dateRange = document.getElementById('activeWeekDateRange');
+            const countdown = document.getElementById('activeWeekCountdown');
+            const previousButton = document.getElementById('previousWeekBtn');
+            const nextButton = document.getElementById('nextWeekBtn');
+            const endWeekButton = document.getElementById('endWeekBtn');
+            const fastForwardButton = document.getElementById('fastForwardWeekBtn');
+            const viewedIndex = viewedWeek
+                ? budgetState.weeks.findIndex(week => week.id === viewedWeek.id)
+                : -1;
+
+            if (dateRange) {
+                dateRange.innerText = viewedWeek
+                    ? `Week ${viewedWeek.weekNumber} • ${formatWeekDateRange(viewedWeek)}`
+                    : 'No active week';
+            }
+
+            if (countdown && viewedWeek) {
+                if (viewedWeek.isClosed) {
+                    countdown.innerText = 'Week closed';
+                } else if (viewedWeek.id === activeWeek?.id) {
+                    countdown.innerText = `${formatCountdown(Date.parse(viewedWeek.endDate) - now)} remaining`;
+                } else {
+                    countdown.innerText = `Starts in ${formatCountdown(Date.parse(viewedWeek.startDate) - now)}`;
+                }
+            }
+
+            if (previousButton) {
+                previousButton.disabled = viewedIndex <= 0;
+                previousButton.setAttribute('aria-controls', 'weekGrid');
+            }
+            if (nextButton) {
+                nextButton.disabled = viewedIndex < 0 || viewedIndex >= budgetState.weeks.length - 1;
+                nextButton.setAttribute('aria-controls', 'weekGrid');
+            }
+            if (endWeekButton) {
+                endWeekButton.style.display =
+                    viewedWeek && activeWeek && viewedWeek.id === activeWeek.id && !activeWeek.isClosed
+                        ? 'block'
+                        : 'none';
+            }
+            if (fastForwardButton) {
+                const isDevelopment =
+                    location.protocol === 'file:' ||
+                    location.hostname === 'localhost' ||
+                    location.hostname === '127.0.0.1';
+                fastForwardButton.style.display = isDevelopment ? 'block' : 'none';
+            }
+        }
+
+        window.navigateWeek = function (direction) {
+            const viewedWeek = getViewedWeek();
+            const currentIndex = budgetState.weeks.findIndex(week => week.id === viewedWeek?.id);
+            const targetIndex = currentIndex + Number(direction);
+            if (targetIndex < 0 || targetIndex >= budgetState.weeks.length) return;
+            budgetState.viewedWeekId = budgetState.weeks[targetIndex].id;
+            persistBudgetState();
+            updateUI();
+        };
+
+        function updateWeekCountdown() {
+            const transitioned = checkWeekProgression(Date.now());
+            if (transitioned) {
+                updateUI();
+                return;
+            }
+            updateWeekHeader(Date.now());
         }
 
 
@@ -3212,7 +5963,8 @@ migrateData();
 
                     savGrid.innerHTML += `
 
-                        <div class="add-box-btn" onclick="addSavingBox()">
+                        <div class="add-box-btn" role="button" tabindex="0" data-keyboard-click
+                            aria-label="Create savings box" onclick="addSavingBox()">
 
                             <i class="fa-solid fa-plus" style="font-size: 1.5rem;"></i>
 
@@ -3224,7 +5976,7 @@ migrateData();
 
 
 
-                checkWeekProgression();
+                updateWeekHeader();
 
 
 
@@ -3272,6 +6024,8 @@ migrateData();
 
                 if (totalDebtDisplay) totalDebtDisplay.innerText = totalDebt.toLocaleString() + ' IQD';
 
+                updateFinancialMetrics(budgetState);
+
 
 
                 // 3. RESTORE FULL WEEK GRID (UI Restoration)
@@ -3312,7 +6066,7 @@ migrateData();
 
                         } else {
 
-                            grid.innerHTML = '<div class="glass-card" style="text-align: center; padding: 2rem;"><h3 style="margin-bottom: 1rem; color: var(--accent-emerald);">This Month\'s Transactions</h3>';
+                            grid.innerHTML = '<div class="glass-card" style="text-align: center; padding: 2rem;"><h3 style="margin-bottom: 1rem; color: var(--color-brand-text);">This Month\'s Transactions</h3>';
 
                             monthlyTransactions.forEach(tx => {
 
@@ -3322,9 +6076,8 @@ migrateData();
 
                                 const icon = isPersonal ? 'fa-user' : isCar ? 'fa-car' : 'fa-piggy-bank';
 
-                                const iconBg = isPersonal ? 'rgba(0, 242, 254, 0.1)' : isCar ? 'rgba(16, 185, 129, 0.1)' : 'rgba(59, 130, 246, 0.14)';
-
-                                const iconColor = isPersonal ? 'var(--accent-teal)' : isCar ? 'var(--accent-emerald)' : '#60a5fa';
+                                const iconBg = 'var(--color-surface-subtle)';
+                                const iconColor = 'var(--color-brand-text)';
 
                                 
 
@@ -3354,7 +6107,7 @@ migrateData();
 
                                                 <button class="mini-btn teal" onclick="editTransaction(${tx.id})">Edit</button>
 
-                                                <button class="mini-btn rose delete-tx-btn" data-tx-id="${tx.id}" style="background: var(--accent-rose) !important; color: white !important;">Delete</button>
+                                                <button class="mini-btn rose delete-tx-btn" data-tx-id="${tx.id}" style="background: var(--color-danger) !important; color: var(--color-on-danger) !important;">Delete</button>
 
                                             </div>
 
@@ -3370,29 +6123,47 @@ migrateData();
 
                         // Show normal week grid
 
-                        budgetState.weeks.forEach((week, index) => {
-
-                        const weekNum = index + 1;
+                        const week = getViewedWeek();
+                        if (week) {
+                        const index = budgetState.weeks.findIndex(entry => entry.id === week.id);
+                        const weekNum = week.weekNumber;
 
                         const totalLeft = (parseInt(week.personal) || 0) + (parseInt(week.car) || 0);
 
-                        const totalMax = (parseInt(week.maxPersonal) || 1) + (parseInt(week.maxCar) || 1);
+                        const personalMax = Math.max(0, parseInt(week.maxPersonal) || 0);
+                        const carMax = Math.max(0, parseInt(week.maxCar) || 0);
+                        const totalMax = personalMax + carMax;
+                        const weeklyLimitSummary = document.getElementById('weeklyLimitSummary');
+                        if (weeklyLimitSummary) {
+                            weeklyLimitSummary.textContent = totalMax > 0
+                                ? `${formatIQD(totalMax)} weekly limit`
+                                : '0 IQD until you set a budget';
+                        }
 
-                        const isCurrent = budgetState.currentWeek === weekNum;
+                        const isCurrent = week.id === budgetState.currentActiveWeekId;
 
 
 
-                        let cardClass = `glass-card week-card ${week.status} ${isCurrent ? 'active' : ''}`;
+                        let cardClass = `glass-card week-card ${week.status} ${isCurrent ? 'active' : 'preview'}`;
 
                         if (week.status === 'pending' && !isCurrent) cardClass += ' locked';
 
 
 
-                        let statusText = isCurrent ? 'Current' : week.status.charAt(0).toUpperCase() + week.status.slice(1);
+                        let statusText = isCurrent ? 'Current Active Week' : week.isClosed ? 'Closed' : 'Upcoming';
 
 
 
-                        const totalSpent = (parseInt(week.maxPersonal) - parseInt(week.personal)) + (parseInt(week.maxCar) - parseInt(week.car));
+                        const totalSpent = Math.max(0, totalMax - totalLeft);
+                        const remainingPercent = totalMax
+                            ? Math.min(100, Math.max(0, Math.round((totalLeft / totalMax) * 100)))
+                            : 0;
+                        const personalPercent = personalMax
+                            ? Math.min(100, Math.max(0, (week.personal / personalMax) * 100))
+                            : 0;
+                        const carPercent = carMax
+                            ? Math.min(100, Math.max(0, (week.car / carMax) * 100))
+                            : 0;
 
 
 
@@ -3408,11 +6179,10 @@ migrateData();
 
                             const now = new Date().getTime();
 
-                            const elapsedMs = now - budgetState.weekStartDate;
+                            const remainingMs = Math.max(0, Date.parse(week.endDate) - now);
+                            daysRemaining = Math.ceil(remainingMs / (1000 * 60 * 60 * 24));
 
-                            daysRemaining = Math.max(0, totalDaysForThisWeek - Math.floor(elapsedMs / (1000 * 60 * 60 * 24)));
-
-                        } else if (week.status === 'completed') {
+                        } else if (week.isClosed) {
 
                             daysRemaining = 0;
 
@@ -3422,93 +6192,71 @@ migrateData();
 
                         grid.innerHTML += `
 
-                            <div class="${cardClass}" onclick="setWeeklyBudget(${index})">
-
-                                <div class="week-header" style="align-items: flex-start;">
-
-                                    <div>
-
+                            <article class="${cardClass}">
+                                <div class="week-card-top">
+                                    <div class="week-card-identity">
                                         <div class="week-title">Week ${weekNum}</div>
-
                                         <div class="week-status ${isCurrent ? 'text-teal' : ''}">${statusText}</div>
-
                                     </div>
-
-                                    <div style="text-align: right;">
-
-                                        <div class="text-rose" style="font-size: 0.75rem; font-weight: 800;">-${totalSpent.toLocaleString()}</div>
-
-                                        <div class="text-muted" style="font-size: 0.6rem;">${daysRemaining}/${totalDaysForThisWeek} Days</div>
-
+                                    <div class="week-card-meta">
+                                        <span class="week-days-pill">
+                                            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                                            ${week.isClosed ? 'Ended' : `${daysRemaining} day${daysRemaining === 1 ? '' : 's'} left`}
+                                        </span>
+                                        ${isCurrent ? `
+                                            <button type="button" class="week-edit-btn"
+                                                onclick="setWeeklyBudget(${index})"
+                                                aria-label="Edit Week ${weekNum} budget">
+                                                <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                                            </button>
+                                        ` : ''}
                                     </div>
-
                                 </div>
-
-                                ${week.status === 'completed' ? `
-
-                                    <div style="text-align: center;">
-
-                                        <div class="text-muted" style="font-size: 0.7rem;">SAVED</div>
-
-                                        <div class="text-emerald" style="font-size: 1.2rem; font-weight: 800;">+${(week.saved || 0).toLocaleString()}</div>
-
-                                        <div class="text-muted" style="font-size: 0.6rem; margin-top: 5px;">Sent to Savings</div>
-
+                                ${week.isClosed ? `
+                                    <div class="week-closed-panel">
+                                        <span class="week-balance-label">Remaining at close</span>
+                                        <div class="total-left">${formatIQD(week.closingBalance ?? week.saved ?? 0)}</div>
+                                        <div class="text-muted">
+                                            ${week.rolloverDestination ? 'Rollover completed' : 'Awaiting rollover choice'}
+                                        </div>
                                     </div>
-
                                 ` : `
-
-                                    <div class="allowance-items">
-
-                                        <div class="allowance-item">
-
-                                            <div class="allowance-label">Personal <span>${((week.personal || 0) / 1000).toFixed(1)}k / ${(week.maxPersonal / 1000).toFixed(1)}k</span></div>
-
-                                            <div class="allowance-bar"><div class="allowance-fill" style="width: ${(week.personal / week.maxPersonal) * 100}%;"></div></div>
-
+                                    <div class="week-balance-panel">
+                                        <span class="week-balance-label">Available this week</span>
+                                        <div class="week-balance-summary">
+                                            <div class="total-left">
+                                                ${totalLeft.toLocaleString()}
+                                                <span>IQD</span>
+                                            </div>
+                                            <div class="week-spending-summary">
+                                                <strong>${formatIQD(totalSpent)} spent</strong>
+                                                <span>${remainingPercent}% remaining</span>
+                                            </div>
                                         </div>
-
-                                        <div class="allowance-item">
-
-                                            <div class="allowance-label">Car <span>${((week.car || 0) / 1000).toFixed(1)}k / ${(week.maxCar / 1000).toFixed(1)}k</span></div>
-
-                                            <div class="allowance-bar"><div class="allowance-fill" style="width: ${(week.car / week.maxCar) * 100}%; background: var(--accent-emerald);"></div></div>
-
-                                        </div>
-
                                     </div>
-
+                                    <div class="allowance-items">
+                                        <div class="allowance-item">
+                                            <div class="allowance-label">
+                                                <span>Personal</span>
+                                                <span>${formatIQD(week.personal || 0)}</span>
+                                            </div>
+                                            <div class="allowance-bar" aria-label="Personal budget ${personalPercent.toFixed(0)}% remaining">
+                                                <div class="allowance-fill" style="width: ${personalPercent}%;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="allowance-item">
+                                            <div class="allowance-label">
+                                                <span>Car</span>
+                                                <span>${formatIQD(week.car || 0)}</span>
+                                            </div>
+                                            <div class="allowance-bar" aria-label="Car budget ${carPercent.toFixed(0)}% remaining">
+                                                <div class="allowance-fill" style="width: ${carPercent}%; background: var(--accent-emerald);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 `}
-
-                                <div class="total-left">${totalLeft.toLocaleString()} <span>/ ${totalMax.toLocaleString()} IQD</span></div>
-
-                                ${!isCurrent && week.status !== 'completed' ? '<div style="font-size: 0.6rem; color: var(--accent-teal); margin-top: 5px;">Tap to Set Budget</div>' : ''}
-
-                            </div>`;
-
-                    });
-
-
-
-                    // Show Reset if all finished
-
-                    if (budgetState.weeks.every(w => w.status === 'completed')) {
-
-                        const resetBtn = document.createElement('button');
-
-                        resetBtn.className = 'save-btn';
-
-                        resetBtn.style.marginTop = '1rem';
-
-                        resetBtn.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
-
-                        resetBtn.style.color = '#fff';
-
-                        resetBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Start New Month';
-
-                        resetBtn.onclick = resetMonth;
-
-                        grid.appendChild(resetBtn);
+                                ${!isCurrent && !week.isClosed ? '<div class="week-preview-note">Upcoming week preview</div>' : ''}
+                            </article>`;
 
                     }
 
@@ -3544,7 +6292,7 @@ migrateData();
 
                                 <div class="glass-card" style="text-align: center; padding: 2rem;">
 
-                                    <h3 style="margin-bottom: 1rem; color: var(--accent-emerald);">Total Balance</h3>
+                                    <h3 style="margin-bottom: 1rem; color: var(--color-brand-text);">Total Balance</h3>
 
                                     <div style="font-size: 2rem; font-weight: 700; color: var(--text-main);">
 
@@ -3600,9 +6348,8 @@ migrateData();
 
                             const icon = isPersonal ? 'fa-user' : isCar ? 'fa-car' : 'fa-piggy-bank';
 
-                            const iconBg = isPersonal ? 'rgba(0, 242, 254, 0.1)' : isCar ? 'rgba(16, 185, 129, 0.1)' : 'rgba(59, 130, 246, 0.14)';
-
-                            const iconColor = isPersonal ? 'var(--accent-teal)' : isCar ? 'var(--accent-emerald)' : '#60a5fa';
+                            const iconBg = 'var(--color-surface-subtle)';
+                            const iconColor = 'var(--color-brand-text)';
 
                             txList.innerHTML += `
 
@@ -3630,7 +6377,7 @@ migrateData();
 
                                             <button class="mini-btn teal" onclick="editTransaction(${tx.id})">Edit</button>
 
-                                            <button class="mini-btn rose delete-tx-btn" data-tx-id="${tx.id}" style="background: var(--accent-rose) !important; color: white !important;">Delete</button>
+                                            <button class="mini-btn rose delete-tx-btn" data-tx-id="${tx.id}" style="background: var(--color-danger) !important; color: var(--color-on-danger) !important;">Delete</button>
 
                                         </div>
 
@@ -3692,7 +6439,7 @@ migrateData();
 
                                             <button class="mini-btn teal" onclick="editDebt(${debt.id})">Edit</button>
 
-                                            <button class="mini-btn rose delete-debt-btn" data-debt-id="${debt.id}" style="background: var(--accent-rose) !important; color: white !important; min-width: 60px !important;">Delete</button>
+                                            <button class="mini-btn rose delete-debt-btn" data-debt-id="${debt.id}" style="background: var(--color-danger) !important; color: var(--color-on-danger) !important; min-width: 60px !important;">Delete</button>
 
                                         </div>
 
@@ -3708,7 +6455,7 @@ migrateData();
 
 
 
-                localStorage.setItem('budgetState', JSON.stringify(budgetState));
+                persistBudgetState();
 
                 
 
@@ -4290,7 +7037,7 @@ migrateData();
 
                         type: "number",
 
-                        value: Math.min(availableAmount, 250000),
+                        value: 0,
 
                         callback: (amountValue) => {
 
@@ -4360,7 +7107,7 @@ migrateData();
 
                         type: "number",
 
-                        value: Math.floor(amount / 2),
+                        value: 0,
 
                         placeholder: "Personal amount",
 
@@ -4584,7 +7331,7 @@ migrateData();
 
                         <span class="text-muted">Distributed</span>
 
-                        <span style="color: var(--accent-emerald); font-weight: 600;">${salary.distributed.toLocaleString()} IQD (${distributedPercentage}%)</span>
+                        <span style="color: var(--color-brand-text); font-weight: 600;">${salary.distributed.toLocaleString()} IQD (${distributedPercentage}%)</span>
 
                     </div>
 
@@ -4606,7 +7353,7 @@ migrateData();
 
                 ${available > 0 ? `
 
-                    <button class="save-btn" style="background: var(--accent-teal); color: #000; margin-bottom: 0.5rem;" onclick="distributeSalary()">
+                    <button class="save-btn" style="background: var(--color-brand); color: var(--color-on-brand); margin-bottom: 0.5rem;" onclick="distributeSalary()">
 
                         <i class="fa-solid fa-hand-holding-dollar"></i> Distribute ${available.toLocaleString()} IQD
 
@@ -4616,7 +7363,7 @@ migrateData();
 
                     <div class="text-muted" style="text-align: center; padding: 1rem; font-size: 0.8rem;">
 
-                        <i class="fa-solid fa-check-circle" style="color: var(--accent-emerald); font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                        <i class="fa-solid fa-check-circle" style="color: var(--color-brand-text); font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
 
                         All salary has been distributed!
 
@@ -4651,6 +7398,8 @@ migrateData();
                     if (confirmed) {
 
                         localStorage.removeItem('budgetState');
+                        localStorage.removeItem('user_custom_items');
+                        localStorage.removeItem('monthlyArchiveFailsafe');
 
                         location.reload();
 
@@ -4709,10 +7458,17 @@ migrateData();
             const actionBtn = document.getElementById('modalActionBtn');
 
             const cancelBtn = document.getElementById('modalCancelBtn');
+            const modalContent = modal.querySelector('.modal-content');
 
 
 
             // Reset
+            modalContent.classList.remove('expense-wizard', 'archive-report');
+            modalContent.onkeydown = null;
+            cancelBtn.innerText = "Cancel";
+            cancelBtn.onclick = closeModal;
+            modalInput.oninput = null;
+            modalInput.removeAttribute('aria-label');
 
             modalTitle.innerText = config.title || "Message";
 
@@ -4740,9 +7496,13 @@ migrateData();
 
                 modalInput.placeholder = config.placeholder || "";
 
-                modalInput.value = config.value || "";
+                const hasProvidedValue = config.value !== undefined && config.value !== null;
+                modalInput.value = hasProvidedValue
+                    ? config.value
+                    : config.type === "number" ? 0 : "";
+                modalInput.setAttribute('aria-label', config.inputLabel || config.title || 'Input');
 
-                ['min', 'max', 'step'].forEach(attr => modalInput.removeAttribute(attr));
+                ['min', 'max', 'step', 'inputmode'].forEach(attr => modalInput.removeAttribute(attr));
 
                 if (config.inputAttributes) {
 
@@ -4754,7 +7514,10 @@ migrateData();
 
                 }
 
-                setTimeout(() => modalInput.focus(), 100);
+                setTimeout(() => {
+                    modalInput.focus();
+                    if (config.type === "number") modalInput.select();
+                }, 100);
 
             }
 
@@ -4805,6 +7568,12 @@ migrateData();
                 const val = config.type ? modalInput.value : true;
 
                 if (config.type === "text" && !config.allowEmptyText && !val.trim()) return;
+                const validationMessage = config.validate ? config.validate(val) : '';
+                if (validationMessage) {
+                    modalDesc.innerText = validationMessage;
+                    modalInput.focus();
+                    return;
+                }
 
                 closeModal();
 
@@ -4821,10 +7590,26 @@ migrateData();
 
 
         window.closeModal = function () {
-
-            document.getElementById('customModal').classList.remove('active');
+            const modal = document.getElementById('customModal');
+            modal.classList.remove('active');
+            const content = modal.querySelector('.modal-content');
+            content.classList.remove('expense-wizard', 'archive-report');
+            content.onkeydown = null;
 
         };
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && document.getElementById('customModal')?.classList.contains('active')) {
+                closeModal();
+            }
+            if (
+                (event.key === 'Enter' || event.key === ' ') &&
+                event.target.matches('[data-keyboard-click]')
+            ) {
+                event.preventDefault();
+                event.target.click();
+            }
+        });
 
 
 
@@ -4882,7 +7667,7 @@ migrateData();
 
                         toast.style.background = 'var(--accent-emerald)';
 
-                        toast.style.color = '#000';
+                        toast.style.color = 'var(--color-on-brand)';
 
                         toast.style.zIndex = '2000';
 
@@ -5270,48 +8055,6 @@ migrateData();
 
 
 
-        window.resetMonth = function () {
-
-            showModal({
-
-                title: "Reset Month?",
-
-                desc: "This will reset all 4 weeks. Your saving boxes and total savings will be preserved.",
-
-                danger: true,
-
-                actionLabel: "Reset Now",
-
-                callback: (confirmed) => {
-
-                    if (!confirmed) return;
-
-                    budgetState.currentWeek = 1;
-
-                    budgetState.weekStartDate = new Date().getTime();
-
-                    budgetState.weeks = [
-
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'active', days: 7 },
-
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
-
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 },
-
-                        { personal: 0, car: 0, maxPersonal: 0, maxCar: 0, saved: 0, status: 'pending', days: 7 }
-
-                    ];
-
-                    updateUI();
-
-                }
-
-            });
-
-        };
-
-
-
         window.editDebt = function (id) {
 
             const debt = budgetState.debts.find(entry => entry.id === id);
@@ -5416,7 +8159,7 @@ migrateData();
 
                 placeholder: "e.g. 5000",
 
-                value: Math.min(5000, debt.amount),
+                value: 0,
 
                 actionLabel: "Next",
 
@@ -5629,13 +8372,13 @@ migrateData();
 
             const week = budgetState.weeks[index];
 
-            if (week.status === 'completed') return;
+            if (!week || week.isClosed || week.id !== budgetState.currentActiveWeekId) return;
 
 
 
             showModal({
 
-                title: `Week ${index + 1} Personal`,
+                title: `Week ${week.weekNumber} Personal`,
 
                 desc: "How much do you want to spend on yourself?",
 
@@ -5649,7 +8392,7 @@ migrateData();
 
                     showModal({
 
-                        title: `Week ${index + 1} Car`,
+                        title: `Week ${week.weekNumber} Car`,
 
                         desc: "How much for car maintenance?",
 
@@ -5659,39 +8402,16 @@ migrateData();
 
                         callback: (cVal) => {
 
-                            const c = parseInt(cVal) || 0;
-
-                            showModal({
-
-                                title: `Week ${index + 1} Duration`,
-
-                                desc: "How many days should this week last?",
-
-                                type: "number",
-
-                                value: week.days || 7,
-
-                                inputAttributes: { min: 1, max: 30 },
-
-                                callback: (dVal) => {
-
-                                    const d = parseInt(dVal) || 7;
-
-                                    week.maxPersonal = p;
-
-                                    week.personal = p;
-
-                                    week.maxCar = c;
-
-                                    week.car = c;
-
-                                    week.days = Math.max(1, Math.min(30, d));
-
-                                    updateUI();
-
-                                }
-
-                            });
+                            const c = Math.max(0, parseInt(cVal) || 0);
+                            const personalSpent = Math.max(0, week.maxPersonal - week.personal);
+                            const carSpent = Math.max(0, week.maxCar - week.car);
+                            week.maxPersonal = Math.max(0, p);
+                            week.personal = Math.max(0, week.maxPersonal - personalSpent);
+                            week.maxCar = c;
+                            week.car = Math.max(0, week.maxCar - carSpent);
+                            week.days = 7;
+                            persistBudgetState();
+                            updateUI();
 
                         }
 
@@ -5853,58 +8573,157 @@ migrateData();
 
 
 
-        window.completeWeek = function () {
+        function ensureFollowingWeek(closedWeek) {
+            const closedIndex = budgetState.weeks.findIndex(week => week.id === closedWeek.id);
+            let nextWeek = budgetState.weeks[closedIndex + 1];
 
-            const index = budgetState.currentWeek - 1;
-
-            const week = budgetState.weeks[index];
-
-
-
-            if (week.status !== 'active') return;
-
-
-
-            // Calculate savings
-
-            const remaining = week.personal + week.car;
-
-            week.saved = remaining;
-
-            week.status = 'completed';
-
-            budgetState.totalSavings += remaining;
-
-
-
-            // Unlock next week
-
-            if (budgetState.currentWeek < 4) {
-
-                budgetState.currentWeek++;
-
-                budgetState.weeks[budgetState.currentWeek - 1].status = 'active';
-
+            if (!nextWeek) {
+                const weeklyLimit = Math.max(0, toIntegerAmount(budgetState.weeklyLimit));
+                nextWeek = createBudgetWeek(
+                    closedWeek.weekNumber + 1,
+                    Date.parse(closedWeek.endDate),
+                    {
+                        maxPersonal: Math.floor(weeklyLimit / 2),
+                        maxCar: weeklyLimit - Math.floor(weeklyLimit / 2)
+                    }
+                );
+                budgetState.weeks.push(nextWeek);
             }
 
+            if (nextWeek.isInitialized === false) {
+                const weeklyLimit = Math.max(0, toIntegerAmount(budgetState.weeklyLimit));
+                nextWeek.maxPersonal = Math.floor(weeklyLimit / 2);
+                nextWeek.maxCar = weeklyLimit - nextWeek.maxPersonal;
+                nextWeek.personal = nextWeek.maxPersonal;
+                nextWeek.car = nextWeek.maxCar;
+                nextWeek.isInitialized = true;
+            }
 
+            nextWeek.startDate = closedWeek.endDate;
+            nextWeek.endDate = new Date(Date.parse(nextWeek.startDate) + WEEK_DURATION_MS).toISOString();
+            nextWeek.isClosed = false;
+            for (let index = closedIndex + 2; index < budgetState.weeks.length; index += 1) {
+                const previousWeek = budgetState.weeks[index - 1];
+                const futureWeek = budgetState.weeks[index];
+                futureWeek.startDate = previousWeek.endDate;
+                futureWeek.endDate = new Date(Date.parse(futureWeek.startDate) + WEEK_DURATION_MS).toISOString();
+            }
+            return nextWeek;
+        }
 
+        function expireActiveWeek(week, now = Date.now()) {
+            if (!week || week.isClosed || week.id !== budgetState.currentActiveWeekId) return;
+
+            const remaining = Math.max(0, toIntegerAmount(week.personal) + toIntegerAmount(week.car));
+            week.isClosed = true;
+            week.status = 'completed';
+            week.closedAt = new Date(now).toISOString();
+            week.closingBalance = remaining;
+            week.saved = 0;
+
+            const nextWeek = ensureFollowingWeek(week);
+            budgetState.currentActiveWeekId = nextWeek.id;
+            budgetState.viewedWeekId = nextWeek.id;
+
+            if (!budgetState.pendingRollovers.some(item => item.fromWeekId === week.id)) {
+                budgetState.pendingRollovers.push({
+                    id: `rollover-${week.id}`,
+                    fromWeekId: week.id,
+                    fromWeekNumber: week.weekNumber,
+                    toWeekId: nextWeek.id,
+                    toWeekNumber: nextWeek.weekNumber,
+                    amount: remaining
+                });
+            }
+
+            persistBudgetState();
+            setTimeout(showPendingRolloverPrompt, 0);
+        }
+
+        function resolveWeekRollover(rollover, destination) {
+            const closedWeek = budgetState.weeks.find(week => week.id === rollover.fromWeekId);
+            const nextWeek = budgetState.weeks.find(week => week.id === rollover.toWeekId);
+
+            if (destination === 'next-week' && nextWeek) {
+                nextWeek.personal += rollover.amount;
+                nextWeek.maxPersonal += rollover.amount;
+                nextWeek.carriedOver = toIntegerAmount(nextWeek.carriedOver) + rollover.amount;
+                if (closedWeek) closedWeek.rolloverDestination = nextWeek.id;
+            } else if (destination === 'total-savings') {
+                budgetState.totalSavings += rollover.amount;
+                if (closedWeek) {
+                    closedWeek.saved = rollover.amount;
+                    closedWeek.rolloverDestination = 'total-savings';
+                }
+            } else if (destination.startsWith('box-')) {
+                const boxId = Number(destination.slice(4));
+                const box = budgetState.savingsBoxes.find(entry => Number(entry.id) === boxId);
+                if (box) {
+                    box.balance += rollover.amount;
+                    if (closedWeek) {
+                        closedWeek.saved = rollover.amount;
+                        closedWeek.rolloverDestination = `box-${box.id}`;
+                    }
+                }
+            }
+
+            budgetState.pendingRollovers = budgetState.pendingRollovers.filter(item => item.id !== rollover.id);
+            persistBudgetState();
             updateUI();
+            setTimeout(showPendingRolloverPrompt, 0);
+        }
 
+        function showPendingRolloverPrompt() {
+            const rollover = budgetState.pendingRollovers[0];
+            const modal = document.getElementById('customModal');
+            if (!rollover || modal?.classList.contains('active')) return;
 
+            const options = [{
+                label: `Roll into Week ${rollover.toWeekNumber} available cash`,
+                icon: 'fa-arrow-right',
+                class: 'teal',
+                value: 'next-week'
+            }];
 
-            // Add a notification effect
+            budgetState.savingsBoxes.forEach(box => {
+                options.push({
+                    label: `Send to ${box.name}`,
+                    icon: 'fa-piggy-bank',
+                    class: 'emerald',
+                    value: `box-${box.id}`
+                });
+            });
 
-            const btn = event.currentTarget;
+            options.push({
+                label: 'Send to Total Savings',
+                icon: 'fa-vault',
+                class: 'emerald',
+                value: 'total-savings'
+            });
 
-            btn.innerHTML = '<i class="fa-solid fa-piggy-bank"></i> Saved to Account!';
+            showModal({
+                title: `Week ${rollover.fromWeekNumber} has ended!`,
+                desc: `Choose where to move the remaining ${formatIQD(rollover.amount)}. Week ${rollover.toWeekNumber} has already started with its designated weekly limit.`,
+                options,
+                callback: destination => resolveWeekRollover(rollover, destination)
+            });
+        }
 
-            setTimeout(() => {
+        window.completeWeek = function () {
+            const week = getActiveWeek();
+            if (!week || week.isClosed) return;
+            week.endDate = new Date().toISOString();
+            expireActiveWeek(week, Date.now());
+            updateUI();
+        };
 
-                btn.innerHTML = '<i class="fa-solid fa-check-circle"></i> End Week & Save Remaining';
-
-            }, 2000);
-
+        window.fastForwardToWeekEnd = function () {
+            const week = getActiveWeek();
+            if (!week || week.isClosed) return;
+            const simulatedEnd = Date.now();
+            week.endDate = new Date(simulatedEnd).toISOString();
+            expireActiveWeek(week, simulatedEnd);
+            updateUI();
         };
 
 
@@ -5923,7 +8742,16 @@ migrateData();
 
             const display = document.getElementById('headerDateTime');
 
-            if (display) display.innerText = `${dateStr} • ${timeStr}`;
+            const timeDisplay = document.getElementById('headerTime');
+            const greetingDisplay = document.getElementById('headerGreeting');
+            const hour = now.getHours();
+            const greeting = hour < 12
+                ? 'Good morning'
+                : hour < 18 ? 'Good afternoon' : 'Good evening';
+
+            if (display) display.innerText = dateStr;
+            if (timeDisplay) timeDisplay.innerText = timeStr;
+            if (greetingDisplay) greetingDisplay.innerText = greeting;
 
         }
 
@@ -5938,6 +8766,8 @@ migrateData();
             body.classList.toggle('light-mode');
 
             const isLight = body.classList.contains('light-mode');
+
+            document.documentElement.classList.toggle('light-mode', isLight);
 
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
 
@@ -5967,6 +8797,8 @@ migrateData();
 
         if (localStorage.getItem('theme') === 'light') {
 
+            document.documentElement.classList.add('light-mode');
+
             document.body.classList.add('light-mode');
 
         }
@@ -5978,8 +8810,15 @@ migrateData();
         updateLiveDateTime();
 
         setInterval(updateLiveDateTime, 30000);
+        setInterval(updateWeekCountdown, 1000);
+        setInterval(runMonthlyArchiveCheck, 60000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) runMonthlyArchiveCheck();
+        });
 
         updateUI();
+        updateWeekCountdown();
+        setTimeout(showPendingRolloverPrompt, 0);
 
     </script>
 
