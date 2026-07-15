@@ -474,7 +474,7 @@
         }
 
         .home-brand-mark {
-            display: grid;
+            display: none;
             width: 46px;
             height: 46px;
             flex: 0 0 auto;
@@ -530,8 +530,8 @@
 
         .profile-btn.home-profile {
             position: relative;
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             flex: 0 0 auto;
             border: 1px solid color-mix(in srgb, var(--color-brand) 42%, var(--color-border));
             border-radius: 17px;
@@ -541,6 +541,34 @@
             font-weight: 800;
             letter-spacing: 0.03em;
             box-shadow: 0 8px 20px rgba(4, 8, 18, 0.2) !important;
+        }
+
+        .home-header-actions {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .privacy-view-toggle {
+            display: grid;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            place-items: center;
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 7px 18px rgba(4, 8, 18, 0.14);
+        }
+
+        .privacy-view-toggle[aria-pressed="true"] {
+            border-color: color-mix(in srgb, var(--color-brand) 48%, var(--color-border));
+            background: color-mix(in srgb, var(--color-brand) 13%, var(--color-surface));
+            color: var(--color-brand-text);
         }
 
         .home-profile-status {
@@ -554,8 +582,15 @@
             background: var(--priority-primary);
         }
 
-        @media (max-width: 360px) {
+        @media (max-width: 480px) {
             .home-brand-mark {
+                display: none;
+            }
+        }
+
+        @media (max-width: 390px) {
+
+            .profile-btn.home-profile {
                 display: none;
             }
 
@@ -3540,6 +3575,270 @@
                 0 7px 16px rgba(15, 23, 42, 0.12);
         }
 
+        .metrics-grid.snapshot-mode {
+            display: block;
+        }
+
+        .financial-vault-card {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--color-brand) 16%, transparent), transparent 36%),
+                var(--color-surface);
+            color: var(--color-text-primary);
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 0 10px 28px rgba(4, 8, 18, 0.14);
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .financial-vault-card:hover,
+        .financial-vault-card:focus-visible {
+            border-color: color-mix(in srgb, var(--color-brand) 50%, var(--color-border));
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(4, 8, 18, 0.2);
+        }
+
+        .financial-vault-header,
+        .financial-vault-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .financial-vault-title {
+            display: flex;
+            min-width: 0;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .financial-vault-icon {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 13px;
+            background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface-subtle));
+            color: var(--color-brand-text);
+        }
+
+        .financial-vault-title strong,
+        .financial-vault-title span {
+            display: block;
+        }
+
+        .financial-vault-title span,
+        .financial-vault-footer {
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .financial-vault-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+            margin: 0.9rem 0;
+        }
+
+        .financial-vault-item {
+            display: flex;
+            min-height: 46px;
+            padding: 0.6rem;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 13px;
+            background: color-mix(in srgb, var(--color-surface-subtle) 82%, transparent);
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 650;
+        }
+
+        .financial-vault-item i {
+            width: 1rem;
+            color: var(--color-brand-text);
+            text-align: center;
+        }
+
+        .financial-vault-item.debt i {
+            color: var(--color-danger);
+        }
+
+        .financial-vault-footer {
+            padding-top: 0.7rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .snapshot-data-source {
+            display: none !important;
+        }
+
+        .modal-content.financial-snapshot-modal {
+            max-width: 520px;
+        }
+
+        .snapshot-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+
+        .snapshot-detail-card {
+            min-width: 0;
+            padding: 0.85rem;
+            border: 1px solid var(--color-border);
+            border-radius: 15px;
+            background: var(--color-surface-subtle);
+        }
+
+        .snapshot-detail-card i {
+            margin-bottom: 0.65rem;
+            color: var(--color-brand-text);
+        }
+
+        .snapshot-detail-card.debt i,
+        .snapshot-detail-card.debt strong {
+            color: var(--color-danger);
+        }
+
+        .snapshot-detail-card span,
+        .snapshot-detail-card strong {
+            display: block;
+        }
+
+        .snapshot-detail-card span {
+            color: var(--color-text-secondary);
+            font-size: 0.72rem;
+        }
+
+        .snapshot-detail-card strong {
+            margin-top: 0.2rem;
+            overflow-wrap: anywhere;
+            font-size: 1rem;
+        }
+
+        .snapshot-formula {
+            margin-top: 0.7rem;
+            padding: 0.75rem;
+            border: 1px dashed var(--color-border);
+            border-radius: 13px;
+            color: var(--color-text-secondary);
+            font-size: 0.76rem;
+            line-height: 1.5;
+        }
+
+        body.light-mode .financial-vault-title span,
+        body.light-mode .financial-vault-footer,
+        body.light-mode .financial-vault-item,
+        body.light-mode .snapshot-detail-card span,
+        body.light-mode .snapshot-formula {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .private-amount {
+            position: relative;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .private-amount:not(.is-revealed) {
+            min-width: 4.5rem;
+            color: transparent !important;
+            text-shadow: none !important;
+            -webkit-text-fill-color: transparent !important;
+            user-select: none;
+            --privacy-left: 0;
+            --privacy-right: auto;
+            --privacy-icon-left: 0.78rem;
+            --privacy-icon-right: auto;
+        }
+
+        .private-amount:not(.is-revealed) > * {
+            visibility: hidden;
+        }
+
+        .private-amount:not(.is-revealed)::after {
+            position: absolute;
+            top: 50%;
+            right: var(--privacy-right);
+            left: var(--privacy-left);
+            width: 2.45rem;
+            height: 1.45rem;
+            transform: translateY(-50%);
+            border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
+            border-radius: 999px;
+            background:
+                linear-gradient(145deg,
+                    color-mix(in srgb, var(--color-surface-subtle) 94%, white 6%),
+                    var(--color-surface-subtle));
+            box-shadow:
+                inset 0 1px 0 color-mix(in srgb, white 7%, transparent),
+                0 2px 8px rgba(4, 8, 18, 0.08);
+            content: '';
+        }
+
+        .private-amount:not(.is-revealed)::before {
+            position: absolute;
+            top: 50%;
+            right: var(--privacy-icon-right);
+            left: var(--privacy-icon-left);
+            z-index: 1;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            content: '\f070';
+            font-family: "Font Awesome 6 Free";
+            font-size: 0.72rem;
+            font-style: normal;
+            font-weight: 900;
+            line-height: 1;
+            -webkit-text-fill-color: var(--color-text-secondary);
+        }
+
+        .private-amount:not(.is-revealed):hover::after,
+        .private-amount:not(.is-revealed):focus-visible::after {
+            border-color: color-mix(in srgb, var(--color-brand) 45%, var(--color-border));
+            background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface-subtle));
+        }
+
+        .private-amount.is-revealed {
+            animation: private-amount-reveal 0.24s ease;
+            user-select: text;
+        }
+
+        @keyframes private-amount-reveal {
+            from {
+                opacity: 0.35;
+                transform: translateY(2px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tx-amount.private-amount,
+        .debt-amount.private-amount,
+        .archive-category-value .private-amount,
+        .week-spending-summary.private-amount,
+        .archive-card-footer .private-amount,
+        .salary-money-value.private-amount {
+            --privacy-left: auto;
+            --privacy-right: 0;
+            --privacy-icon-left: auto;
+            --privacy-icon-right: 0.78rem;
+        }
+
+        .allowance-label .private-amount {
+            min-width: 5.5rem;
+        }
+
         @media (max-width: 390px) {
             .merchant-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3646,7 +3945,7 @@
                             <i class="fa-solid fa-chart-line"></i>
                         </div>
                         <div class="greeting">
-                            <span class="home-eyebrow">NOVAVEST · MONEY AT A GLANCE</span>
+                            <span class="home-eyebrow">NOVAVEST · CALM VIEW</span>
                             <h1><span id="headerGreeting">Welcome back</span><span class="brand-dot">.</span></h1>
                             <div class="home-date-row">
                                 <span id="headerDateTime">Calculating date...</span>
@@ -3658,9 +3957,16 @@
                         </div>
                     </div>
 
-                    <div class="profile-btn home-profile" role="img" aria-label="NovaVest profile">
-                        <span>NV</span>
-                        <span class="home-profile-status" aria-hidden="true"></span>
+                    <div class="home-header-actions">
+                        <button class="privacy-view-toggle" id="privacyViewToggle" type="button"
+                            aria-label="Reveal all financial amounts" aria-pressed="false"
+                            title="Reveal all amounts">
+                            <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+                        </button>
+                        <div class="profile-btn home-profile" role="img" aria-label="NovaVest profile">
+                            <span>NV</span>
+                            <span class="home-profile-status" aria-hidden="true"></span>
+                        </div>
                     </div>
 
                     
@@ -3671,50 +3977,37 @@
 
                 <!-- Financial Metrics -->
 
-                <section class="metrics-grid fade-in delay-1" aria-label="Financial overview">
-
-                    <article class="glass-card metric-card">
-                        <div class="metric-label-row">
-                            <h2 class="metric-label">Available Cash</h2>
-                            <span class="metric-info">
-                                <button class="metric-info-button" type="button"
-                                    aria-label="About Available Cash" aria-describedby="availableCashHelp">
-                                    <i class="fa-solid fa-info" aria-hidden="true"></i>
-                                </button>
-                                <span class="metric-tooltip" id="availableCashHelp" role="tooltip">Spendable money: undistributed current salary plus remaining cash in active or pending weekly budgets. Savings are excluded.</span>
-                            </span>
+                <section class="metrics-grid snapshot-mode fade-in delay-1" aria-label="Financial overview">
+                    <button class="financial-vault-card" type="button" onclick="openFinancialSnapshot()"
+                        aria-label="Open complete financial snapshot">
+                        <div class="financial-vault-header">
+                            <div class="financial-vault-title">
+                                <span class="financial-vault-icon">
+                                    <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+                                </span>
+                                <span>
+                                    <strong>Financial Snapshot</strong>
+                                    <span>Four balances, one calm overview</span>
+                                </span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                         </div>
-                        <div class="metric-value" id="availableCashMetric">0 IQD</div>
-                    </article>
-
-                    <article class="glass-card metric-card">
-                        <div class="metric-label-row">
-                            <h2 class="metric-label">Total Savings</h2>
-                            <span class="metric-info">
-                                <button class="metric-info-button" type="button"
-                                    aria-label="About Total Savings" aria-describedby="totalSavingsHelp">
-                                    <i class="fa-solid fa-info" aria-hidden="true"></i>
-                                </button>
-                                <span class="metric-tooltip" id="totalSavingsHelp" role="tooltip">Money set aside: all savings-box balances plus completed-week savings stored in totalSavings. Available cash is excluded.</span>
-                            </span>
+                        <div class="financial-vault-grid" aria-hidden="true">
+                            <span class="financial-vault-item"><i class="fa-solid fa-money-bill-wave"></i>Available Cash</span>
+                            <span class="financial-vault-item"><i class="fa-solid fa-piggy-bank"></i>Total Savings</span>
+                            <span class="financial-vault-item debt"><i class="fa-solid fa-file-invoice-dollar"></i>Total Debt</span>
+                            <span class="financial-vault-item"><i class="fa-solid fa-scale-balanced"></i>Net Worth</span>
                         </div>
-                        <div class="metric-value savings" id="totalSavingsMetric">0 IQD</div>
-                    </article>
-
-                    <article class="glass-card metric-card">
-                        <div class="metric-label-row">
-                            <h2 class="metric-label">Total Debt</h2>
+                        <div class="financial-vault-footer">
+                            <span><i class="fa-regular fa-eye" aria-hidden="true"></i> Tap to view all amounts</span>
+                            <span>Private by default</span>
                         </div>
-                        <div class="metric-value debt" id="totalDebtMetric">0 IQD</div>
-                    </article>
+                    </button>
 
-                    <article class="glass-card metric-card">
-                        <div class="metric-label-row">
-                            <h2 class="metric-label">Net Worth</h2>
-                        </div>
-                        <div class="metric-value net-worth" id="netWorthMetric">0 IQD</div>
-                    </article>
-
+                    <span class="snapshot-data-source" id="availableCashMetric">0 IQD</span>
+                    <span class="snapshot-data-source" id="totalSavingsMetric">0 IQD</span>
+                    <span class="snapshot-data-source" id="totalDebtMetric">0 IQD</span>
+                    <span class="snapshot-data-source" id="netWorthMetric">0 IQD</span>
                 </section>
 
 
@@ -4467,6 +4760,146 @@
             );
             scheduleNavigationCollapse(1600);
         }
+
+        const PRIVATE_AMOUNT_SELECTOR = [
+            '.metric-value',
+            '#totalSavingsDisplay',
+            '#salaryAvailableDisplay',
+            '#totalDebtDisplay',
+            '.box-amount',
+            '.tx-amount',
+            '.debt-amount',
+            '.salary-money-value',
+            '.archive-card-total',
+            '.archive-card-footer > span:last-child',
+            '.archive-total-box strong',
+            '.archive-category-value strong',
+            '.archive-percentage'
+        ].join(',');
+
+        const PRIVATE_AMOUNT_CONTAINER_SELECTOR = [
+            '.metric-card',
+            '.week-balance-panel',
+            '.allowance-item',
+            '.transaction-item',
+            '.savings-box',
+            '.debt-item',
+            '.archive-total-box',
+            '.archive-category-row'
+        ].join(',');
+        let allAmountsVisible = false;
+
+        function preparePrivateAmount(element) {
+            if (!element || element.dataset.privateAmountReady === 'true') return;
+            if (!/\d/.test(element.textContent || '')) return;
+            element.dataset.privateAmountReady = 'true';
+            element.classList.add('private-amount');
+            if (allAmountsVisible) element.classList.add('is-revealed');
+            element.title = 'Tap to reveal this amount';
+            const interactiveParent = element.closest('button, a, input, select, textarea');
+            if (!interactiveParent) {
+                element.setAttribute('role', 'button');
+                element.setAttribute('tabindex', '0');
+            }
+            element.setAttribute('aria-label', 'Hidden financial amount. Activate to reveal.');
+        }
+
+        function applyAmountPrivacy(root = document) {
+            if (root.nodeType !== Node.ELEMENT_NODE && root !== document) return;
+            if (root !== document && root.matches?.(PRIVATE_AMOUNT_SELECTOR)) {
+                preparePrivateAmount(root);
+            }
+            root.querySelectorAll?.(PRIVATE_AMOUNT_SELECTOR).forEach(preparePrivateAmount);
+        }
+
+        function togglePrivateAmount(element) {
+            if (!element) return;
+            const isRevealed = element.classList.toggle('is-revealed');
+            if (!isRevealed && allAmountsVisible) {
+                allAmountsVisible = false;
+                syncPrivacyViewToggle();
+            }
+            element.title = isRevealed ? 'Tap to hide this amount' : 'Tap to reveal this amount';
+            element.setAttribute(
+                'aria-label',
+                isRevealed
+                    ? `${element.textContent.trim()}. Activate to hide.`
+                    : 'Hidden financial amount. Activate to reveal.'
+            );
+        }
+
+        function syncPrivacyViewToggle() {
+            const toggle = document.getElementById('privacyViewToggle');
+            if (!toggle) return;
+            toggle.setAttribute('aria-pressed', String(allAmountsVisible));
+            toggle.setAttribute(
+                'aria-label',
+                allAmountsVisible ? 'Hide all financial amounts' : 'Reveal all financial amounts'
+            );
+            toggle.title = allAmountsVisible ? 'Hide all amounts' : 'Reveal all amounts';
+            toggle.innerHTML = `
+                <i class="fa-solid ${allAmountsVisible ? 'fa-eye' : 'fa-eye-slash'}" aria-hidden="true"></i>
+            `;
+        }
+
+        function toggleAllPrivateAmounts() {
+            allAmountsVisible = !allAmountsVisible;
+            document.querySelectorAll('.private-amount').forEach(element => {
+                element.classList.toggle('is-revealed', allAmountsVisible);
+                element.title = allAmountsVisible
+                    ? 'Tap to hide this amount'
+                    : 'Tap to reveal this amount';
+                element.setAttribute(
+                    'aria-label',
+                    allAmountsVisible
+                        ? `${element.textContent.trim()}. Activate to hide.`
+                        : 'Hidden financial amount. Activate to reveal.'
+                );
+            });
+            syncPrivacyViewToggle();
+        }
+
+        function getPrivateAmountFromInteraction(target) {
+            const directAmount = target.closest?.('.private-amount');
+            if (directAmount) return directAmount;
+            if (target.closest?.('button, a, input, select, textarea')) return null;
+            const container = target.closest?.(PRIVATE_AMOUNT_CONTAINER_SELECTOR);
+            if (!container) return null;
+            return container.querySelector('.private-amount:not(.is-revealed)')
+                || container.querySelector('.private-amount');
+        }
+
+        document.addEventListener('click', event => {
+            const amount = getPrivateAmountFromInteraction(event.target);
+            if (!amount) return;
+            event.preventDefault();
+            event.stopPropagation();
+            togglePrivateAmount(amount);
+        }, true);
+
+        document.addEventListener('keydown', event => {
+            if (!['Enter', ' '].includes(event.key)) return;
+            const amount = event.target.closest?.('.private-amount');
+            if (!amount) return;
+            event.preventDefault();
+            togglePrivateAmount(amount);
+        });
+
+        const amountPrivacyObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === Node.ELEMENT_NODE) applyAmountPrivacy(node);
+                });
+            });
+        });
+        amountPrivacyObserver.observe(document.querySelector('.app-container'), {
+            childList: true,
+            subtree: true
+        });
+        applyAmountPrivacy();
+        document.getElementById('privacyViewToggle')
+            ?.addEventListener('click', toggleAllPrivateAmounts);
+        syncPrivacyViewToggle();
 
 
 
@@ -6312,6 +6745,60 @@
             });
         }
 
+        window.openFinancialSnapshot = function () {
+            const metrics = calculateFinancialMetrics(budgetState);
+            const modal = document.getElementById('customModal');
+            const content = modal.querySelector('.modal-content');
+            const title = document.getElementById('modalTitle');
+            const desc = document.getElementById('modalDesc');
+            const input = document.getElementById('modalInput');
+            const options = document.getElementById('modalOptions');
+            const action = document.getElementById('modalActionBtn');
+            const cancel = document.getElementById('modalCancelBtn');
+
+            content.classList.remove('expense-wizard', 'archive-report');
+            content.classList.add('financial-snapshot-modal');
+            content.onkeydown = null;
+            title.textContent = 'Financial Snapshot';
+            desc.textContent = 'Your complete financial position, revealed only after you open this view.';
+            input.style.display = 'none';
+            input.oninput = null;
+            options.style.display = 'flex';
+            options.innerHTML = `
+                <div class="snapshot-detail-grid">
+                    <article class="snapshot-detail-card">
+                        <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
+                        <span>Available Cash</span>
+                        <strong>${formatIQD(metrics.availableCash)}</strong>
+                    </article>
+                    <article class="snapshot-detail-card">
+                        <i class="fa-solid fa-piggy-bank" aria-hidden="true"></i>
+                        <span>Total Savings</span>
+                        <strong>${formatIQD(metrics.totalSavings)}</strong>
+                    </article>
+                    <article class="snapshot-detail-card debt">
+                        <i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i>
+                        <span>Total Debt</span>
+                        <strong>${formatIQD(metrics.totalDebt)}</strong>
+                    </article>
+                    <article class="snapshot-detail-card">
+                        <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+                        <span>Net Worth</span>
+                        <strong>${formatIQD(metrics.netWorth)}</strong>
+                    </article>
+                </div>
+                <div class="snapshot-formula">
+                    <strong>How Net Worth is calculated</strong><br>
+                    Available Cash + Total Savings − Total Debt
+                </div>
+            `;
+            action.style.display = 'none';
+            cancel.textContent = 'Close Snapshot';
+            cancel.onclick = closeModal;
+            modal.classList.add('active');
+            setTimeout(() => cancel.focus(), 50);
+        };
+
         function formatWeekDateRange(week) {
             if (!week) return 'No active week';
             const options = { weekday: 'short', month: 'short', day: 'numeric' };
@@ -7820,7 +8307,7 @@
 
                         <span class="text-muted">Total Salary</span>
 
-                        <span style="font-weight: 600;">${salary.amount.toLocaleString()} IQD</span>
+                        <span class="salary-money-value" style="font-weight: 600;">${salary.amount.toLocaleString()} IQD</span>
 
                     </div>
 
@@ -7828,7 +8315,7 @@
 
                         <span class="text-muted">Distributed</span>
 
-                        <span style="color: var(--color-brand-text); font-weight: 600;">${salary.distributed.toLocaleString()} IQD (${distributedPercentage}%)</span>
+                        <span class="salary-money-value" style="color: var(--color-brand-text); font-weight: 600;">${salary.distributed.toLocaleString()} IQD (${distributedPercentage}%)</span>
 
                     </div>
 
@@ -7852,7 +8339,7 @@
 
                     <button class="save-btn" style="background: var(--color-brand); color: var(--color-on-brand); margin-bottom: 0.5rem;" onclick="distributeSalary()">
 
-                        <i class="fa-solid fa-hand-holding-dollar"></i> Distribute ${available.toLocaleString()} IQD
+                        <i class="fa-solid fa-hand-holding-dollar"></i> Distribute <span class="salary-money-value">${available.toLocaleString()} IQD</span>
 
                     </button>
 
@@ -7960,7 +8447,7 @@
 
 
             // Reset
-            modalContent.classList.remove('expense-wizard', 'archive-report');
+            modalContent.classList.remove('expense-wizard', 'archive-report', 'financial-snapshot-modal');
             modalContent.onkeydown = null;
             cancelBtn.innerText = "Cancel";
             cancelBtn.onclick = closeModal;
@@ -8090,7 +8577,7 @@
             const modal = document.getElementById('customModal');
             modal.classList.remove('active');
             const content = modal.querySelector('.modal-content');
-            content.classList.remove('expense-wizard', 'archive-report');
+            content.classList.remove('expense-wizard', 'archive-report', 'financial-snapshot-modal');
             content.onkeydown = null;
 
         };
