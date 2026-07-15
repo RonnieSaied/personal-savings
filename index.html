@@ -2685,7 +2685,7 @@
 
         .wizard-progress {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 0.5rem;
             margin-bottom: 1rem;
         }
@@ -2698,6 +2698,120 @@
 
         .wizard-progress-step.active {
             background: var(--color-brand);
+        }
+
+        .funding-source-grid {
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .funding-source-card {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr) auto;
+            min-height: 64px;
+            padding: 0.65rem;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: 15px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            text-align: left;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .funding-source-card:hover:not(:disabled),
+        .funding-source-card:focus-visible {
+            border-color: var(--color-brand);
+            background: color-mix(in srgb, var(--color-brand) 7%, var(--color-surface));
+            transform: translateY(-1px);
+        }
+
+        .funding-source-card.selected {
+            border-color: var(--color-brand);
+        }
+
+        .funding-source-card:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .funding-source-icon {
+            display: grid;
+            width: 44px;
+            height: 44px;
+            place-items: center;
+            border-radius: 13px;
+            background: var(--color-surface-subtle);
+            color: var(--color-brand-text);
+        }
+
+        .funding-source-card.car .funding-source-icon {
+            color: var(--priority-secondary);
+        }
+
+        .funding-source-card.savings .funding-source-icon {
+            color: var(--priority-primary);
+        }
+
+        .funding-source-copy {
+            min-width: 0;
+        }
+
+        .funding-source-copy strong,
+        .funding-source-copy span {
+            display: block;
+        }
+
+        .funding-source-copy span {
+            margin-top: 0.1rem;
+            overflow: hidden;
+            color: var(--color-text-secondary);
+            font-size: 0.74rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .funding-source-balance {
+            color: var(--color-text-primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .funding-source-balance small {
+            display: block;
+            margin-top: 0.15rem;
+            color: var(--color-danger);
+            font-size: 0.66rem;
+            font-weight: 600;
+        }
+
+        .funding-source-empty {
+            padding: 0.8rem;
+            border: 1px dashed var(--color-border);
+            border-radius: 13px;
+            color: var(--color-text-secondary);
+            font-size: 0.78rem;
+            text-align: center;
+        }
+
+        body.light-mode .funding-source-copy span,
+        body.light-mode .funding-source-balance,
+        body.light-mode .funding-source-balance small,
+        body.light-mode .funding-source-empty {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        body.light-mode .funding-source-balance {
+            color: var(--color-text-primary);
+        }
+
+        body.light-mode .funding-source-balance small {
+            color: var(--color-danger);
         }
 
         .merchant-grid {
@@ -3275,6 +3389,157 @@
             font-size: 0.875rem;
         }
 
+        /* Floating, Instagram-inspired navigation capsule */
+        .main-content {
+            padding-bottom: calc(108px + var(--safe-area-inset-bottom));
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: calc(10px + var(--safe-area-inset-bottom));
+            left: 50%;
+            width: calc(100% - 20px);
+            height: 72px;
+            padding: 6px;
+            transform: translateX(-50%);
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 30px;
+            background: rgba(17, 20, 27, 0.92) !important;
+            box-shadow:
+                0 16px 34px rgba(0, 0, 0, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(24px) saturate(145%);
+            -webkit-backdrop-filter: blur(24px) saturate(145%);
+            transition:
+                width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                padding 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                border-radius 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease,
+                transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nav-item {
+            position: relative;
+            display: grid;
+            height: 58px;
+            min-width: 0;
+            flex: 1;
+            place-items: center;
+            border-radius: 22px;
+            color: #D7DAE0;
+            transition:
+                flex 0.25s ease,
+                color 0.2s ease,
+                background-color 0.25s ease,
+                transform 0.2s ease;
+        }
+
+        .nav-item:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .nav-item:active {
+            transform: scale(0.94);
+        }
+
+        .nav-item i {
+            font-size: 1.45rem;
+            transition: transform 0.25s ease;
+        }
+
+        .nav-item span {
+            position: absolute !important;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+            white-space: nowrap;
+        }
+
+        .nav-item.active {
+            flex: 1.14;
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.19), rgba(255, 255, 255, 0.11));
+            color: #FFFFFF !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                0 8px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-item.active i {
+            filter: none;
+            transform: scale(1.12);
+        }
+
+        .nav-item.active::after {
+            position: absolute;
+            bottom: 7px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--color-brand);
+            box-shadow: 0 0 9px var(--color-brand);
+            content: '';
+        }
+
+        .bottom-nav.is-collapsed {
+            width: clamp(276px, 78%, 360px);
+            height: 58px;
+            padding: 4px;
+            transform: translateX(-50%) translateY(2px);
+            border-radius: 25px;
+            opacity: 0.88;
+        }
+
+        .bottom-nav.is-collapsed .nav-item {
+            height: 48px;
+            border-radius: 19px;
+        }
+
+        .bottom-nav.is-collapsed .nav-item i {
+            font-size: 1.2rem;
+        }
+
+        .bottom-nav.is-collapsed .nav-item.active::after {
+            bottom: 5px;
+            width: 4px;
+            height: 4px;
+        }
+
+        .fab {
+            bottom: calc(94px + var(--safe-area-inset-bottom));
+        }
+
+        body.light-mode .bottom-nav {
+            border-color: rgba(15, 23, 42, 0.12);
+            background: rgba(255, 255, 255, 0.9) !important;
+            box-shadow:
+                0 16px 34px rgba(15, 23, 42, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        }
+
+        body.light-mode .nav-item {
+            color: #5F6D7E;
+        }
+
+        body.light-mode .nav-item:hover {
+            color: #1E293B;
+            background: rgba(15, 23, 42, 0.05);
+        }
+
+        body.light-mode .nav-item.active {
+            background: linear-gradient(145deg, #EDF1F5, #E2E8F0);
+            color: #111827 !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                0 7px 16px rgba(15, 23, 42, 0.12);
+        }
+
         @media (max-width: 390px) {
             .merchant-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3286,6 +3551,27 @@
 
             .archive-report-totals {
                 grid-template-columns: minmax(0, 1fr);
+            }
+
+            .bottom-nav {
+                bottom: calc(7px + var(--safe-area-inset-bottom));
+                width: calc(100% - 12px);
+                height: 68px;
+                padding: 5px;
+                border-radius: 27px;
+            }
+
+            .nav-item {
+                height: 56px;
+                border-radius: 20px;
+            }
+
+            .nav-item i {
+                font-size: 1.3rem;
+            }
+
+            .fab {
+                bottom: calc(88px + var(--safe-area-inset-bottom));
             }
         }
 
@@ -3852,48 +4138,48 @@
 
         <!-- Bottom Navigation -->
 
-        <nav class="bottom-nav">
+        <nav class="bottom-nav" aria-label="Primary navigation">
 
-            <a href="#" class="nav-item active" onclick="showTab('home')">
+            <a href="#" class="nav-item active" aria-label="Home" onclick="showTab('home'); return false;">
 
-                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-house" aria-hidden="true"></i>
 
                 <span>Home</span>
 
             </a>
 
-            <a href="#" class="nav-item" onclick="showTab('transactions')">
+            <a href="#" class="nav-item" aria-label="Transactions" onclick="showTab('transactions'); return false;">
 
-                <i class="fa-solid fa-receipt"></i>
+                <i class="fa-solid fa-receipt" aria-hidden="true"></i>
 
                 <span>Transactions</span>
 
             </a>
 
-            <a href="#" class="nav-item" onclick="showTab('savings')">
+            <a href="#" class="nav-item" aria-label="Savings" onclick="showTab('savings'); return false;">
 
-                <i class="fa-solid fa-piggy-bank"></i>
+                <i class="fa-solid fa-piggy-bank" aria-hidden="true"></i>
 
                 <span>Savings</span>
 
             </a>
 
-            <a href="#" class="nav-item" onclick="showTab('debts')">
+            <a href="#" class="nav-item" aria-label="Debts" onclick="showTab('debts'); return false;">
 
-                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
 
                 <span>Debts</span>
 
             </a>
 
-            <a href="#" class="nav-item" onclick="showTab('history')">
-                <i class="fa-solid fa-box-archive"></i>
+            <a href="#" class="nav-item" aria-label="History" onclick="showTab('history'); return false;">
+                <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
                 <span>History</span>
             </a>
 
-            <a href="#" class="nav-item" onclick="showTab('settings')">
+            <a href="#" class="nav-item" aria-label="Settings" onclick="showTab('settings'); return false;">
 
-                <i class="fa-solid fa-gear"></i>
+                <i class="fa-solid fa-gear" aria-hidden="true"></i>
 
                 <span>Settings</span>
 
@@ -4136,6 +4422,53 @@
         };
 
 
+        const bottomNavigation = document.querySelector('.bottom-nav');
+        let navigationCollapseTimer = null;
+        let navigationHovered = false;
+
+        function expandBottomNavigation() {
+            clearTimeout(navigationCollapseTimer);
+            bottomNavigation?.classList.remove('is-collapsed');
+        }
+
+        function collapseBottomNavigation() {
+            const hasVisibleKeyboardFocus = bottomNavigation?.querySelector(':focus-visible');
+            if (navigationHovered || hasVisibleKeyboardFocus) {
+                scheduleNavigationCollapse(900);
+                return;
+            }
+            bottomNavigation?.classList.add('is-collapsed');
+        }
+
+        function scheduleNavigationCollapse(delay = 2200) {
+            clearTimeout(navigationCollapseTimer);
+            navigationCollapseTimer = setTimeout(collapseBottomNavigation, delay);
+        }
+
+        if (bottomNavigation) {
+            bottomNavigation.addEventListener('pointerenter', event => {
+                if (event.pointerType === 'mouse') navigationHovered = true;
+                expandBottomNavigation();
+            });
+            bottomNavigation.addEventListener('pointerleave', event => {
+                if (event.pointerType === 'mouse') navigationHovered = false;
+                scheduleNavigationCollapse(650);
+            });
+            bottomNavigation.addEventListener('pointerdown', () => {
+                expandBottomNavigation();
+                scheduleNavigationCollapse();
+            });
+            bottomNavigation.addEventListener('focusin', expandBottomNavigation);
+            bottomNavigation.addEventListener('focusout', () => scheduleNavigationCollapse(900));
+            document.querySelector('.main-content')?.addEventListener(
+                'scroll',
+                () => scheduleNavigationCollapse(500),
+                { passive: true }
+            );
+            scheduleNavigationCollapse(1600);
+        }
+
+
 
         // Handle FAB spending/actions
 
@@ -4250,6 +4583,17 @@
                 : [];
             const priorityTiers = [...new Set(selectedItems.map(item => item.priority))];
             const itemCategories = selectedItems.map(item => item.name);
+            const validFundingTypes = ['weekly', 'box', 'total-savings'];
+            const fundingSource = tx.fundingSource && validFundingTypes.includes(tx.fundingSource.type)
+                ? {
+                    type: tx.fundingSource.type,
+                    id: tx.fundingSource.id ?? null,
+                    bucket: ['personal', 'car'].includes(tx.fundingSource.bucket)
+                        ? tx.fundingSource.bucket
+                        : null,
+                    label: String(tx.fundingSource.label || 'Unknown balance')
+                }
+                : null;
 
             return {
 
@@ -4281,7 +4625,9 @@
 
                 itemCategories,
 
-                notes: tx.notes ? String(tx.notes) : ''
+                notes: tx.notes ? String(tx.notes) : '',
+
+                fundingSource
 
             };
 
@@ -4343,7 +4689,9 @@
 
                 priority: sourceMeta.priority,
 
-                notes: sourceMeta.notes
+                notes: sourceMeta.notes,
+
+                fundingSource: sourceMeta.fundingSource
 
             });
 
@@ -4618,8 +4966,9 @@
         function renderWizardProgress(activeStep) {
             return `
                 <div class="wizard-progress" aria-label="Expense entry progress">
-                    <span class="wizard-progress-step active"></span>
-                    <span class="wizard-progress-step ${activeStep === 2 ? 'active' : ''}"></span>
+                    ${[1, 2, 3].map(step => `
+                        <span class="wizard-progress-step ${step <= activeStep ? 'active' : ''}"></span>
+                    `).join('')}
                 </div>
                 <div class="wizard-error" id="expenseWizardError" role="alert"></div>
             `;
@@ -4632,12 +4981,142 @@
             error.style.display = 'block';
         }
 
+        function getExpenseFundingSources() {
+            const activeWeek = getActiveWeek();
+            const sources = [];
+            if (activeWeek && !activeWeek.isClosed) {
+                sources.push(
+                    {
+                        type: 'weekly',
+                        id: activeWeek.id,
+                        bucket: 'personal',
+                        label: 'Personal',
+                        description: `Week ${activeWeek.weekNumber} personal money`,
+                        icon: 'fa-user',
+                        className: 'personal',
+                        balance: Math.max(0, toIntegerAmount(activeWeek.personal))
+                    },
+                    {
+                        type: 'weekly',
+                        id: activeWeek.id,
+                        bucket: 'car',
+                        label: 'Car Maintenance',
+                        description: `Week ${activeWeek.weekNumber} car money`,
+                        icon: 'fa-car',
+                        className: 'car',
+                        balance: Math.max(0, toIntegerAmount(activeWeek.car))
+                    }
+                );
+            }
+            if (toIntegerAmount(budgetState.totalSavings) > 0) {
+                sources.push({
+                    type: 'total-savings',
+                    id: 'totalSavings',
+                    bucket: null,
+                    label: 'Saved Week Funds',
+                    description: 'Savings carried from completed weeks',
+                    icon: 'fa-vault',
+                    className: 'savings',
+                    balance: Math.max(0, toIntegerAmount(budgetState.totalSavings))
+                });
+            }
+            (budgetState.savingsBoxes || []).forEach(box => {
+                sources.push({
+                    type: 'box',
+                    id: box.id,
+                    bucket: null,
+                    label: box.name,
+                    description: 'Savings box',
+                    icon: 'fa-piggy-bank',
+                    className: 'savings',
+                    balance: Math.max(0, toIntegerAmount(box.balance)),
+                    hidden: box.hidden === true
+                });
+            });
+            return sources;
+        }
+
+        function openExpenseFundingStep() {
+            const elements = getExpenseModalElements();
+            const sources = getExpenseFundingSources();
+            elements.content.classList.add('expense-wizard');
+            elements.content.onkeydown = null;
+            elements.title.textContent = 'Which balance should pay?';
+            elements.desc.textContent = `Choose exactly where to deduct ${formatIQD(transactionWizardState.amount)}.`;
+            elements.input.style.display = 'none';
+            elements.input.oninput = null;
+            elements.input.onkeydown = null;
+            elements.options.style.display = 'flex';
+            elements.options.innerHTML = `
+                ${renderWizardProgress(1)}
+                <div class="funding-source-grid" aria-label="Available spending sources">
+                    ${sources.length ? sources.map(source => {
+                        const hasEnough = source.balance >= transactionWizardState.amount;
+                        const isSelected =
+                            transactionWizardState.fundingSource?.type === source.type &&
+                            String(transactionWizardState.fundingSource?.id) === String(source.id) &&
+                            transactionWizardState.fundingSource?.bucket === source.bucket;
+                        return `
+                            <button type="button"
+                                class="funding-source-card ${source.className} ${isSelected ? 'selected' : ''}"
+                                data-funding-type="${source.type}"
+                                data-funding-id="${escapeHTML(source.id)}"
+                                data-funding-bucket="${source.bucket || ''}"
+                                ${hasEnough ? '' : 'disabled'}
+                                aria-label="${escapeHTML(source.label)}, ${source.hidden ? 'balance hidden' : `${formatIQD(source.balance)} available`}">
+                                <span class="funding-source-icon">
+                                    <i class="fa-solid ${source.icon}" aria-hidden="true"></i>
+                                </span>
+                                <span class="funding-source-copy">
+                                    <strong>${escapeHTML(source.label)}</strong>
+                                    <span>${escapeHTML(source.description)}</span>
+                                </span>
+                                <span class="funding-source-balance">
+                                    ${source.hidden ? '•••• IQD' : formatIQD(source.balance)}
+                                    ${hasEnough ? '' : '<small>Not enough</small>'}
+                                </span>
+                            </button>
+                        `;
+                    }).join('') : `
+                        <div class="funding-source-empty">
+                            No spending balances are available. Set a weekly budget or add money to a savings box first.
+                        </div>
+                    `}
+                </div>
+            `;
+            elements.options.querySelectorAll('[data-funding-type]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const source = getExpenseFundingSources().find(candidate =>
+                        candidate.type === button.dataset.fundingType &&
+                        String(candidate.id) === button.dataset.fundingId &&
+                        (candidate.bucket || '') === button.dataset.fundingBucket
+                    );
+                    if (!source || source.balance < transactionWizardState.amount) {
+                        showExpenseWizardError('That balance does not have enough money.');
+                        return;
+                    }
+                    transactionWizardState.fundingSource = {
+                        type: source.type,
+                        id: source.id,
+                        bucket: source.bucket,
+                        label: source.label
+                    };
+                    openExpenseLocationStep();
+                });
+            });
+            elements.action.style.display = 'none';
+            elements.cancel.textContent = 'Cancel';
+            elements.cancel.onclick = closeModal;
+            elements.modal.classList.add('active');
+            setTimeout(() => elements.options.querySelector('.funding-source-card:not(:disabled)')?.focus(), 50);
+        }
+
         function openExpenseLocationStep() {
             const elements = getExpenseModalElements();
             elements.content.classList.add('expense-wizard');
             elements.content.onkeydown = null;
             elements.title.textContent = 'Where did you spend it?';
-            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} · Type a merchant or choose a common location.`;
+            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} from ${transactionWizardState.fundingSource?.label || 'your selected balance'} · Choose a location.`;
             elements.input.style.display = 'block';
             elements.input.type = 'search';
             elements.input.value = transactionWizardState.location || '';
@@ -4646,7 +5125,7 @@
             elements.input.oninput = null;
             elements.options.style.display = 'flex';
             elements.options.innerHTML = `
-                ${renderWizardProgress(1)}
+                ${renderWizardProgress(2)}
                 <div class="merchant-grid" aria-label="Common merchants">
                     ${EXPENSE_MERCHANTS.map(merchant => `
                         <button type="button" class="merchant-choice" data-location="${merchant.name}">
@@ -4659,8 +5138,8 @@
             elements.action.style.display = 'block';
             elements.action.textContent = 'Continue';
             elements.action.className = 'modal-btn primary';
-            elements.cancel.textContent = 'Cancel';
-            elements.cancel.onclick = closeModal;
+            elements.cancel.textContent = 'Back';
+            elements.cancel.onclick = openExpenseFundingStep;
             elements.action.onclick = () => continueExpenseLocation(elements.input.value);
             elements.input.onkeydown = event => {
                 if (event.key === 'Enter') {
@@ -4901,7 +5380,7 @@
             const elements = getExpenseModalElements();
             elements.content.classList.add('expense-wizard');
             elements.title.textContent = 'What did you buy?';
-            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} at ${transactionWizardState.location}. Select one or more items.`;
+            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} from ${transactionWizardState.fundingSource?.label || 'selected balance'} at ${transactionWizardState.location}.`;
             elements.input.style.display = 'block';
             elements.input.type = 'text';
             elements.input.value = transactionWizardState.notes || '';
@@ -4915,7 +5394,7 @@
 
             let shortcutIndex = 1;
             elements.options.innerHTML = `
-                ${renderWizardProgress(2)}
+                ${renderWizardProgress(3)}
                 <div class="priority-grid">
                     ${EXPENSE_PRIORITY_TIERS.map(tier => `
                         <section class="priority-tier ${tier.priority} ${transactionWizardState.highlightedPriority === tier.priority ? 'highlighted' : ''}">
@@ -5006,18 +5485,30 @@
             ) || null;
         }
 
-        function spendFromActiveWeek(amount, prefersCar) {
-            const week = getActiveWeek();
-            if (!week || week.isClosed) return false;
-            const totalAvailable = toIntegerAmount(week.personal) + toIntegerAmount(week.car);
-            if (totalAvailable < amount) return false;
-
-            const firstBucket = prefersCar ? 'car' : 'personal';
-            const secondBucket = prefersCar ? 'personal' : 'car';
-            const firstDeduction = Math.min(toIntegerAmount(week[firstBucket]), amount);
-            week[firstBucket] -= firstDeduction;
-            week[secondBucket] -= amount - firstDeduction;
-            return true;
+        function spendFromSelectedSource(amount, fundingSource) {
+            if (!fundingSource || amount <= 0) return false;
+            if (fundingSource.type === 'weekly') {
+                const week = budgetState.weeks.find(item => item.id === fundingSource.id);
+                const bucket = fundingSource.bucket;
+                if (!week || week.isClosed || !['personal', 'car'].includes(bucket)) return false;
+                if (toIntegerAmount(week[bucket]) < amount) return false;
+                week[bucket] -= amount;
+                return true;
+            }
+            if (fundingSource.type === 'box') {
+                const box = budgetState.savingsBoxes.find(item =>
+                    String(item.id) === String(fundingSource.id)
+                );
+                if (!box || toIntegerAmount(box.balance) < amount) return false;
+                box.balance -= amount;
+                return true;
+            }
+            if (fundingSource.type === 'total-savings') {
+                if (toIntegerAmount(budgetState.totalSavings) < amount) return false;
+                budgetState.totalSavings -= amount;
+                return true;
+            }
+            return false;
         }
 
         function showAppToast(message) {
@@ -5039,11 +5530,13 @@
             }
 
             const amount = transactionWizardState.amount;
-            const prefersCar =
-                selectedItems.some(item => item.name === 'Transportation') ||
-                /taxi|car|fuel/i.test(transactionWizardState.location);
-            if (!spendFromActiveWeek(amount, prefersCar)) {
-                showExpenseWizardError(`Not enough active weekly cash for ${formatIQD(amount)}.`);
+            const fundingSource = transactionWizardState.fundingSource;
+            if (!fundingSource) {
+                showExpenseWizardError('Choose which balance should pay before saving.');
+                return;
+            }
+            if (!spendFromSelectedSource(amount, fundingSource)) {
+                showExpenseWizardError(`Not enough money remains in ${fundingSource.label}.`);
                 return;
             }
 
@@ -5055,19 +5548,20 @@
                 description,
                 Date.now(),
                 {
-                    sourceType: 'weekly',
-                    sourceId: 'smart-expense',
+                    sourceType: fundingSource.type,
+                    sourceId: fundingSource.id,
                     location: transactionWizardState.location,
                     selectedItems,
                     priority: getSmartExpensePriority(selectedItems),
-                    notes: transactionWizardState.notes
+                    notes: transactionWizardState.notes,
+                    fundingSource
                 }
             );
 
             persistBudgetState();
             updateUI();
             closeModal();
-            showAppToast(`${formatIQD(amount)} saved at ${transactionWizardState.location}.`);
+            showAppToast(`${formatIQD(amount)} paid from ${fundingSource.label}.`);
             fab.style.background = 'var(--color-brand)';
             fab.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
             setTimeout(() => {
@@ -5094,11 +5588,12 @@
                     }
                     transactionWizardState = {
                         amount,
+                        fundingSource: null,
                         location: '',
                         selectedItems: [],
                         notes: ''
                     };
-                    openExpenseLocationStep();
+                    openExpenseFundingStep();
                 }
             });
         };
@@ -5659,6 +6154,7 @@
                     transaction.location,
                     transaction.notes,
                     transaction.amount,
+                    transaction.fundingSource?.label,
                     ...(transaction.itemCategories || [])
                 ].some(value => String(value || '').toLowerCase().includes(normalizedQuery));
             });
@@ -5690,6 +6186,7 @@
                                 <div class="archive-transaction-meta">
                                     ${escapeHTML(formatTransactionDate(transaction.effectiveAt))}
                                     ${transaction.location ? ` · ${escapeHTML(transaction.location)}` : ''}
+                                    ${transaction.fundingSource ? ` · Paid from ${escapeHTML(transaction.fundingSource.label)}` : ''}
                                     ${transaction.notes ? ` · ${escapeHTML(transaction.notes)}` : ''}
                                 </div>
                                 <span class="archive-priority-badge">${escapeHTML(transaction.priority || 'uncategorized')}</span>
@@ -6093,7 +6590,7 @@
 
                                                 <h4>${tx.description || 'Spending'}</h4>
 
-                                                <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}</p>
+                                                <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}${tx.fundingSource ? ` • Paid from ${escapeHTML(tx.fundingSource.label)}` : ''}</p>
 
                                             </div>
 
@@ -6363,7 +6860,7 @@
 
                                             <h4>${tx.description || 'Spending'}</h4>
 
-                                            <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}</p>
+                                            <p>${formatTransactionDate(tx.effectiveAt)} • ${getTransactionLabel(tx.category)}${tx.fundingSource ? ` • Paid from ${escapeHTML(tx.fundingSource.label)}` : ''}</p>
 
                                         </div>
 
