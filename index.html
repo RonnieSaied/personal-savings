@@ -10,7 +10,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Personal Finance Management Dashboard</title>
+    <title>NovaVest</title>
 
     <script>
         try {
@@ -24,7 +24,7 @@
 
     <!-- Fonts -->
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Icons -->
 
@@ -73,7 +73,16 @@
             --accent-emerald: var(--color-brand);
             --accent-rose: var(--color-danger);
 
-            --font-family: 'Inter', sans-serif;
+            --font-family: 'Manrope', sans-serif;
+            --font-display: 'Sora', 'Manrope', sans-serif;
+
+            --frost-blur: 20px;
+            --frost-saturate: 155%;
+            --frost-chrome: color-mix(in srgb, var(--color-surface) 62%, transparent);
+            --frost-chrome-border: color-mix(in srgb, rgba(255, 255, 255, 0.14), var(--color-border) 55%);
+            --frost-modal: color-mix(in srgb, var(--color-surface) 76%, transparent);
+            --atmosphere-brand: color-mix(in srgb, var(--color-brand) 15%, transparent);
+            --atmosphere-cool: rgba(96, 165, 250, 0.07);
 
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -107,6 +116,11 @@
             --priority-nonessential: #BE123C;
             --priority-nonessential-bg: #FFF1F2;
             --accent-teal-glow: rgba(13, 148, 136, 0.16);
+            --frost-chrome: color-mix(in srgb, var(--color-surface) 72%, transparent);
+            --frost-chrome-border: color-mix(in srgb, rgba(255, 255, 255, 0.55), var(--color-border) 65%);
+            --frost-modal: color-mix(in srgb, var(--color-surface) 82%, transparent);
+            --atmosphere-brand: color-mix(in srgb, var(--color-brand) 10%, transparent);
+            --atmosphere-cool: rgba(2, 132, 199, 0.06);
             background-color: var(--color-bg-app);
             color: var(--color-text-primary);
 
@@ -130,7 +144,11 @@
         html.light-mode body .app-container,
         body.light-mode .app-container {
             background-color: #F4F6F8;
-            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(244, 246, 248, 0.95));
+            background-image:
+                radial-gradient(ellipse 110% 58% at 50% -10%, var(--atmosphere-brand), transparent 60%),
+                radial-gradient(ellipse 55% 42% at 108% 72%, color-mix(in srgb, var(--color-brand) 8%, transparent), transparent 58%),
+                radial-gradient(ellipse 48% 36% at -8% 90%, var(--atmosphere-cool), transparent 55%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(244, 246, 248, 0.92));
             border-color: #DCE3EB;
         }
 
@@ -169,7 +187,7 @@
             font-size: 1rem;
             font-weight: 400;
             line-height: 1.6;
-            letter-spacing: 0.015em;
+            letter-spacing: 0.01em;
 
             display: flex;
 
@@ -180,10 +198,9 @@
             overflow-x: hidden;
 
             background-image:
-
-                radial-gradient(circle at 50% 0%, var(--accent-teal-glow), transparent 50%),
-
-                radial-gradient(circle at 100% 100%, rgba(45, 212, 191, 0.04), transparent 40%);
+                radial-gradient(ellipse 95% 55% at 50% -12%, var(--atmosphere-brand), transparent 58%),
+                radial-gradient(ellipse 50% 35% at 100% 78%, color-mix(in srgb, var(--color-brand) 8%, transparent), transparent 55%),
+                radial-gradient(ellipse 45% 32% at 0% 88%, var(--atmosphere-cool), transparent 52%);
             transition: background-color 0.2s ease, color 0.2s ease;
 
         }
@@ -202,7 +219,11 @@
 
             /* Reduced for better phone aspect ratio */
 
-            background-color: var(--bg-deep-navy);
+            background-color: var(--color-bg-app);
+            background-image:
+                radial-gradient(ellipse 110% 58% at 50% -10%, var(--atmosphere-brand), transparent 60%),
+                radial-gradient(ellipse 55% 42% at 108% 72%, color-mix(in srgb, var(--color-brand) 9%, transparent), transparent 58%),
+                radial-gradient(ellipse 48% 36% at -8% 90%, var(--atmosphere-cool), transparent 55%);
 
             height: 92vh;
 
@@ -228,6 +249,11 @@
 
             margin: auto;
 
+        }
+
+        .main-content,
+        .tab-content {
+            background-color: transparent;
         }
 
 
@@ -289,15 +315,13 @@
 
             flex: 1;
 
-            padding: 1.5rem;
-
-            padding-bottom: calc(85px + var(--safe-area-inset-bottom));
+            padding: 1.15rem 1.15rem calc(108px + var(--safe-area-inset-bottom));
 
             display: flex;
 
             flex-direction: column;
 
-            gap: 1.5rem;
+            gap: 1.1rem;
 
             overflow-y: auto;
 
@@ -323,17 +347,13 @@
 
             border: 1px solid var(--card-border);
 
-            border-radius: 28px;
+            border-radius: 22px;
 
-            padding: 1.5rem;
+            padding: 1.15rem;
 
-            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 
-            -webkit-backdrop-filter: blur(20px);
-
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-
-            transition: var(--transition);
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
             position: relative;
 
@@ -345,44 +365,20 @@
 
         .glass-card:active {
 
-            transform: scale(0.98);
-
-            background: rgba(255, 255, 255, 0.02);
+            transform: scale(0.99);
 
         }
 
 
 
         .glass-card::before {
+            display: none;
+        }
 
-            content: '';
-
-            position: absolute;
-
-            top: 0;
-
-            left: 0;
-
-            right: 0;
-
-            bottom: 0;
-
-            border-radius: 28px;
-
-            padding: 1px;
-
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 60%);
-
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-
-            -webkit-mask-composite: xor;
-
-            mask-composite: exclude;
-
-            pointer-events: none;
-
+        h1, h2, .greeting h1, .home-hero-header .greeting h1,
+        .total-left, .metric-value, .financial-vault-title strong {
+            font-family: var(--font-display);
+            letter-spacing: -0.02em;
         }
 
 
@@ -442,28 +438,18 @@
         .home-hero-header {
             position: relative;
             isolation: isolate;
-            min-height: 128px;
-            margin-top: 0.25rem;
-            padding: 1rem;
-            overflow: hidden;
-            border: 1px solid var(--color-border);
-            border-radius: 24px;
-            background:
-                radial-gradient(circle at 88% 15%, color-mix(in srgb, var(--color-brand) 20%, transparent), transparent 34%),
-                linear-gradient(135deg, color-mix(in srgb, var(--color-surface-subtle) 94%, transparent), var(--color-surface));
-            box-shadow: 0 14px 35px rgba(4, 8, 18, 0.2);
+            min-height: 0;
+            margin-top: 0.15rem;
+            padding: 0.15rem 0.1rem 0.35rem;
+            overflow: visible;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
         }
 
         .home-hero-header::after {
-            position: absolute;
-            right: -32px;
-            bottom: -55px;
-            z-index: -1;
-            width: 130px;
-            height: 130px;
-            border: 1px solid color-mix(in srgb, var(--color-brand) 24%, transparent);
-            border-radius: 50%;
-            content: '';
+            display: none;
         }
 
         .home-brand-block {
@@ -475,30 +461,23 @@
 
         .home-brand-mark {
             display: none;
-            width: 46px;
-            height: 46px;
-            flex: 0 0 auto;
-            place-items: center;
-            border: 1px solid color-mix(in srgb, var(--color-brand) 38%, var(--color-border));
-            border-radius: 15px;
-            background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface));
-            color: var(--color-brand-text);
-            box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
         }
 
         .home-eyebrow {
             display: block;
-            margin-bottom: 0.15rem;
-            color: var(--color-brand-text);
-            font-size: 0.68rem;
-            font-weight: 800;
-            letter-spacing: 0.13em;
+            margin-bottom: 0.2rem;
+            color: var(--color-text-secondary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .home-hero-header .greeting h1 {
             margin: 0;
-            font-size: clamp(1.4rem, 5.8vw, 1.8rem);
-            line-height: 1.15;
+            font-size: clamp(1.55rem, 6vw, 1.95rem);
+            line-height: 1.1;
+            font-weight: 700;
         }
 
         .brand-dot {
@@ -507,25 +486,26 @@
 
         .home-date-row {
             display: flex;
-            margin-top: 0.45rem;
+            margin-top: 0.35rem;
             align-items: center;
             gap: 0.45rem;
             color: var(--color-text-secondary);
-            font-size: 0.76rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
         .home-time-pill {
             display: inline-flex;
-            min-height: 28px;
-            padding: 0.25rem 0.5rem;
+            min-height: 26px;
+            padding: 0.2rem 0.55rem;
             align-items: center;
             gap: 0.3rem;
-            border: 1px solid var(--color-border);
+            border: 0;
             border-radius: 999px;
-            background: var(--color-surface);
-            color: var(--color-text-primary);
+            background: color-mix(in srgb, var(--color-surface-subtle) 88%, transparent);
+            color: var(--color-text-secondary);
             font-variant-numeric: tabular-nums;
+            font-size: 0.75rem;
         }
 
         .profile-btn.home-profile {
@@ -1101,15 +1081,15 @@
 
             bottom: calc(90px + var(--safe-area-inset-bottom));
 
-            right: 1.5rem;
+            right: 1.25rem;
 
-            width: 56px;
+            width: 54px;
 
-            height: 56px;
+            height: 54px;
 
             border-radius: 18px;
 
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            background: var(--color-brand);
 
             display: flex;
 
@@ -1117,17 +1097,17 @@
 
             justify-content: center;
 
-            color: #050b14;
+            color: var(--color-on-brand);
 
-            font-size: 1.5rem;
+            font-size: 1.35rem;
 
-            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
+            box-shadow: 0 10px 28px color-mix(in srgb, var(--color-brand) 28%, transparent);
 
             cursor: pointer;
 
             z-index: 90;
 
-            transition: var(--transition);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
 
         }
 
@@ -1433,9 +1413,9 @@
 
         .week-card.active {
 
-            border-color: var(--color-border);
+            border-color: color-mix(in srgb, var(--color-brand) 35%, var(--color-border));
 
-            box-shadow: 0 12px 30px rgba(4, 8, 18, 0.18);
+            box-shadow: 0 10px 28px rgba(4, 8, 18, 0.16);
 
         }
 
@@ -1443,7 +1423,7 @@
             position: absolute;
             top: 0;
             left: 1.05rem;
-            width: 58px;
+            width: 48px;
             height: 3px;
             border-radius: 0 0 999px 999px;
             background: var(--color-brand);
@@ -1694,11 +1674,12 @@
         }
 
         .weekly-finish-btn {
-            min-height: 52px;
-            margin-top: 0.8rem !important;
-            border-radius: 17px;
-            font-size: 0.82rem;
-            box-shadow: 0 8px 20px color-mix(in srgb, var(--color-brand) 18%, transparent);
+            min-height: 50px;
+            margin-top: 0.35rem !important;
+            border-radius: 16px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 8px 20px color-mix(in srgb, var(--color-brand) 16%, transparent);
         }
 
         @media (max-width: 390px) {
@@ -2500,8 +2481,6 @@
         .transaction-item,
         .debt-item,
         .saving-goal,
-        .bottom-nav,
-        .modal-content,
         .option-btn,
         .modal-input {
             background-color: var(--color-surface);
@@ -2549,8 +2528,8 @@
         }
 
         .bottom-nav {
-            background: var(--color-surface);
-            background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+            background: var(--frost-chrome);
+            background: color-mix(in srgb, var(--color-surface) 58%, transparent);
         }
 
         .metric-tooltip,
@@ -2849,31 +2828,87 @@
             color: var(--color-danger);
         }
 
-        .merchant-grid {
+        .priority-choice-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.65rem;
+            gap: 0.75rem;
             animation: wizardSlideIn 0.2s ease both;
         }
 
-        .merchant-choice {
-            min-height: 72px;
-            padding: 0.65rem 0.4rem;
+        .priority-choice {
+            display: grid;
+            grid-template-columns: 48px minmax(0, 1fr);
+            align-items: center;
+            gap: 0.85rem;
+            min-height: 78px;
+            padding: 0.9rem 1rem;
             border: 1px solid var(--color-border);
-            border-radius: 14px;
-            background: var(--color-surface-subtle);
+            border-radius: 16px;
+            background: var(--color-surface);
             color: var(--color-text-primary);
-            font-size: 0.78rem;
-            font-weight: 600;
-            line-height: 1.3;
+            text-align: left;
             cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
         }
 
-        .merchant-choice i {
+        .priority-choice:hover,
+        .priority-choice:focus-visible {
+            border-color: var(--color-brand);
+            background: color-mix(in srgb, var(--color-brand) 7%, var(--color-surface));
+            transform: translateY(-1px);
+        }
+
+        .priority-choice.selected {
+            border-color: var(--color-brand);
+            border-width: 2px;
+        }
+
+        .priority-choice.primary {
+            background: var(--priority-primary-bg);
+        }
+
+        .priority-choice.secondary {
+            background: var(--priority-secondary-bg);
+        }
+
+        .priority-choice.non-essential {
+            background: var(--priority-nonessential-bg);
+        }
+
+        .priority-choice-icon {
+            display: grid;
+            width: 48px;
+            height: 48px;
+            place-items: center;
+            border-radius: 14px;
+            background: var(--color-surface);
+            font-size: 1.2rem;
+        }
+
+        .priority-choice.primary .priority-choice-icon {
+            color: var(--priority-primary);
+        }
+
+        .priority-choice.secondary .priority-choice-icon {
+            color: var(--priority-secondary);
+        }
+
+        .priority-choice.non-essential .priority-choice-icon {
+            color: var(--priority-nonessential);
+        }
+
+        .priority-choice strong {
             display: block;
-            margin-bottom: 0.35rem;
-            color: var(--color-brand-text);
-            font-size: 1.15rem;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .priority-choice span {
+            display: block;
+            margin-top: 0.2rem;
+            color: var(--color-text-secondary);
+            font-size: 0.82rem;
+            line-height: 1.35;
         }
 
         .priority-grid {
@@ -3438,14 +3473,14 @@
             padding: 6px;
             transform: translateX(-50%);
             justify-content: space-between;
-            border: 1px solid rgba(255, 255, 255, 0.11);
+            border: 1px solid var(--frost-chrome-border);
             border-radius: 30px;
-            background: rgba(17, 20, 27, 0.92) !important;
+            background: var(--frost-chrome) !important;
             box-shadow:
-                0 16px 34px rgba(0, 0, 0, 0.42),
-                inset 0 1px 0 rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(24px) saturate(145%);
-            -webkit-backdrop-filter: blur(24px) saturate(145%);
+                0 16px 34px rgba(0, 0, 0, 0.36),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturate));
+            -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(var(--frost-saturate));
             transition:
                 width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
                 height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -3551,11 +3586,11 @@
         }
 
         body.light-mode .bottom-nav {
-            border-color: rgba(15, 23, 42, 0.12);
-            background: rgba(255, 255, 255, 0.9) !important;
+            border-color: var(--frost-chrome-border);
+            background: var(--frost-chrome) !important;
             box-shadow:
-                0 16px 34px rgba(15, 23, 42, 0.18),
-                inset 0 1px 0 rgba(255, 255, 255, 0.85);
+                0 16px 34px rgba(15, 23, 42, 0.14),
+                inset 0 1px 0 rgba(255, 255, 255, 0.75);
         }
 
         body.light-mode .nav-item {
@@ -3575,30 +3610,108 @@
                 0 7px 16px rgba(15, 23, 42, 0.12);
         }
 
+        /* Soft atmosphere + frosted chrome only */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            margin: 0 -0.35rem;
+            padding: 0.85rem 0.35rem 0.7rem;
+            border-bottom: 1px solid color-mix(in srgb, var(--frost-chrome-border) 70%, transparent);
+            background: color-mix(in srgb, var(--color-bg-app) 48%, transparent);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+        }
+
+        .home-hero-header {
+            margin-top: 0;
+            border-bottom-color: transparent;
+            background: color-mix(in srgb, var(--color-bg-app) 35%, transparent);
+        }
+
+        .privacy-view-toggle {
+            background: var(--frost-chrome);
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
+            border-color: var(--frost-chrome-border);
+        }
+
+        .profile-btn.home-profile {
+            background: var(--frost-chrome) !important;
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
+        }
+
+        .glass-card.modal-content {
+            background: var(--frost-modal) !important;
+            border: 1px solid var(--frost-chrome-border);
+            border-radius: 24px;
+            box-shadow:
+                0 24px 48px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+        }
+
+        .glass-card:not(.modal-content),
+        .week-card,
+        .transaction-item,
+        .debt-item,
+        .saving-goal,
+        .salary-panel,
+        .financial-vault-card {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .glass-card:not(.modal-content) {
+            background: var(--color-surface);
+        }
+
+        body.light-mode .header {
+            background: color-mix(in srgb, var(--color-bg-app) 62%, transparent);
+            border-bottom-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+        }
+
+        body.light-mode .glass-card.modal-content {
+            background: var(--frost-modal) !important;
+            border-color: var(--frost-chrome-border);
+            box-shadow:
+                0 24px 48px rgba(15, 23, 42, 0.16),
+                inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        }
+
+        body.light-mode .app-container {
+            background-image:
+                radial-gradient(ellipse 110% 58% at 50% -10%, var(--atmosphere-brand), transparent 60%),
+                radial-gradient(ellipse 55% 42% at 108% 72%, color-mix(in srgb, var(--color-brand) 8%, transparent), transparent 58%),
+                radial-gradient(ellipse 48% 36% at -8% 90%, var(--atmosphere-cool), transparent 55%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(244, 246, 248, 0.92));
+        }
+
         .metrics-grid.snapshot-mode {
             display: block;
         }
 
         .financial-vault-card {
             width: 100%;
-            padding: 1rem;
+            padding: 0.85rem 1rem;
             border: 1px solid var(--color-border);
-            border-radius: 22px;
-            background:
-                radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--color-brand) 16%, transparent), transparent 36%),
-                var(--color-surface);
+            border-radius: 18px;
+            background: var(--color-surface);
             color: var(--color-text-primary);
             text-align: left;
             cursor: pointer;
-            box-shadow: 0 10px 28px rgba(4, 8, 18, 0.14);
-            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: none;
+            transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
         }
 
         .financial-vault-card:hover,
         .financial-vault-card:focus-visible {
-            border-color: color-mix(in srgb, var(--color-brand) 50%, var(--color-border));
-            transform: translateY(-2px);
-            box-shadow: 0 14px 32px rgba(4, 8, 18, 0.2);
+            border-color: color-mix(in srgb, var(--color-brand) 40%, var(--color-border));
+            background: color-mix(in srgb, var(--color-brand) 6%, var(--color-surface));
+            transform: translateY(-1px);
+            box-shadow: none;
         }
 
         .financial-vault-header,
@@ -3607,6 +3720,10 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.75rem;
+        }
+
+        .financial-vault-footer {
+            display: none;
         }
 
         .financial-vault-title {
@@ -3618,11 +3735,11 @@
 
         .financial-vault-icon {
             display: grid;
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             flex: 0 0 auto;
             place-items: center;
-            border-radius: 13px;
+            border-radius: 12px;
             background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface-subtle));
             color: var(--color-brand-text);
         }
@@ -3632,6 +3749,11 @@
             display: block;
         }
 
+        .financial-vault-title strong {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
         .financial-vault-title span,
         .financial-vault-footer {
             color: var(--color-text-secondary);
@@ -3639,43 +3761,91 @@
         }
 
         .financial-vault-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.55rem;
-            margin: 0.9rem 0;
+            display: none;
         }
 
         .financial-vault-item {
-            display: flex;
-            min-height: 46px;
-            padding: 0.6rem;
-            align-items: center;
-            gap: 0.5rem;
-            border: 1px solid var(--color-border);
-            border-radius: 13px;
-            background: color-mix(in srgb, var(--color-surface-subtle) 82%, transparent);
-            color: var(--color-text-secondary);
-            font-size: 0.75rem;
-            font-weight: 650;
-        }
-
-        .financial-vault-item i {
-            width: 1rem;
-            color: var(--color-brand-text);
-            text-align: center;
-        }
-
-        .financial-vault-item.debt i {
-            color: var(--color-danger);
-        }
-
-        .financial-vault-footer {
-            padding-top: 0.7rem;
-            border-top: 1px solid var(--color-border);
+            display: none;
         }
 
         .snapshot-data-source {
             display: none !important;
+        }
+
+        .home-week-section {
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .home-week-section .chart-header {
+            margin-bottom: 0 !important;
+            align-items: flex-end;
+        }
+
+        .home-week-section .chart-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .home-week-section .week-focus-header {
+            margin-bottom: 0;
+            border: 0;
+            background: transparent;
+            padding: 0;
+        }
+
+        .salary-panel {
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            background: var(--color-surface);
+            overflow: hidden;
+        }
+
+        .salary-panel-summary {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 1rem 1.1rem;
+            border: 0;
+            background: transparent;
+            color: var(--color-text-primary);
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .salary-panel-summary strong {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.98rem;
+        }
+
+        .salary-panel-summary span {
+            display: block;
+            margin-top: 0.15rem;
+            color: var(--color-text-secondary);
+            font-size: 0.78rem;
+        }
+
+        .salary-panel-chevron {
+            color: var(--color-text-secondary);
+            transition: transform 0.2s ease;
+        }
+
+        .salary-panel.is-open .salary-panel-chevron {
+            transform: rotate(180deg);
+        }
+
+        .salary-panel-body {
+            display: none;
+            padding: 0 1.1rem 1.1rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .salary-panel.is-open .salary-panel-body {
+            display: block;
+            padding-top: 1rem;
         }
 
         .modal-content.financial-snapshot-modal {
@@ -3840,10 +4010,6 @@
         }
 
         @media (max-width: 390px) {
-            .merchant-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
             .priority-items {
                 grid-template-columns: minmax(0, 1fr);
             }
@@ -3941,11 +4107,8 @@
 
                 <header class="header home-hero-header fade-in">
                     <div class="home-brand-block">
-                        <div class="home-brand-mark" aria-hidden="true">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
                         <div class="greeting">
-                            <span class="home-eyebrow">NOVAVEST · CALM VIEW</span>
+                            <span class="home-eyebrow">NovaVest</span>
                             <h1><span id="headerGreeting">Welcome back</span><span class="brand-dot">.</span></h1>
                             <div class="home-date-row">
                                 <span id="headerDateTime">Calculating date...</span>
@@ -3959,23 +4122,20 @@
 
                     <div class="home-header-actions">
                         <button class="privacy-view-toggle" id="privacyViewToggle" type="button"
-                            aria-label="Reveal all financial amounts" aria-pressed="false"
-                            title="Reveal all amounts">
-                            <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+                            aria-label="Hide all financial amounts" aria-pressed="true"
+                            title="Hide all amounts">
+                            <i class="fa-solid fa-eye" aria-hidden="true"></i>
                         </button>
                         <div class="profile-btn home-profile" role="img" aria-label="NovaVest profile">
                             <span>NV</span>
                             <span class="home-profile-status" aria-hidden="true"></span>
                         </div>
                     </div>
-
-                    
-
                 </header>
 
 
 
-                <!-- Financial Metrics -->
+                <!-- Financial Snapshot (quiet entry) -->
 
                 <section class="metrics-grid snapshot-mode fade-in delay-1" aria-label="Financial overview">
                     <button class="financial-vault-card" type="button" onclick="openFinancialSnapshot()"
@@ -3983,24 +4143,14 @@
                         <div class="financial-vault-header">
                             <div class="financial-vault-title">
                                 <span class="financial-vault-icon">
-                                    <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+                                    <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
                                 </span>
                                 <span>
-                                    <strong>Financial Snapshot</strong>
-                                    <span>Four balances, one calm overview</span>
+                                    <strong>Full financial picture</strong>
+                                    <span>Cash, savings, debt &amp; net worth</span>
                                 </span>
                             </div>
                             <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                        </div>
-                        <div class="financial-vault-grid" aria-hidden="true">
-                            <span class="financial-vault-item"><i class="fa-solid fa-money-bill-wave"></i>Available Cash</span>
-                            <span class="financial-vault-item"><i class="fa-solid fa-piggy-bank"></i>Total Savings</span>
-                            <span class="financial-vault-item debt"><i class="fa-solid fa-file-invoice-dollar"></i>Total Debt</span>
-                            <span class="financial-vault-item"><i class="fa-solid fa-scale-balanced"></i>Net Worth</span>
-                        </div>
-                        <div class="financial-vault-footer">
-                            <span><i class="fa-regular fa-eye" aria-hidden="true"></i> Tap to view all amounts</span>
-                            <span>Private by default</span>
                         </div>
                     </button>
 
@@ -4014,17 +4164,17 @@
 
                 <!-- Weekly Allowance Section -->
 
-                <section class="fade-in delay-1">
+                <section class="home-week-section fade-in delay-1">
 
                     <div class="chart-header" style="margin-bottom: 1rem;">
                         <div>
-                            <h2>Weekly Allowance</h2>
+                            <h2>This week</h2>
                             <span class="text-muted" id="weeklyLimitSummary">0 IQD until you set a budget</span>
                         </div>
                         <div style="text-align: right;">
                             <div class="text-muted" style="font-size: 0.7rem;">TOTAL SAVED</div>
                             <div class="text-emerald" id="totalSavingsDisplay"
-                                style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
+                                style="font-size: 1.05rem; font-weight: 800;">0 IQD</div>
                         </div>
                     </div>
 
@@ -4071,48 +4221,29 @@
 
                 <!-- Salary Income Section -->
 
-                <section class="glass-card fade-in delay-2" id="salarySection">
-
-                    <div class="chart-header" style="margin-bottom: 1rem;">
-
-                        <div>
-
-                            <h2>Salary Income</h2>
-
-                            <span class="text-muted">Monthly salary management</span>
-
-                        </div>
-
-                        <div style="text-align: right;">
-
-                            <div class="text-muted" style="font-size: 0.7rem;">AVAILABLE TO DISTRIBUTE</div>
-
-                            <div class="text-teal" id="salaryAvailableDisplay"
-
-                                style="font-size: 1.1rem; font-weight: 800;">0 IQD</div>
-
-                        </div>
-
-                    </div>
-
-                    <div id="salaryContent">
-
-                        <div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">
-
-                            <i class="fa-solid fa-money-bill-wave" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
-
-                            No salary recorded yet. Click below to add your monthly income.
-
-                        </div>
-
-                    </div>
-
-                    <button class="save-btn" style="margin-top: 1rem; background: var(--color-brand); color: var(--color-on-brand);" onclick="addSalary()">
-
-                        <i class="fa-solid fa-plus"></i> Add Salary
-
+                <section class="salary-panel fade-in delay-2" id="salarySection">
+                    <button class="salary-panel-summary" type="button" id="salaryPanelToggle"
+                        aria-expanded="false" aria-controls="salaryPanelBody">
+                        <span>
+                            <strong>Salary</strong>
+                            <span id="salaryPanelHint">Tap to manage monthly income</span>
+                        </span>
+                        <span style="text-align: right;">
+                            <span class="text-teal" id="salaryAvailableDisplay"
+                                style="display:block; font-size: 0.95rem; font-weight: 800;">0 IQD</span>
+                            <i class="fa-solid fa-chevron-down salary-panel-chevron" aria-hidden="true"></i>
+                        </span>
                     </button>
-
+                    <div class="salary-panel-body" id="salaryPanelBody">
+                        <div id="salaryContent">
+                            <div class="text-muted" style="text-align: center; padding: 1.25rem 0.5rem; font-size: 0.85rem;">
+                                No salary recorded yet. Add your monthly income when you’re ready.
+                            </div>
+                        </div>
+                        <button class="save-btn" style="margin-top: 0.75rem; background: var(--color-brand); color: var(--color-on-brand);" onclick="addSalary()">
+                            <i class="fa-solid fa-plus"></i> Add Salary
+                        </button>
+                    </div>
                 </section>
 
             </div>
@@ -4491,7 +4622,7 @@
         if (typeof Chart !== 'undefined') {
         Chart.defaults.color = '#94a3b8';
 
-        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.family = "'Manrope', sans-serif";
 
         Chart.defaults.font.size = 11;
 
@@ -4787,7 +4918,7 @@
             '.archive-total-box',
             '.archive-category-row'
         ].join(',');
-        let allAmountsVisible = false;
+        let allAmountsVisible = true;
 
         function preparePrivateAmount(element) {
             if (!element || element.dataset.privateAmountReady === 'true') return;
@@ -4795,13 +4926,18 @@
             element.dataset.privateAmountReady = 'true';
             element.classList.add('private-amount');
             if (allAmountsVisible) element.classList.add('is-revealed');
-            element.title = 'Tap to reveal this amount';
+            element.title = allAmountsVisible ? 'Tap to hide this amount' : 'Tap to reveal this amount';
             const interactiveParent = element.closest('button, a, input, select, textarea');
             if (!interactiveParent) {
                 element.setAttribute('role', 'button');
                 element.setAttribute('tabindex', '0');
             }
-            element.setAttribute('aria-label', 'Hidden financial amount. Activate to reveal.');
+            element.setAttribute(
+                'aria-label',
+                allAmountsVisible
+                    ? `${element.textContent.trim()}. Activate to hide.`
+                    : 'Hidden financial amount. Activate to reveal.'
+            );
         }
 
         function applyAmountPrivacy(root = document) {
@@ -4901,6 +5037,13 @@
             ?.addEventListener('click', toggleAllPrivateAmounts);
         syncPrivacyViewToggle();
 
+        document.getElementById('salaryPanelToggle')?.addEventListener('click', () => {
+            const panel = document.getElementById('salarySection');
+            const toggle = document.getElementById('salaryPanelToggle');
+            if (!panel || !toggle) return;
+            const isOpen = panel.classList.toggle('is-open');
+            toggle.setAttribute('aria-expanded', String(isOpen));
+        });
 
 
         // Handle FAB spending/actions
@@ -5296,32 +5439,26 @@
 
         };
 
-        const EXPENSE_MERCHANTS = [
-            { name: 'Supermarket', icon: 'fa-cart-shopping' },
-            { name: 'Pharmacy', icon: 'fa-prescription-bottle-medical' },
-            { name: 'Gym', icon: 'fa-dumbbell' },
-            { name: 'Restaurant', icon: 'fa-utensils' },
-            { name: 'Cafe', icon: 'fa-mug-hot' },
-            { name: 'Taxi', icon: 'fa-taxi' }
-        ];
-
         const EXPENSE_PRIORITY_TIERS = [
             {
                 priority: 'primary',
-                label: 'Tier 1 · Primary',
+                label: 'Primary',
                 hint: 'Essentials / Needs',
+                icon: 'fa-house',
                 items: ['Food (Groceries)', 'Medicines/Prescriptions', 'Bills (Water/Electricity)', 'Rent']
             },
             {
                 priority: 'secondary',
-                label: 'Tier 2 · Secondary',
+                label: 'Secondary',
                 hint: 'Wants / Quality of Life',
+                icon: 'fa-star',
                 items: ['Gym Membership', 'Restaurant Meal', 'Transportation', 'Clothing']
             },
             {
                 priority: 'non-essential',
-                label: 'Tier 3 · Non-Essential',
+                label: 'Non-Essential',
                 hint: 'Splurges / Luxuries',
+                icon: 'fa-gift',
                 items: ['Cafes/Coffee', 'Entertainment (Movies/Gaming)', 'Snacks', 'Subscriptions']
             }
         ];
@@ -5370,15 +5507,6 @@
                 JSON.stringify((budgetState.userCustomItems || []).filter(item => item.isSavedForFuture))
             );
         }
-
-        const EXPENSE_CONTEXT_RULES = [
-            { match: 'pharmacy', priority: 'primary', item: 'Medicines/Prescriptions' },
-            { match: 'supermarket', priority: 'primary', item: 'Food (Groceries)' },
-            { match: 'gym', priority: 'secondary', item: 'Gym Membership' },
-            { match: 'restaurant', priority: 'secondary', item: 'Restaurant Meal' },
-            { match: 'taxi', priority: 'secondary', item: 'Transportation' },
-            { match: 'cafe', priority: 'non-essential', item: 'Cafes/Coffee' }
-        ];
 
         let transactionWizardState = null;
 
@@ -5534,7 +5662,7 @@
                         bucket: source.bucket,
                         label: source.label
                     };
-                    openExpenseLocationStep();
+                    openExpensePriorityStep();
                 });
             });
             elements.action.style.display = 'none';
@@ -5544,68 +5672,66 @@
             setTimeout(() => elements.options.querySelector('.funding-source-card:not(:disabled)')?.focus(), 50);
         }
 
-        function openExpenseLocationStep() {
+        function getExpensePriorityTierLabel(priority) {
+            return EXPENSE_PRIORITY_TIERS.find(tier => tier.priority === priority)?.label || 'Spending';
+        }
+
+        function openExpensePriorityStep() {
             const elements = getExpenseModalElements();
             elements.content.classList.add('expense-wizard');
             elements.content.onkeydown = null;
-            elements.title.textContent = 'Where did you spend it?';
-            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} from ${transactionWizardState.fundingSource?.label || 'your selected balance'} · Choose a location.`;
-            elements.input.style.display = 'block';
-            elements.input.type = 'search';
-            elements.input.value = transactionWizardState.location || '';
-            elements.input.placeholder = 'e.g. Carrefour or Local Pharmacy';
-            elements.input.setAttribute('aria-label', 'Merchant or spending location');
+            elements.title.textContent = 'How essential was this?';
+            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} from ${transactionWizardState.fundingSource?.label || 'your selected balance'} · Choose a priority.`;
+            elements.input.style.display = 'none';
             elements.input.oninput = null;
+            elements.input.onkeydown = null;
             elements.options.style.display = 'flex';
+            const selectedPriority = transactionWizardState.highlightedPriority;
             elements.options.innerHTML = `
                 ${renderWizardProgress(2)}
-                <div class="merchant-grid" aria-label="Common merchants">
-                    ${EXPENSE_MERCHANTS.map(merchant => `
-                        <button type="button" class="merchant-choice" data-location="${merchant.name}">
-                            <i class="fa-solid ${merchant.icon}" aria-hidden="true"></i>
-                            ${merchant.name}
+                <div class="priority-choice-grid" role="group" aria-label="Spending priority">
+                    ${EXPENSE_PRIORITY_TIERS.map(tier => `
+                        <button type="button"
+                            class="priority-choice ${tier.priority} ${selectedPriority === tier.priority ? 'selected' : ''}"
+                            data-priority="${tier.priority}">
+                            <span class="priority-choice-icon" aria-hidden="true">
+                                <i class="fa-solid ${tier.icon}"></i>
+                            </span>
+                            <span>
+                                <strong>${tier.label}</strong>
+                                <span>${tier.hint}</span>
+                            </span>
                         </button>
                     `).join('')}
                 </div>
             `;
-            elements.action.style.display = 'block';
-            elements.action.textContent = 'Continue';
-            elements.action.className = 'modal-btn primary';
+            elements.action.style.display = 'none';
             elements.cancel.textContent = 'Back';
             elements.cancel.onclick = openExpenseFundingStep;
-            elements.action.onclick = () => continueExpenseLocation(elements.input.value);
-            elements.input.onkeydown = event => {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    continueExpenseLocation(elements.input.value);
-                }
-            };
-            elements.options.querySelectorAll('[data-location]').forEach(button => {
-                button.addEventListener('click', () => continueExpenseLocation(button.dataset.location));
+            elements.options.querySelectorAll('[data-priority]').forEach(button => {
+                button.addEventListener('click', () => continueExpensePriority(button.dataset.priority));
             });
             elements.modal.classList.add('active');
-            setTimeout(() => elements.input.focus(), 50);
+            setTimeout(() => {
+                const focusTarget = elements.options.querySelector('.priority-choice.selected')
+                    || elements.options.querySelector('.priority-choice');
+                focusTarget?.focus();
+            }, 50);
         }
 
-        function continueExpenseLocation(rawLocation) {
-            const location = String(rawLocation || '').trim();
-            if (!location) {
-                showExpenseWizardError('Enter or select a location to continue.');
+        function continueExpensePriority(priority) {
+            const validPriorities = ['primary', 'secondary', 'non-essential'];
+            if (!validPriorities.includes(priority)) {
+                showExpenseWizardError('Choose whether this spend is primary, secondary, or non-essential.');
                 return;
             }
 
-            const locationChanged = transactionWizardState.location !== location;
-            transactionWizardState.location = location;
-            if (locationChanged) transactionWizardState.selectedItems = [];
-            const context = EXPENSE_CONTEXT_RULES.find(rule =>
-                location.toLowerCase().includes(rule.match)
-            );
-            transactionWizardState.highlightedPriority = context?.priority || null;
-            if (context && locationChanged) {
-                transactionWizardState.selectedItems.push({
-                    name: context.item,
-                    priority: context.priority
-                });
+            const priorityChanged = transactionWizardState.highlightedPriority !== priority;
+            transactionWizardState.highlightedPriority = priority;
+            transactionWizardState.location = getExpensePriorityTierLabel(priority);
+            if (priorityChanged) {
+                transactionWizardState.selectedItems = (transactionWizardState.selectedItems || [])
+                    .filter(item => item.priority === priority);
             }
             openExpenseItemsStep();
         }
@@ -5685,10 +5811,11 @@
         function addCustomExpenseItem(event) {
             event.preventDefault();
             const nameInput = document.getElementById('customItemName');
-            const priorityInput = document.querySelector('input[name="customItemPriority"]:checked');
+            const priorityInput = document.getElementById('customItemPriority')
+                || document.querySelector('input[name="customItemPriority"]:checked');
             const saveInput = document.getElementById('saveCustomItem');
             const name = String(nameInput?.value || '').trim().replace(/\s+/g, ' ');
-            const priority = priorityInput?.value;
+            const priority = priorityInput?.value || transactionWizardState.highlightedPriority;
             const isSavedForFuture = saveInput?.checked === true;
             if (!name) {
                 showExpenseWizardError('Enter a name for your custom item.');
@@ -5698,6 +5825,10 @@
             if (name.length > 60) {
                 showExpenseWizardError('Custom item names must be 60 characters or fewer.');
                 nameInput?.focus();
+                return;
+            }
+            if (!['primary', 'secondary', 'non-essential'].includes(priority)) {
+                showExpenseWizardError('Choose a valid spending priority first.');
                 return;
             }
 
@@ -5811,9 +5942,14 @@
 
         function openExpenseItemsStep(focusItemId = null) {
             const elements = getExpenseModalElements();
+            const selectedPriority = transactionWizardState.highlightedPriority;
+            const priorityTier = selectedPriority
+                ? EXPENSE_PRIORITY_TIERS.filter(tier => tier.priority === selectedPriority)
+                : EXPENSE_PRIORITY_TIERS;
+            const priorityLabel = getExpensePriorityTierLabel(selectedPriority);
             elements.content.classList.add('expense-wizard');
             elements.title.textContent = 'What did you buy?';
-            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} from ${transactionWizardState.fundingSource?.label || 'selected balance'} at ${transactionWizardState.location}.`;
+            elements.desc.textContent = `${formatIQD(transactionWizardState.amount)} from ${transactionWizardState.fundingSource?.label || 'selected balance'} · ${priorityLabel}.`;
             elements.input.style.display = 'block';
             elements.input.type = 'text';
             elements.input.value = transactionWizardState.notes || '';
@@ -5829,8 +5965,8 @@
             elements.options.innerHTML = `
                 ${renderWizardProgress(3)}
                 <div class="priority-grid">
-                    ${EXPENSE_PRIORITY_TIERS.map(tier => `
-                        <section class="priority-tier ${tier.priority} ${transactionWizardState.highlightedPriority === tier.priority ? 'highlighted' : ''}">
+                    ${priorityTier.map(tier => `
+                        <section class="priority-tier ${tier.priority} highlighted">
                             <div class="priority-heading">
                                 <strong>${tier.label}</strong>
                                 <span>${tier.hint}</span>
@@ -5852,21 +5988,7 @@
                         <input class="custom-item-name" id="customItemName" type="text"
                             maxlength="60" autocomplete="off" placeholder="Item name, e.g. Dog Toys"
                             aria-label="Custom item name">
-                        <fieldset class="custom-priority-group">
-                            <legend>Choose its budget priority</legend>
-                            <label class="custom-priority-choice">
-                                <input type="radio" name="customItemPriority" value="primary" checked>
-                                <span>Primary</span>
-                            </label>
-                            <label class="custom-priority-choice">
-                                <input type="radio" name="customItemPriority" value="secondary">
-                                <span>Secondary</span>
-                            </label>
-                            <label class="custom-priority-choice">
-                                <input type="radio" name="customItemPriority" value="non-essential">
-                                <span>Non-Essential</span>
-                            </label>
-                        </fieldset>
+                        <input type="hidden" name="customItemPriority" id="customItemPriority" value="${selectedPriority || 'primary'}">
                         <label class="custom-save-choice">
                             <input type="checkbox" id="saveCustomItem" checked>
                             <span>Save to quick-select list?</span>
@@ -5900,7 +6022,7 @@
             elements.action.className = 'modal-btn primary';
             elements.action.onclick = saveSmartExpense;
             elements.cancel.textContent = 'Back';
-            elements.cancel.onclick = openExpenseLocationStep;
+            elements.cancel.onclick = openExpensePriorityStep;
             elements.content.onkeydown = event => handleExpenseItemsKeyboard(event, elements);
             elements.modal.classList.add('active');
 
@@ -5974,7 +6096,8 @@
             }
 
             const itemNames = selectedItems.map(item => item.name);
-            const description = `${itemNames.join(', ')} · ${transactionWizardState.location}`;
+            const priorityLabel = getExpensePriorityTierLabel(transactionWizardState.highlightedPriority);
+            const description = `${itemNames.join(', ')} · ${priorityLabel}`;
             recordTransaction(
                 itemNames[0],
                 amount,
@@ -5983,9 +6106,9 @@
                 {
                     sourceType: fundingSource.type,
                     sourceId: fundingSource.id,
-                    location: transactionWizardState.location,
+                    location: priorityLabel,
                     selectedItems,
-                    priority: getSmartExpensePriority(selectedItems),
+                    priority: getSmartExpensePriority(selectedItems) || transactionWizardState.highlightedPriority,
                     notes: transactionWizardState.notes,
                     fundingSource
                 }
@@ -6023,6 +6146,7 @@
                         amount,
                         fundingSource: null,
                         location: '',
+                        highlightedPriority: null,
                         selectedItems: [],
                         notes: ''
                     };
@@ -7134,7 +7258,7 @@
 
 
 
-                        let statusText = isCurrent ? 'Current Active Week' : week.isClosed ? 'Closed' : 'Upcoming';
+                        let statusText = isCurrent ? 'Active' : week.isClosed ? 'Closed' : 'Upcoming';
 
 
 
@@ -7213,7 +7337,7 @@
                                                 <span>IQD</span>
                                             </div>
                                             <div class="week-spending-summary">
-                                                <strong>${formatIQD(totalSpent)} spent</strong>
+                                                <strong style="color: ${totalSpent > 0 ? 'var(--color-danger)' : 'var(--color-text-secondary)'};">${formatIQD(totalSpent)} spent</strong>
                                                 <span>${remainingPercent}% remaining</span>
                                             </div>
                                         </div>
@@ -8273,17 +8397,17 @@
 
                 salaryContent.innerHTML = `
 
-                    <div class="text-muted" style="text-align: center; padding: 2rem; font-size: 0.8rem;">
+                    <div class="text-muted" style="text-align: center; padding: 1.25rem 0.5rem; font-size: 0.85rem;">
 
-                        <i class="fa-solid fa-money-bill-wave" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
-
-                        No salary recorded yet. Click below to add your monthly income.
+                        No salary recorded yet. Add your monthly income when you’re ready.
 
                     </div>
 
                 `;
 
                 availableDisplay.innerText = '0 IQD';
+                const hint = document.getElementById('salaryPanelHint');
+                if (hint) hint.textContent = 'Tap to manage monthly income';
 
                 return;
 
@@ -8360,6 +8484,12 @@
             
 
             availableDisplay.innerText = `${available.toLocaleString()} IQD`;
+            const hint = document.getElementById('salaryPanelHint');
+            if (hint) {
+                hint.textContent = available > 0
+                    ? `${available.toLocaleString()} IQD left to distribute`
+                    : 'Fully distributed this month';
+            }
 
         }
 
